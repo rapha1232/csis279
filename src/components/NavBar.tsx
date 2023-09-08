@@ -13,7 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
-import avatar from "../person.png"
+import avatar from "../person.png";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -97,7 +97,7 @@ function ResponsiveAppBar() {
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
-                    <Link className="text-white no-underline" to={`/${page}`}>
+                    <Link className="text-black no-underline" to={`/${page}`}>
                       {page}
                     </Link>
                   </Typography>
@@ -141,7 +141,12 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings" enterTouchDelay={750} enterDelay={750} enterNextDelay={750}>
+            <Tooltip
+              title="Open settings"
+              enterTouchDelay={750}
+              enterDelay={750}
+              enterNextDelay={750}
+            >
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src={avatar} />
               </IconButton>
