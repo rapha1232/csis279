@@ -11,15 +11,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useDispatch } from "react-redux";
 import { setUser } from "../models/user/userReducer";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
-import shortid from "shortid";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
 
 export const SignUp = () => {
   const dispatch = useDispatch();
@@ -51,7 +44,7 @@ export const SignUp = () => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <DarkTheme>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -134,6 +127,6 @@ export const SignUp = () => {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </DarkTheme>
   );
 };

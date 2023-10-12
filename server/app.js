@@ -1,9 +1,16 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import listingsRouter from "./routes/listings.js";
 import { signin, logout, signup } from "./routes/auth.js";
+import {
+  addProductListing,
+  deleteListing,
+  editProductListing,
+  getListingData,
+  myListings,
+} from "./routes/listings.js";
 import session from "express-session";
+import fileUpload from "express-fileupload";
 const app = express();
 
 app.use(
@@ -16,7 +23,7 @@ app.use(
     },
   })
 );
-
+app.use(fileUpload());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -28,10 +35,11 @@ app.get("/", (req, res) => {
 app.post("/sign-in", signin);
 app.post("/sign-up", signup);
 app.post("/logout", logout);
-// app.use("/api/auth", auth);
-
-// Use the listings router for handling file uploads
-app.use("/listings", listingsRouter);
+app.post("/addProductListing", addProductListing);
+app.get("/myListings", myListings);
+app.delete("/deleteListing", deleteListing);
+app.get("/getProductListing", getListingData);
+app.put("/editProductListing", editProductListing);
 
 app.listen(process.env.APP_PORT || 3001, () => {
   console.log("Working");

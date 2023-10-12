@@ -2,7 +2,6 @@ import connection from "../config/_database.config.js";
 import bcrypt from "bcrypt";
 const signin = (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   connection.query(
     "SELECT * FROM users WHERE email = ?",
     [email],
@@ -12,9 +11,9 @@ const signin = (req, res) => {
       } else {
         if (result.length > 0) {
           const user = {
-            id: result[0].user_id,
-            firstName: result[0].user_firstName,
-            lastName: result[0].user_lastName,
+            user_id: result[0].user_id,
+            user_firstName: result[0].user_firstName,
+            user_lastName: result[0].user_lastName,
             email: result[0].email,
             password: result[0].password,
           };
@@ -23,6 +22,7 @@ const signin = (req, res) => {
             if (bcryptErr) {
               res.status(500).send({ message: "Error signing in" });
             } else if (bcryptResult) {
+              req.session.user = user;
               res.status(200).send({
                 message: "Successfully signed in",
                 success: true,
@@ -42,8 +42,8 @@ const signin = (req, res) => {
 
 const signup = (req, res) => {
   const user = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    user_firstName: req.body.firstName,
+    user_lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
   };
@@ -58,14 +58,16 @@ const signup = (req, res) => {
     user.password = hash;
 
     const sql =
-      "INSERT INTO csis279.users(user_firstName, user_lastName, email, password) VALUES (?, ?, ?, ?)";
+      "INSERT INTO csis279.users(user_firstName, user_lastName, email, password) VALUES (?, ?, ?, ?) RETURNING user_id";
     const values = [user.firstName, user.lastName, user.email, user.password];
 
-    connection.query(sql, values, (dbErr) => {
+    connection.query(sql, values, (dbErr, results) => {
       if (dbErr) {
         res.status(500).send({ error: dbErr, user: null });
-      } else {
-        // Assuming you want to return a message and the user information upon successful registration
+      } else if (results.length > 0) {
+        user.user_id = results[0].user_id;
+
+        req.session.user = user;
         res
           .status(200)
           .send({ message: "Successfully registered!", user: user });

@@ -1,16 +1,16 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../app/store'
-import NavBar from '../components/NavBar'
+import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import NavBar from "../components/NavBar";
 
 const Home = () => {
-  const user = useSelector((state: RootState) => state.user)
+  const user = useSelector((state: RootState) => state.user);
   return (
     <div>
       <NavBar />
-      {user.user?.firstName}
+      {user.user?.user_firstName}
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
