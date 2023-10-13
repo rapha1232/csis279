@@ -18,6 +18,7 @@ import { Checklist, Logout } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { clearUser } from "../models/user/userReducer";
+import { removeLocalStorageUser } from "../utils/localStorageUtils";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -91,6 +92,7 @@ export default function PrimarySearchAppBar({
 
   const handleLogout = () => {
     axios.post("http://localhost:3001/logout").then((res) => {
+      removeLocalStorageUser();
       dispatch(clearUser());
       navigate("/sign-in");
     });

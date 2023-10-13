@@ -64,7 +64,7 @@ const MyListings = () => {
             <Typography component="h1" variant="h3" align="center">
               {listings.length === 0
                 ? "No Listings Found"
-                : "All Your Listings"}
+                : `All Your Listings (${listings.length})`}
             </Typography>
           </Container>
         </Box>

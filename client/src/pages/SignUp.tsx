@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../models/user/userReducer";
 import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
+import { setLocalStorageUser } from "../utils/localStorageUtils";
 
 export const SignUp = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,10 @@ export const SignUp = () => {
         password,
       })
       .then((res) => {
-        if (res.data.user !== null) {
+        if (res.data.success) {
+          let authenticatedUser = res.data.user;
+          authenticatedUser.token = res.data.token;
+          setLocalStorageUser(authenticatedUser);
           dispatch(setUser(res.data.user));
           navigate("/");
         } else {

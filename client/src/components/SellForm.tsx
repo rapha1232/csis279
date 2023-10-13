@@ -7,6 +7,8 @@ import {
   FormControl,
   InputLabel,
   Box,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
@@ -15,20 +17,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import DarkTheme from "./DarkTheme";
-import { exists } from "fs";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const NewProductListingForm = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [category, setCategory] = useState<string>("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
+  const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   const userId = useSelector((state: RootState) => state.user.user?.user_id);
   var editData =
     location.state && location.state.editData ? location.state.editData : null;
-  // Function to populate the form with existing data
+
   const populateFormWithData = (data: {
     title: string;
     description: string;
@@ -70,15 +73,27 @@ const NewProductListingForm = () => {
     }
   };
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!selectedFile) return setOpen(true);
     const date = new Date().toISOString().split("T")[0];
     const data = new FormData();
     data.append("title", title);
     data.append("description", description);
     data.append("price", price.toString());
     data.append("category", category.toString());
-    data.append("image", selectedFile!);
+    data.append("image", selectedFile);
     data.append("date", date);
     data.append("userId", userId!.toString());
 
@@ -91,7 +106,14 @@ const NewProductListingForm = () => {
           },
         })
         .then((res) => {
-          if (res.data.success) navigate("/");
+          if (res.data.success)
+            navigate("/", {
+              state: {
+                open: true,
+                message: "Your listing has been successfully created",
+                type: "success",
+              },
+            });
           else console.error(res.data.error);
         })
         .catch((error) => console.error(error));
@@ -105,7 +127,14 @@ const NewProductListingForm = () => {
           },
         })
         .then((res) => {
-          if (res.data.success) navigate("/");
+          if (res.data.success)
+            navigate("/", {
+              state: {
+                open: true,
+                message: "Your listing has been successfully editted",
+                type: "success",
+              },
+            });
           else console.error(res.data.error);
         })
         .catch((error) => console.error(error));
@@ -177,11 +206,26 @@ const NewProductListingForm = () => {
               name="image"
               onChange={handleFileChange}
               accept="image/*"
-              required
               hidden
             />
           </Button>
-          <p>{selectedFile && `Uploaded File: ${selectedFile.name}`}</p>
+          <p>
+            {selectedFile && (
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                gap={4}
+              >
+                Uploaded File: {selectedFile.name}
+                <RiDeleteBin6Line
+                  size={20}
+                  color="white"
+                  onClick={() => setSelectedFile(undefined)}
+                />
+              </Box>
+            )}
+          </p>
         </Box>
         <Box margin="20px 0" textAlign="center">
           <Button type="submit" variant="contained" color="primary">
@@ -189,6 +233,11 @@ const NewProductListingForm = () => {
           </Button>
         </Box>
       </form>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          Upload an Image
+        </Alert>
+      </Snackbar>
     </DarkTheme>
   );
 };

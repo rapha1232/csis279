@@ -13,6 +13,7 @@ import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../models/user/userReducer";
+import { setLocalStorageUser } from "../utils/localStorageUtils";
 
 export const SignIn = () => {
   const [data, setData] = useState({});
@@ -39,6 +40,9 @@ export const SignIn = () => {
       .post("http://localhost:3001/sign-in", { email, password })
       .then((res) => {
         if (res.data.success) {
+          let authenticatedUser = res.data.user;
+          authenticatedUser.token = res.data.token;
+          setLocalStorageUser(authenticatedUser);
           dispatch(setUser(res.data.user));
           navigate("/");
         } else {

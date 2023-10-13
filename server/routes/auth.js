@@ -1,5 +1,9 @@
 import connection from "../config/_database.config.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
 const signin = (req, res) => {
   const { email, password } = req.body;
   connection.query(
@@ -23,10 +27,15 @@ const signin = (req, res) => {
               res.status(500).send({ message: "Error signing in" });
             } else if (bcryptResult) {
               req.session.user = user;
+              const token = jwt.sign(
+                { userId: user.user_id },
+                process.env.SECRET_KEY
+              );
               res.status(200).send({
                 message: "Successfully signed in",
                 success: true,
                 user: user,
+                token: token,
               });
             } else {
               res.status(500).send({ message: "Wrong email or password" });
@@ -66,11 +75,17 @@ const signup = (req, res) => {
         res.status(500).send({ error: dbErr, user: null });
       } else if (results.length > 0) {
         user.user_id = results[0].user_id;
-
         req.session.user = user;
-        res
-          .status(200)
-          .send({ message: "Successfully registered!", user: user });
+        const token = jwt.sign(
+          { userId: user.user_id },
+          process.env.SECRET_KEY
+        );
+        res.status(200).send({
+          success: true,
+          message: "Successfully registered!",
+          user: user,
+          token: token,
+        });
       }
     });
   });
