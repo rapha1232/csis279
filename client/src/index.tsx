@@ -15,6 +15,7 @@ import MyListings from "./pages/MyListings";
 import Browse from "./pages/Browse";
 import ProductPage from "./pages/ProductPage";
 import NavBar from "./components/NavBar/NavBar";
+import Home from "./pages/Home";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -30,7 +31,7 @@ root.render(
               element={
                 <>
                   <NavBar />
-                  <App />
+                  <Home />
                 </>
               }
             />

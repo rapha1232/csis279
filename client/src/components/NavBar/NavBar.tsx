@@ -51,8 +51,19 @@ const NavBar = ({ searchBar = false }: { searchBar?: boolean | null }) => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "#333333" }}>
+    <Box sx={{ flexGrow: 1, zIndex: 5 }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "#333333",
+          maxWidth: "80%",
+          margin: "auto",
+          borderRadius: "10px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          top: "10px",
+        }}
+      >
         <Toolbar>
           <Typography
             variant="h6"

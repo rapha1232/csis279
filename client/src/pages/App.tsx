@@ -14,13 +14,7 @@ const App = () => {
     if (user && !savedUser) dispatch(setUser(user));
     if (!user) navigate("/sign-in");
   }, [user, savedUser]);
-  return (
-    <div className="App">
-      <>
-        <Home />
-      </>
-    </div>
-  );
+  return <div className="App"></div>;
 };
 
 export default App;

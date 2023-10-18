@@ -8,28 +8,45 @@ import {
   DialogActions,
   Button,
   IconButton,
+  Badge,
+  Chip,
+  useMediaQuery,
 } from "@mui/material";
 import DarkTheme from "../DarkTheme";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import CartItem from "./CartItem";
 import { getCart } from "../../utils/cartUtils";
-import { ShoppingCart } from "./Icons";
+import { ShoppingCart, VerticalAlignBottomIcon } from "./Icons";
 
 const CartModal = () => {
   const [open, setOpen] = useState<boolean>(false);
   const userId = useSelector((state: RootState) => state.user.user?.user_id);
   const cart = useSelector((state: RootState) => state.cart);
+  const desktop = useMediaQuery("(min-width: 900px)");
   const dispatch = useDispatch();
-
-  const handleClose = () => {
-    setOpen(false);
-    // window.location.reload();
-  };
 
   useEffect(() => {
     getCart(userId!, dispatch);
   }, [userId, dispatch]);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "c" || event.key === "C") {
+        setOpen(!open);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [open]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <DarkTheme>
@@ -41,8 +58,20 @@ const CartModal = () => {
         aria-haspopup="true"
         onClick={() => setOpen(true)}
         color="inherit"
+        sx={{ gap: 1 }}
       >
-        <ShoppingCart />
+        {desktop && (
+          <Chip
+            variant="outlined"
+            color="default"
+            size="small"
+            label="C"
+            icon={<VerticalAlignBottomIcon />}
+          />
+        )}
+        <Badge color="error" badgeContent={cart.products.length}>
+          <ShoppingCart />
+        </Badge>
       </IconButton>
       <Dialog
         open={open}

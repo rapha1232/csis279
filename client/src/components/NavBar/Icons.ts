@@ -7,6 +7,7 @@ import Checklist from "@mui/icons-material/Checklist";
 import Logout from "@mui/icons-material/Logout";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import VerticalAlignBottomIcon from "@mui/icons-material/VerticalAlignBottom";
 export {
   HomeIcon,
   SellIcon,
@@ -17,4 +18,5 @@ export {
   Logout,
   ShoppingCart,
   RiDeleteBin6Line,
+  VerticalAlignBottomIcon,
 };

@@ -6,6 +6,7 @@ import {
   Button,
   Container,
   Grid,
+  Skeleton,
   Snackbar,
   Typography,
 } from "@mui/material";
@@ -21,21 +22,23 @@ const Home = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastType, setToastType] = useState<AlertColor>("success");
-  const [featuredProducts, setFeaturedProducts] = useState<Listing[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<Listing[]>();
   const userId = useSelector((state: RootState) => state.user.user?.user_id);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const getFeaturedProducts = () => {
-    axios
-      .get("http://localhost:3001/featured-products")
-      .then((response) => {
-        if (response.data.listings.length > 0)
-          setFeaturedProducts(response.data.listings);
-      })
-      .catch((error) => {
-        console.error("Error fetching featured products:", error);
-      });
+    setTimeout(() => {
+      axios
+        .get("http://localhost:3001/featured-products")
+        .then((response) => {
+          if (response.data.listings.length > 0)
+            setFeaturedProducts(response.data.listings);
+        })
+        .catch((error) => {
+          console.error("Error fetching featured products:", error);
+        });
+    }, 2500);
   };
 
   useEffect(() => {
@@ -51,7 +54,7 @@ const Home = () => {
   }, [dispatch]);
   return (
     <>
-      <Container>
+      <Container sx={{ pt: "75px" }}>
         <Box
           mt={4}
           display="flex"
@@ -77,30 +80,46 @@ const Home = () => {
           <Typography variant="h4" align="center" gutterBottom>
             Featured Products
           </Typography>
-          <Grid container spacing={3}>
-            {featuredProducts.length > 0 &&
-              featuredProducts.map((product) => (
-                <Grid
-                  item
-                  key={product.product_id}
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                >
-                  <ProductListingCard
-                    product={product}
-                    homeScreen={true}
-                    onClick={() =>
-                      navigate(`/product/${product.product_id}`, {
-                        state: { userId: userId },
-                      })
-                    }
+          {featuredProducts ? (
+            <Grid container spacing={3}>
+              {featuredProducts.length > 0 &&
+                featuredProducts.map((product) => (
+                  <Grid
+                    item
+                    key={product.product_id}
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={3}
+                  >
+                    <ProductListingCard
+                      product={product}
+                      homeScreen={true}
+                      onClick={() =>
+                        navigate(`/product/${product.product_id}`, {
+                          state: { userId: userId },
+                        })
+                      }
+                    />
+                  </Grid>
+                ))}
+              {featuredProducts.length === 0 && <p>No featured products</p>}
+            </Grid>
+          ) : (
+            <Grid container spacing={3}>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((product) => (
+                <Grid item key={product} xs={12} sm={6} md={4} lg={3}>
+                  <Skeleton
+                    variant="rectangular"
+                    width={270}
+                    height={530}
+                    animation="wave"
+                    sx={{ bgcolor: "grey.800" }}
                   />
                 </Grid>
               ))}
-            {featuredProducts.length === 0 && <p>No featured products</p>}
-          </Grid>
+            </Grid>
+          )}
         </Box>
       </Container>
       <Snackbar
