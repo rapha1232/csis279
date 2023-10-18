@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Grid, Paper, Typography } from "@mui/material";
-import NavBar from "../components/NavBar";
 import NewProductListingForm from "../components/SellForm";
 import DarkTheme from "../components/DarkTheme";
 
@@ -8,7 +7,6 @@ const Sell = () => {
   return (
     <DarkTheme>
       <div>
-        <NavBar />
         <Container>
           <Grid
             container

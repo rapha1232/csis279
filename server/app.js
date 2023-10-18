@@ -6,11 +6,18 @@ import {
   addProductListing,
   deleteListing,
   editProductListing,
+  getFeaturedListings,
   getListingData,
   myListings,
 } from "./routes/listings.js";
 import session from "express-session";
 import fileUpload from "express-fileupload";
+import {
+  addToCart,
+  checkCart,
+  deleteFromCart,
+  getCart,
+} from "./routes/cart.js";
 const app = express();
 
 app.use(
@@ -40,6 +47,11 @@ app.get("/myListings", myListings);
 app.delete("/deleteListing", deleteListing);
 app.get("/getProductListing", getListingData);
 app.put("/editProductListing", editProductListing);
+app.get("/featured-products", getFeaturedListings);
+app.get("/getCart", getCart);
+app.post("/addToCart", addToCart);
+app.post("/deleteFromCart", deleteFromCart);
+app.get("/checkCart", checkCart);
 
 app.listen(process.env.APP_PORT || 3001, () => {
   console.log("Working");

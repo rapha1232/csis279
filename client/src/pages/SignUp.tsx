@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { FormEvent } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,10 +10,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useDispatch } from "react-redux";
-import { setUser } from "../models/user/userReducer";
 import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
 import { setLocalStorageUser } from "../utils/localStorageUtils";
+import { setUser } from "../app/store";
 
 export const SignUp = () => {
   const dispatch = useDispatch();

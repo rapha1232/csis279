@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,8 +12,8 @@ import Container from "@mui/material/Container";
 import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser } from "../models/user/userReducer";
 import { setLocalStorageUser } from "../utils/localStorageUtils";
+import { setUser } from "../app/store";
 
 export const SignIn = () => {
   const [data, setData] = useState({});

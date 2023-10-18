@@ -13,6 +13,8 @@ import Profile from "./pages/Profile";
 import Sell from "./pages/Sell";
 import MyListings from "./pages/MyListings";
 import Browse from "./pages/Browse";
+import ProductPage from "./pages/ProductPage";
+import NavBar from "./components/NavBar/NavBar";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -23,13 +25,62 @@ root.render(
       <Provider store={store}>
         <Router>
           <Routes>
-            <Route path="/" element={<App />} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <NavBar />
+                  <App />
+                </>
+              }
+            />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/sell" element={<Sell />} />
-            <Route path="/my-listings" element={<MyListings />} />
-            <Route path="/browse" element={<Browse />} />
+            <Route
+              path="/profile"
+              element={
+                <>
+                  <NavBar />
+                  <Profile />
+                </>
+              }
+            />
+            <Route
+              path="/sell"
+              element={
+                <>
+                  <NavBar />
+                  <Sell />
+                </>
+              }
+            />
+            <Route
+              path="/my-listings"
+              element={
+                <>
+                  <NavBar />
+                  <MyListings />
+                </>
+              }
+            />
+            <Route
+              path="/browse"
+              element={
+                <>
+                  <NavBar searchBar />
+                  <Browse />
+                </>
+              }
+            />
+            <Route
+              path="/product/:id"
+              element={
+                <>
+                  <NavBar />
+                  <ProductPage />
+                </>
+              }
+            />
           </Routes>
         </Router>
       </Provider>

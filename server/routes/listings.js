@@ -49,7 +49,7 @@ const addProductListing = (req, res) => {
 const myListings = (req, res) => {
   const userId = req.query.userId;
   const sql =
-    "SELECT product_id as id, title, description, price, image, date_posted FROM csis279.product_listings WHERE seller_id = ? ORDER BY date_posted DESC";
+    "SELECT * FROM csis279.product_listings WHERE seller_id = ? ORDER BY date_posted DESC";
   const values = [userId];
 
   connection.query(sql, values, (err, results) => {
@@ -77,12 +77,11 @@ const deleteListing = (req, res) => {
 
 const getListingData = (req, res) => {
   const listingId = req.query.listingId;
-  const sql =
-    "SELECT title, description, price, category_id FROM csis279.product_listings WHERE product_id = ?";
+  const sql = "SELECT * FROM csis279.product_listings WHERE product_id = ?";
   const values = [listingId];
 
   connection.query(sql, values, (err, results) => {
-    if (err) {
+    if (err || results.length === 0) {
       res.send({ error: err, message: "ERROR!" });
     } else {
       res.send({ listing: results[0] });
@@ -119,10 +118,29 @@ const editProductListing = (req, res) => {
     }
   });
 };
+
+const getFeaturedListings = (req, res) => {
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const sql =
+    "SELECT * FROM csis279.product_listings ORDER BY date_posted > ? LIMIT 8";
+  const values = [oneWeekAgo];
+
+  connection.query(sql, values, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.send({ error: err, message: "ERROR!" });
+    } else {
+      res.send({ listings: results });
+    }
+  });
+};
 export {
   addProductListing,
   myListings,
   deleteListing,
   getListingData,
   editProductListing,
+  getFeaturedListings,
 };

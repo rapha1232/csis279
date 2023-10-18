@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../components/NavBar";
 import ProductListingCard from "../components/ProductListingCard";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Listing } from "../types";
+import { handleDelete, handleEdit } from "../utils/listingActionsUtils";
 
-interface Listing {
-  id: number;
-  title: string;
-  description: string;
-  price: string;
-  image: string;
-  datePosted: string;
-}
 const MyListings = () => {
   const [listings, setListings] = useState<Listing[]>([]);
   const userId = useSelector((state: RootState) => state.user.user?.user_id);
@@ -26,33 +19,8 @@ const MyListings = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const handleDelete = (id: number) => {
-    axios
-      .delete(`http://localhost:3001/deleteListing?listingId=${id}`)
-      .then(() =>
-        setListings((prevData) =>
-          prevData.filter((listing) => listing.id !== id)
-        )
-      )
-      .catch((error) => console.error(error));
-  };
-
-  const handleEdit = (id: number) => {
-    // Make an Axios GET request to fetch the existing data for the product with the specified ID
-    axios
-      .get(`http://localhost:3001/getProductListing?listingId=${id}`)
-      .then((response) => {
-        const editData = response.data.listing;
-        editData.id = id;
-        const exists = true;
-        navigate("/sell", { state: { editData } });
-      })
-      .catch((error) => console.error(error));
-  };
-
   return (
     <div>
-      <NavBar />
       <main>
         <Box
           sx={{
@@ -72,14 +40,13 @@ const MyListings = () => {
           <Container sx={{ py: 8 }} maxWidth="lg">
             <Grid container spacing={4}>
               {listings.map((listing) => (
-                <Grid item key={listing.id} xs={12} sm={6} md={4}>
+                <Grid item key={listing.product_id} xs={12} sm={6} md={4}>
                   <ProductListingCard
-                    id={listing.id}
-                    title={listing.title}
-                    description={listing.description}
-                    image={listing.image}
-                    handleDelete={handleDelete}
-                    handleEdit={handleEdit}
+                    product={listing}
+                    handleDelete={() =>
+                      handleDelete(listing.product_id, setListings)
+                    }
+                    handleEdit={() => handleEdit(listing.product_id, navigate)}
                   />
                 </Grid>
               ))}

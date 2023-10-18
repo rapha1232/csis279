@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import DarkTheme from "./DarkTheme";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { handleClose } from "../utils/toastUtils";
 
 const NewProductListingForm = () => {
   const [title, setTitle] = useState<string>("");
@@ -73,72 +74,54 @@ const NewProductListingForm = () => {
     }
   };
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!selectedFile) return setOpen(true);
+
     const date = new Date().toISOString().split("T")[0];
     const data = new FormData();
     data.append("title", title);
     data.append("description", description);
     data.append("price", price.toString());
     data.append("category", category.toString());
-    data.append("image", selectedFile);
     data.append("date", date);
     data.append("userId", userId!.toString());
 
-    // Check if you are adding a new listing or editing an existing one
     if (!editData) {
-      axios
-        .post("http://localhost:3001/addProductListing", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          if (res.data.success)
-            navigate("/", {
-              state: {
-                open: true,
-                message: "Your listing has been successfully created",
-                type: "success",
-              },
-            });
-          else console.error(res.data.error);
-        })
-        .catch((error) => console.error(error));
+      if (!selectedFile) {
+        return setOpen(true);
+      }
+      data.append("image", selectedFile);
     } else {
-      // For editing an existing listing
-      data.append("id", editData.id); // Include the ID of the listing being edited
-      axios
-        .put("http://localhost:3001/editProductListing", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          if (res.data.success)
-            navigate("/", {
-              state: {
-                open: true,
-                message: "Your listing has been successfully editted",
-                type: "success",
-              },
-            });
-          else console.error(res.data.error);
-        })
-        .catch((error) => console.error(error));
+      data.append("id", editData.product_id);
     }
+
+    axios
+      .request({
+        method: !editData ? "post" : "put",
+        url: `http://localhost:3001/${
+          !editData ? "add" : "edit"
+        }ProductListing`,
+        data: data,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.data.success) {
+          navigate("/", {
+            state: {
+              open: true,
+              message: `Your listing has been successfully ${
+                !editData ? "created" : "edited"
+              }`,
+              type: "success",
+            },
+          });
+        } else {
+          console.error(res.data.error);
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -176,6 +159,7 @@ const NewProductListingForm = () => {
           margin="normal"
           required
           type="number"
+          inputProps={{ min: 0, step: 0.01 }}
         />
         <FormControl variant="outlined" fullWidth margin="normal">
           <InputLabel>Category</InputLabel>
@@ -186,55 +170,71 @@ const NewProductListingForm = () => {
             label="Category"
             required
           >
-            <MenuItem value="1">Electronics</MenuItem>
-            <MenuItem value="2">Clothing</MenuItem>
-            <MenuItem value="3">Vehicles</MenuItem>
-            <MenuItem value="4">Utilities</MenuItem>
-            <MenuItem value="5">Other</MenuItem>
+            <MenuItem value="6">Electronics</MenuItem>
+            <MenuItem value="7">Vehicles</MenuItem>
+            <MenuItem value="8">Appliances</MenuItem>
+            <MenuItem value="9">Furniture</MenuItem>
+            <MenuItem value="10">Photography</MenuItem>
+            <MenuItem value="11">Sports & Outdoors</MenuItem>
+            <MenuItem value="12">Musical Instruments</MenuItem>
+            <MenuItem value="13">Home & Kitchen</MenuItem>
+            <MenuItem value="14">Gaming</MenuItem>
+            <MenuItem value="15">Fashion</MenuItem>
+            <MenuItem value="16">Office Supplies</MenuItem>
           </Select>
         </FormControl>
-        <Box marginY="10px" textAlign={"center"}>
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUpload />}
-            size="large"
-          >
-            Upload file
-            <input
-              type="file"
-              name="image"
-              onChange={handleFileChange}
-              accept="image/*"
-              hidden
-            />
-          </Button>
-          <p>
-            {selectedFile && (
-              <Box
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                gap={4}
-              >
-                Uploaded File: {selectedFile.name}
-                <RiDeleteBin6Line
-                  size={20}
-                  color="white"
-                  onClick={() => setSelectedFile(undefined)}
-                />
-              </Box>
-            )}
-          </p>
-        </Box>
+        {!editData && (
+          <Box marginY="10px" textAlign={"center"}>
+            <Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUpload />}
+              size="large"
+            >
+              Upload file
+              <input
+                type="file"
+                name="image"
+                onChange={handleFileChange}
+                accept="image/*"
+                hidden
+              />
+            </Button>
+            <p>
+              {selectedFile && (
+                <Box
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  gap={4}
+                >
+                  Uploaded File: {selectedFile.name}
+                  <RiDeleteBin6Line
+                    size={20}
+                    color="white"
+                    onClick={() => setSelectedFile(undefined)}
+                  />
+                </Box>
+              )}
+            </p>
+          </Box>
+        )}
         <Box margin="20px 0" textAlign="center">
           <Button type="submit" variant="contained" color="primary">
             Submit
           </Button>
         </Box>
       </form>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => handleClose(setOpen)}
+      >
+        <Alert
+          onClose={() => handleClose(setOpen)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
           Upload an Image
         </Alert>
       </Snackbar>

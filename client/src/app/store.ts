@@ -1,4 +1,3 @@
-//store.ts
 import {
   configureStore,
   ThunkAction,
@@ -6,19 +5,19 @@ import {
   PayloadAction,
   createSlice,
 } from "@reduxjs/toolkit";
-import { User } from "../models/user/userModel";
-import { UserState } from "../models/user/userReducer";
-import { userReducer } from "../models/user/userReducer";
+import { Cart, CartEntry, User } from "../types/index";
 
-const textSlice = createSlice({
-  name: "text",
-  initialState: "",
-  reducers: {
-    setText: (state, action: PayloadAction<string>) => {
-      return action.payload;
-    },
-  },
-});
+interface UserState {
+  user: User | null;
+}
+interface CartState {
+  cart: Cart | null;
+}
+
+const initialCart: Cart = {
+  user_id: 0,
+  products: [],
+};
 
 const userSlice = createSlice({
   name: "user",
@@ -33,14 +32,32 @@ const userSlice = createSlice({
   },
 });
 
-export const store = configureStore({
-  reducer: {
-    text: textSlice.reducer,
-    user: userReducer,
+// Create a cart slice
+const cartSlice = createSlice({
+  name: "cart",
+  initialState: initialCart,
+  reducers: {
+    setCart: (state, action: PayloadAction<Cart>) => {
+      return action.payload;
+    },
+    clearCart: (state) => {
+      state.products = [];
+    },
+    setCartProducts: (state, action: PayloadAction<CartEntry[]>) => {
+      state.products = action.payload;
+    },
   },
 });
 
-export const { setText } = textSlice.actions;
+export const store = configureStore({
+  reducer: {
+    user: userSlice.reducer,
+    cart: cartSlice.reducer,
+  },
+});
+
+export const { setUser, clearUser } = userSlice.actions;
+export const { setCart, clearCart, setCartProducts } = cartSlice.actions;
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

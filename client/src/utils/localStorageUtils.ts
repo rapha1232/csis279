@@ -1,4 +1,4 @@
-import { User } from "../models/user/userModel";
+import { User } from "../types/index";
 
 const getLocalStorageUser = () => {
   const parseUser = JSON.parse(localStorage.getItem("user") || "null");

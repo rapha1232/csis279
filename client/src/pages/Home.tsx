@@ -1,25 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import {
+  Alert,
+  AlertColor,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Snackbar,
+  Typography,
+} from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import ProductListingCard from "../components/ProductListingCard";
+import axios from "axios";
+import { Listing } from "../types";
+import { handleClose } from "../utils/toastUtils";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import NavBar from "../components/NavBar";
-import { Alert, AlertColor, Snackbar } from "@mui/material";
-import { useLocation } from "react-router-dom";
 
 const Home = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
   const [toastType, setToastType] = useState<AlertColor>("success");
+  const [featuredProducts, setFeaturedProducts] = useState<Listing[]>([]);
+  const userId = useSelector((state: RootState) => state.user.user?.user_id);
   const location = useLocation();
-
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const getFeaturedProducts = () => {
+    axios
+      .get("http://localhost:3001/featured-products")
+      .then((response) => {
+        if (response.data.listings.length > 0)
+          setFeaturedProducts(response.data.listings);
+      })
+      .catch((error) => {
+        console.error("Error fetching featured products:", error);
+      });
   };
 
   useEffect(() => {
@@ -30,14 +46,70 @@ const Home = () => {
     }
   }, [location]);
 
-  const user = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    getFeaturedProducts();
+  }, [dispatch]);
   return (
     <>
-      <NavBar />
-      {user.user?.user_lastName}
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Container>
+        <Box
+          mt={4}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={4}
+        >
+          <Typography variant="h3" align="center" gutterBottom>
+            Welcome to NeighborMarket
+          </Typography>
+          <Typography variant="body1" align="center" paragraph>
+            Discover a wide range of products and services at competitive
+            prices. <br />
+            Feel free to browse our listings or create your own after joining
+            us!
+          </Typography>
+          <Button variant="contained" color="primary" href="/browse">
+            Explore Products
+          </Button>
+        </Box>
+
+        <Box mt={4}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Featured Products
+          </Typography>
+          <Grid container spacing={3}>
+            {featuredProducts.length > 0 &&
+              featuredProducts.map((product) => (
+                <Grid
+                  item
+                  key={product.product_id}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                >
+                  <ProductListingCard
+                    product={product}
+                    homeScreen={true}
+                    onClick={() =>
+                      navigate(`/product/${product.product_id}`, {
+                        state: { userId: userId },
+                      })
+                    }
+                  />
+                </Grid>
+              ))}
+            {featuredProducts.length === 0 && <p>No featured products</p>}
+          </Grid>
+        </Box>
+      </Container>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => handleClose(setOpen)}
+      >
         <Alert
-          onClose={handleClose}
+          onClose={() => handleClose(setOpen)}
           severity={toastType}
           sx={{ width: "100%" }}
         >

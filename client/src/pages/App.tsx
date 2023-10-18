@@ -3,8 +3,7 @@ import Home from "./Home";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorageUser } from "../utils/localStorageUtils";
-import { setUser } from "../models/user/userReducer";
-import { RootState } from "../app/store";
+import { RootState, setUser } from "../app/store";
 
 const App = () => {
   const navigate = useNavigate();
