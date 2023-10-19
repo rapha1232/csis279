@@ -12,7 +12,6 @@ import {
   Chip,
   useMediaQuery,
 } from "@mui/material";
-import DarkTheme from "../DarkTheme";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import CartItem from "./CartItem";
@@ -49,7 +48,7 @@ const CartModal = () => {
   };
 
   return (
-    <DarkTheme>
+    <>
       <IconButton
         size="large"
         edge="end"
@@ -101,7 +100,7 @@ const CartModal = () => {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-    </DarkTheme>
+    </>
   );
 };
 

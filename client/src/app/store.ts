@@ -4,8 +4,8 @@ import {
   Action,
   PayloadAction,
   createSlice,
-} from "@reduxjs/toolkit";
-import { Cart, CartEntry, User } from "../types/index";
+} from '@reduxjs/toolkit';
+import { Cart, CartEntry, User } from '../types/index';
 
 interface UserState {
   user: User | null;
@@ -20,7 +20,7 @@ const initialCart: Cart = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: { user: null } as UserState,
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
@@ -34,7 +34,7 @@ const userSlice = createSlice({
 
 // Create a cart slice
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState: initialCart,
   reducers: {
     setCart: (state, action: PayloadAction<Cart>) => {

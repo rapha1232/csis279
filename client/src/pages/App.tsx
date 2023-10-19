@@ -1,20 +1,83 @@
-import React, { useEffect } from "react";
+import React from "react";
+import DarkTheme from "../components/DarkTheme";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from "../components/NavBar/NavBar";
+import Browse from "./Browse";
+import MyListings from "./MyListings";
+import ProductPage from "./ProductPage";
+import Profile from "./Profile";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import Home from "./Home";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getLocalStorageUser } from "../utils/localStorageUtils";
-import { RootState, setUser } from "../app/store";
+import Sell from "./Sell";
+import { CssBaseline } from "@mui/material";
 
 const App = () => {
-  const navigate = useNavigate();
-  const user = getLocalStorageUser();
-  const dispatch = useDispatch();
-  const savedUser = useSelector((state: RootState) => state.user.user);
-  useEffect(() => {
-    if (user && !savedUser) dispatch(setUser(user));
-    if (!user) navigate("/sign-in");
-  }, [user, savedUser]);
-  return <div className="App"></div>;
+  return (
+    <DarkTheme>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <NavBar />
+                <Home />
+              </>
+            }
+          />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route
+            path="/profile"
+            element={
+              <>
+                <NavBar />
+                <Profile />
+              </>
+            }
+          />
+          <Route
+            path="/sell"
+            element={
+              <>
+                <NavBar />
+                <Sell />
+              </>
+            }
+          />
+          <Route
+            path="/my-listings"
+            element={
+              <>
+                <NavBar />
+                <MyListings />
+              </>
+            }
+          />
+          <Route
+            path="/browse"
+            element={
+              <>
+                <NavBar searchBar />
+                <Browse />
+              </>
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <>
+                <NavBar />
+                <ProductPage />
+              </>
+            }
+          />
+        </Routes>
+      </Router>
+    </DarkTheme>
+  );
 };
 
 export default App;

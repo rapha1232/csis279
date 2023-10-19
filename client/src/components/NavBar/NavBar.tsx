@@ -1,19 +1,19 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-import { removeLocalStorageUser } from "../../utils/localStorageUtils";
-import SearchBar from "./Search";
-import MobileMenu from "./MobileMenu";
-import Menu from "./Menu";
-import { MenuIcon, AccountCircle } from "./Icons";
-import CartModal from "./CartModal";
-import { clearUser } from "../../app/store";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { removeLocalStorageUser } from '../../utils/localStorageUtils';
+import SearchBar from './Search';
+import MobileMenu from './MobileMenu';
+import Menu from './Menu';
+import { MenuIcon, AccountCircle } from './Icons';
+import CartModal from './CartModal';
+import { clearUser } from '../../app/store';
 
 const NavBar = ({ searchBar = false }: { searchBar?: boolean | null }) => {
   const dispatch = useDispatch();
@@ -43,33 +43,33 @@ const NavBar = ({ searchBar = false }: { searchBar?: boolean | null }) => {
   };
 
   const handleLogout = () => {
-    axios.post("http://localhost:3001/logout").then((res) => {
+    axios.post('http://localhost:3001/logout').then((res) => {
       removeLocalStorageUser();
       dispatch(clearUser());
-      navigate("/sign-in");
+      navigate('/sign-in');
     });
   };
 
   return (
     <Box sx={{ flexGrow: 1, zIndex: 5 }}>
       <AppBar
-        position="fixed"
+        position='fixed'
         sx={{
-          backgroundColor: "#333333",
-          maxWidth: "80%",
-          margin: "auto",
-          borderRadius: "10px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          top: "10px",
+          backgroundColor: '#333333',
+          maxWidth: '80%',
+          margin: 'auto',
+          borderRadius: '10px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          top: '10px',
         }}
       >
         <Toolbar>
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            component='div'
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             NeighborMarket
           </Typography>
@@ -77,53 +77,53 @@ const NavBar = ({ searchBar = false }: { searchBar?: boolean | null }) => {
           <Box sx={{ flex: 0.5 }} />
           <Box
             sx={{
-              display: { xs: "none", md: "flex" },
+              display: { xs: 'none', md: 'flex' },
               flexGrow: 0.5,
-              alignItems: "center",
-              justifyContent: "space-between",
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
-            <IconButton size="large" color="inherit" component={Link} to="/">
+            <IconButton size='large' color='inherit' component={Link} to='/'>
               Home
             </IconButton>
             <IconButton
-              size="large"
-              color="inherit"
+              size='large'
+              color='inherit'
               component={Link}
-              to="/browse"
+              to='/browse'
             >
-              Browse{" "}
+              Browse{' '}
             </IconButton>
             <IconButton
-              size="large"
-              color="inherit"
+              size='large'
+              color='inherit'
               component={Link}
-              to="/sell"
+              to='/sell'
             >
               Sell
             </IconButton>
             <CartModal />
             <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
+              size='large'
+              edge='end'
+              aria-label='account of current user'
+              aria-controls='primary-search-account-menu'
+              aria-haspopup='true'
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <CartModal />
             <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls="primary-search-account-menu-mobile"
-              aria-haspopup="true"
+              size='large'
+              aria-label='show more'
+              aria-controls='primary-search-account-menu-mobile'
+              aria-haspopup='true'
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>

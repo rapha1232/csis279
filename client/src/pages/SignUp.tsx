@@ -10,12 +10,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useDispatch } from "react-redux";
-import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
 import { setLocalStorageUser } from "../utils/localStorageUtils";
 import { setUser } from "../app/store";
 
-export const SignUp = () => {
+const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -48,7 +47,7 @@ export const SignUp = () => {
   };
 
   return (
-    <DarkTheme>
+    <>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -131,6 +130,8 @@ export const SignUp = () => {
           </Box>
         </Box>
       </Container>
-    </DarkTheme>
+    </>
   );
 };
+
+export default SignUp;

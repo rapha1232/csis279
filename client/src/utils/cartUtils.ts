@@ -1,11 +1,11 @@
 // cartUtils.js
-import axios from "axios";
-import { setCart } from "../app/store";
-import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import axios from 'axios';
+import { setCart } from '../app/store';
+import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 
 export const getCart = async (
   userId: number,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
 ) => {
   axios
     .get(`http://localhost:3001/getCart?userId=${userId}`)
@@ -18,10 +18,10 @@ export const addToCart = (
   userId: number,
   q: number,
   setAdded: React.Dispatch<React.SetStateAction<boolean>>,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
 ) => {
   axios
-    .post("http://localhost:3001/addToCart", { productId, userId, q })
+    .post('http://localhost:3001/addToCart', { productId, userId, q })
     .then((res) => {
       if (res.data.success === true) setAdded(true);
       else setAdded(false);
@@ -36,11 +36,11 @@ export const deleteFromCart = (
   productId: number,
   userId: number,
   setAdded: React.Dispatch<React.SetStateAction<boolean>>,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
 ) => {
   axios
     .post(
-      `http://localhost:3001/deleteFromCart?userId=${userId}&productId=${productId}`
+      `http://localhost:3001/deleteFromCart?userId=${userId}&productId=${productId}`,
     )
     .then((res) => {
       if (res.data.success === true) setAdded(false);
@@ -55,11 +55,11 @@ export const deleteFromCart = (
 export const deleteInCart = (
   product_id: number,
   userId: number,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
 ) => {
   axios
     .post(
-      `http://localhost:3001/deleteFromCart?userId=${userId}&productId=${product_id}`
+      `http://localhost:3001/deleteFromCart?userId=${userId}&productId=${product_id}`,
     )
     .then(() => {
       getCart(userId, dispatch);

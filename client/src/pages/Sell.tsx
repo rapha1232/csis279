@@ -1,11 +1,10 @@
 import React from "react";
 import { Container, Grid, Paper, Typography } from "@mui/material";
 import NewProductListingForm from "../components/SellForm";
-import DarkTheme from "../components/DarkTheme";
 
 const Sell = () => {
   return (
-    <DarkTheme>
+    <>
       <div>
         <Container>
           <Grid
@@ -26,7 +25,7 @@ const Sell = () => {
           </Grid>
         </Container>
       </div>
-    </DarkTheme>
+    </>
   );
 };
 

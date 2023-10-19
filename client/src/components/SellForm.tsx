@@ -16,7 +16,6 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import DarkTheme from "./DarkTheme";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { handleClose } from "../utils/toastUtils";
 
@@ -125,7 +124,7 @@ const NewProductListingForm = () => {
   };
 
   return (
-    <DarkTheme>
+    <>
       <form onSubmit={handleSubmit}>
         <TextField
           label="Title"
@@ -238,7 +237,7 @@ const NewProductListingForm = () => {
           Upload an Image
         </Alert>
       </Snackbar>
-    </DarkTheme>
+    </>
   );
 };
 

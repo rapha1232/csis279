@@ -26,6 +26,7 @@ const MyListings = () => {
           sx={{
             pt: 4,
             pb: 6,
+            mt: "100px",
           }}
         >
           <Container maxWidth="sm">

@@ -1,46 +1,46 @@
 export const CATEGORIES = [
   {
     category_id: 6,
-    name: "Electronics",
+    name: 'Electronics',
   },
   {
     category_id: 7,
-    name: "Vehicles",
+    name: 'Vehicles',
   },
   {
     category_id: 8,
-    name: "Appliances",
+    name: 'Appliances',
   },
   {
     category_id: 9,
-    name: "Furniture",
+    name: 'Furniture',
   },
   {
     category_id: 10,
-    name: "Photography",
+    name: 'Photography',
   },
   {
     category_id: 11,
-    name: "Sports & Outdoors",
+    name: 'Sports & Outdoors',
   },
   {
     category_id: 12,
-    name: "Musical Instruments",
+    name: 'Musical Instruments',
   },
   {
     category_id: 13,
-    name: "Home & Kitchen",
+    name: 'Home & Kitchen',
   },
   {
     category_id: 14,
-    name: "Gaming",
+    name: 'Gaming',
   },
   {
     category_id: 15,
-    name: "Fashion",
+    name: 'Fashion',
   },
   {
     category_id: 16,
-    name: "Office Supplies",
+    name: 'Office Supplies',
   },
 ];

@@ -9,13 +9,12 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import DarkTheme from "../components/DarkTheme";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setLocalStorageUser } from "../utils/localStorageUtils";
 import { setUser } from "../app/store";
 
-export const SignIn = () => {
+const SignIn = () => {
   const [data, setData] = useState({});
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +53,7 @@ export const SignIn = () => {
   };
 
   return (
-    <DarkTheme>
+    <>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -117,6 +116,8 @@ export const SignIn = () => {
           </Box>
         </Box>
       </Container>
-    </DarkTheme>
+    </>
   );
 };
+
+export default SignIn;

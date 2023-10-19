@@ -5,7 +5,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import DarkTheme from "./DarkTheme";
 import { Listing } from "../types";
 import Tag from "./Tag";
 import { addToCart, deleteFromCart } from "../utils/cartUtils";
@@ -45,69 +44,58 @@ const ProductListingCard = ({
       });
   }, [added, cart]);
   return (
-    <DarkTheme>
-      <Card
-        sx={{
-          maxWidth: 345,
-          minHeight: 500,
-          cursor: onClick ? "pointer" : "",
-        }}
-        onClick={onClick}
-      >
-        <CardMedia sx={{ height: 300 }} image={product.image}></CardMedia>
-        <CardContent>
-          <Typography gutterBottom variant="h6" component="div" mb={2}>
-            {product.title}
-            <Typography variant="subtitle1">
-              {product.price}$<br />
-              <Tag id={product.category_id} />
-            </Typography>
+    <Card
+      sx={{
+        maxWidth: 345,
+        minHeight: 500,
+        cursor: onClick ? "pointer" : "",
+      }}
+      onClick={onClick}
+    >
+      <CardMedia sx={{ height: 300 }} image={product.image}></CardMedia>
+      <CardContent>
+        <Typography gutterBottom variant="h6" component="div" mb={2}>
+          {product.title}
+          <Typography variant="subtitle1">
+            {product.price}$<br />
+            <Tag id={product.category_id} />
           </Typography>
-          <Typography variant="body2" color="text.secondary" mb={2}>
-            {product.description}
-          </Typography>
-          {homeScreen && (
-            <Button
-              size="small"
-              variant="contained"
-              color={added ? "error" : "primary"}
-              onClick={(e) => {
-                e.stopPropagation();
-                added
-                  ? deleteFromCart(
-                      product.product_id,
-                      userId!,
-                      setAdded,
-                      dispatch
-                    )
-                  : addToCart(
-                      product.product_id,
-                      userId!,
-                      1,
-                      setAdded,
-                      dispatch
-                    );
-              }}
-            >
-              {added ? "Delete From Cart" : "Add to Cart"}
-            </Button>
-          )}
-        </CardContent>
-        {!homeScreen && handleDelete && handleEdit && (
-          <CardActions>
-            <Button
-              size="small"
-              onClick={() => handleDelete(product.product_id)}
-            >
-              Delete
-            </Button>
-            <Button size="small" onClick={() => handleEdit(product.product_id)}>
-              Edit
-            </Button>
-          </CardActions>
+        </Typography>
+        <Typography variant="body2" color="text.secondary" mb={2}>
+          {product.description}
+        </Typography>
+        {homeScreen && (
+          <Button
+            size="small"
+            variant="contained"
+            color={added ? "error" : "primary"}
+            onClick={(e) => {
+              e.stopPropagation();
+              added
+                ? deleteFromCart(
+                    product.product_id,
+                    userId!,
+                    setAdded,
+                    dispatch
+                  )
+                : addToCart(product.product_id, userId!, 1, setAdded, dispatch);
+            }}
+          >
+            {added ? "Delete From Cart" : "Add to Cart"}
+          </Button>
         )}
-      </Card>
-    </DarkTheme>
+      </CardContent>
+      {!homeScreen && handleDelete && handleEdit && (
+        <CardActions>
+          <Button size="small" onClick={() => handleDelete(product.product_id)}>
+            Delete
+          </Button>
+          <Button size="small" onClick={() => handleEdit(product.product_id)}>
+            Edit
+          </Button>
+        </CardActions>
+      )}
+    </Card>
   );
 };
 

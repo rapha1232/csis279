@@ -120,14 +120,10 @@ const editProductListing = (req, res) => {
 };
 
 const getFeaturedListings = (req, res) => {
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
   const sql =
-    "SELECT * FROM csis279.product_listings ORDER BY date_posted > ? LIMIT 8";
-  const values = [oneWeekAgo];
+    "SELECT * FROM csis279.product_listings ORDER BY date_posted DESC LIMIT 8";
 
-  connection.query(sql, values, (err, results) => {
+  connection.query(sql, (err, results) => {
     if (err) {
       console.log(err);
       res.send({ error: err, message: "ERROR!" });
