@@ -1,46 +1,87 @@
+import { SidebarLink } from "../types";
+
+export const themes = [
+  { value: "light", label: "Light", icon: "/assets/icons/sun.svg" },
+  { value: "dark", label: "Dark", icon: "/assets/icons/moon.svg" },
+  { value: "system", label: "System", icon: "/assets/icons/computer.svg" },
+];
+
 export const CATEGORIES = [
   {
     category_id: 6,
-    name: 'Electronics',
+    name: "Electronics",
   },
   {
     category_id: 7,
-    name: 'Vehicles',
+    name: "Vehicles",
   },
   {
     category_id: 8,
-    name: 'Appliances',
+    name: "Appliances",
   },
   {
     category_id: 9,
-    name: 'Furniture',
+    name: "Furniture",
   },
   {
     category_id: 10,
-    name: 'Photography',
+    name: "Photography",
   },
   {
     category_id: 11,
-    name: 'Sports & Outdoors',
+    name: "Sports & Outdoors",
   },
   {
     category_id: 12,
-    name: 'Musical Instruments',
+    name: "Musical Instruments",
   },
   {
     category_id: 13,
-    name: 'Home & Kitchen',
+    name: "Home & Kitchen",
   },
   {
     category_id: 14,
-    name: 'Gaming',
+    name: "Gaming",
   },
   {
     category_id: 15,
-    name: 'Fashion',
+    name: "Fashion",
   },
   {
     category_id: 16,
-    name: 'Office Supplies',
+    name: "Office Supplies",
+  },
+];
+
+export const sidebarLinks: SidebarLink[] = [
+  {
+    imgURL: "/assets/icons/home.svg",
+    route: "/home",
+    label: "Home",
+  },
+  {
+    imgURL: "/assets/icons/events.svg",
+    route: "/events",
+    label: "Events",
+  },
+  {
+    imgURL: "/assets/icons/discussions.svg",
+    route: "/discussions",
+    label: "Discussions",
+  },
+  {
+    imgURL: "/assets/icons/question.svg",
+    route: "/questions",
+    label: "Questions",
+  },
+  {
+    imgURL: "/assets/icons/user.svg",
+    route: "/user",
+    label: "Users",
+  },
+  {
+    imgURL: "/assets/icons/aq.svg",
+    route: "/ask-question",
+    label: "Ask a Question",
   },
 ];

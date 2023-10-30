@@ -1,10 +1,7 @@
 import React from "react";
-import { useAppSelector } from "../app/hooks";
-import { Container } from "@mui/material";
 
 const Profile = () => {
-  const user = useAppSelector((state) => state.user.user);
-  return <Container sx={{ pt: "100px" }}>{user?.user_firstName}</Container>;
+  return <div>Profile</div>;
 };
 
 export default Profile;

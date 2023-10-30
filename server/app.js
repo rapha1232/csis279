@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { signin, logout, signup } from "./routes/auth.js";
+import { signin, signout, signup } from "./routes/auth.js";
 import {
   addProductListing,
   deleteListing,
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 
 app.post("/sign-in", signin);
 app.post("/sign-up", signup);
-app.post("/logout", logout);
+app.post("/sign-out", signout);
 app.post("/addProductListing", addProductListing);
 app.get("/myListings", myListings);
 app.delete("/deleteListing", deleteListing);
@@ -54,7 +54,7 @@ app.post("/deleteFromCart", deleteFromCart);
 app.get("/checkCart", checkCart);
 
 app.listen(process.env.APP_PORT || 3001, () => {
-  console.log("Working");
+  console.log(`Working on ${process.env.APP_PORT || 3001}`);
 });
 
 export { app };

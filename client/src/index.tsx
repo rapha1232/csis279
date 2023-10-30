@@ -5,18 +5,21 @@ import { store } from "./app/store";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./pages/App";
-import DarkTheme from "./components/DarkTheme";
+import { ThemeProvider } from "./context/ThemeProvider";
+import { QueryProvider } from "./lib/ReactQuery/QueryProvider";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <DarkTheme>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </DarkTheme>
+    <ThemeProvider>
+      <QueryProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </QueryProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 reportWebVitals();
