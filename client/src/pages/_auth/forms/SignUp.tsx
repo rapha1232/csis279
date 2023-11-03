@@ -13,14 +13,20 @@ import {
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
-import Loader from "../../../components/shared/Loader";
 import { useToast } from "../../../components/ui/use-toast";
 import { SignupValidation } from "../../../lib/validation";
+import { useDispatch } from "react-redux";
+import { setUser, useSignupMutation } from "../../../app/store";
+import {
+  removeLocalStorageUser,
+  setLocalStorageUser,
+} from "../../../utils/localStorageUtils";
 
 const SignupForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const [signup, { isLoading }] = useSignupMutation();
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -31,8 +37,18 @@ const SignupForm = () => {
     },
   });
 
-  // Handler
-  const handleSignup = async (user: z.infer<typeof SignupValidation>) => {};
+  const handleSignup = async (user: z.infer<typeof SignupValidation>) => {
+    try {
+      const res = await signup(user).unwrap();
+      removeLocalStorageUser();
+      setLocalStorageUser(res);
+      dispatch(setUser(res));
+      navigate("/");
+      toast({ title: "Successfully created your account" });
+    } catch {
+      toast({ title: "Failed to create account" });
+    }
+  };
 
   return (
     <Form {...form}>

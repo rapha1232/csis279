@@ -1,8 +1,5 @@
 import * as z from "zod";
 
-// ============================================================
-// USER
-// ============================================================
 export const SignupValidation = z.object({
   FirstName: z
     .string()
@@ -13,7 +10,7 @@ export const SignupValidation = z.object({
   Email: z.string().email(),
   Password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters." }),
+    .min(6, { message: "Password must be at least 8 characters." }),
 });
 
 export const SigninValidation = z.object({

@@ -6,7 +6,6 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import App from "./pages/App";
 import { ThemeProvider } from "./context/ThemeProvider";
-import { QueryProvider } from "./lib/ReactQuery/QueryProvider";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -14,11 +13,9 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-      <QueryProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </QueryProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>
 );

@@ -4,25 +4,9 @@ import { Button } from "../../ui/button";
 import { Link } from "react-router-dom";
 import SignedOut from "../../auth/SignedOut";
 import SignedIn from "../../auth/SignedIn";
-import { link } from "fs";
-import { useSignOutAccount } from "../../../lib/ReactQuery/queries";
-import { toast } from "../../ui/use-toast";
 import LogoutDialog from "../../LogoutDialog";
 
 const LeftSideBar = () => {
-  const { mutateAsync: signOutAccount, isPending } = useSignOutAccount();
-  const handleSignOut = async () => {
-    const session = await signOutAccount();
-    if (!session) {
-      toast({
-        title: "Logout failed. Please try again.",
-        variant: "destructive",
-      });
-      return;
-    }
-    return;
-  };
-
   const pathname = window.location.href;
   return (
     <section className="background-light900_dark200 custom-scrollbar light-border sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
@@ -93,7 +77,7 @@ const LeftSideBar = () => {
         </div>
       </SignedOut>
       <SignedIn>
-        <LogoutDialog handleSignOut={handleSignOut} />
+        <LogoutDialog />
       </SignedIn>
     </section>
   );

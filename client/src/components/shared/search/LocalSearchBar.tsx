@@ -1,6 +1,7 @@
-"use client";
-import React, { useState } from "react";
-import { Input } from "../../../components/ui/input";
+import React from "react";
+import { Input } from "../../ui/input";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setEventSearch, setTopicSearch } from "../../../app/store";
 
 interface CustomInputProps {
   route: string;
@@ -8,16 +9,26 @@ interface CustomInputProps {
   imageSrc: string;
   placeholder: string;
   otherClasses?: string;
+  slice: "eventSearch" | "topicSearch";
 }
 
-const LocalSearcchBar = ({
+const LocalSearchBar = ({
   route,
   iconPosition,
   imageSrc,
   placeholder,
   otherClasses,
+  slice,
 }: CustomInputProps) => {
-  const [query, setQuery] = useState("");
+  const value = useSelector((state: RootState) => state[slice]);
+  const dispatch = useDispatch();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (slice === "eventSearch") {
+      dispatch(setEventSearch(e.target.value));
+    } else if (slice === "topicSearch") {
+      dispatch(setTopicSearch(e.target.value));
+    }
+  };
   return (
     <div
       className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
@@ -35,10 +46,8 @@ const LocalSearcchBar = ({
       <Input
         type="text"
         placeholder={placeholder}
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-        }}
+        value={value}
+        onChange={handleChange}
         className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
       />
 
@@ -55,4 +64,4 @@ const LocalSearcchBar = ({
   );
 };
 
-export default LocalSearcchBar;
+export default LocalSearchBar;

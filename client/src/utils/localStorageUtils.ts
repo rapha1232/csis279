@@ -1,6 +1,6 @@
 import { User } from "../types/index";
 
-const getLocalStorageUser = () => {
+const getLocalStorageUser = (): User => {
   const parseUser = JSON.parse(localStorage.getItem("user") || "null");
   delete parseUser?.token;
   return parseUser;

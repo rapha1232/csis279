@@ -10,12 +10,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { clearUser, useSignoutMutation } from "../app/store";
+import { toast } from "./ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-const LogoutDialog = ({ handleSignOut }: { handleSignOut: () => void }) => {
+const LogoutDialog = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [signout, { isLoading }] = useSignoutMutation();
+  const handleSignOut = async () => {
+    try {
+      await signout();
+      navigate("/sign-in");
+      dispatch(clearUser());
+      toast({ title: "Successfully logged out" });
+    } catch {
+      toast({ title: "Something went wrong" });
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="flex items-center justify-start gap-4 h-14">
+        <Button
+          className="flex items-center justify-start gap-4 h-14"
+          disabled={isLoading}
+        >
           <img
             src="/assets/icons/logout.svg"
             alt="logout"
@@ -23,7 +43,9 @@ const LogoutDialog = ({ handleSignOut }: { handleSignOut: () => void }) => {
             height={20}
             className="invert-colors"
           />
-          <p className="base-medium max-lg:hidden ">Logout</p>
+          <p className="base-medium max-lg:hidden text-dark300_light900">
+            Logout
+          </p>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -34,7 +56,12 @@ const LogoutDialog = ({ handleSignOut }: { handleSignOut: () => void }) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="sm:justify-start">
-          <Button type="button" variant={"destructive"} onClick={handleSignOut}>
+          <Button
+            type="button"
+            variant={"destructive"}
+            onClick={handleSignOut}
+            disabled={isLoading}
+          >
             Confirm
           </Button>
           <DialogClose asChild>

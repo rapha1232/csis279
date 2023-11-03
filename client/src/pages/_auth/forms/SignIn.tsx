@@ -2,7 +2,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Form,
   FormControl,
@@ -14,20 +14,21 @@ import {
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import Loader from "../../../components/shared/Loader";
-import { useToast } from "../../..//components/ui/use-toast";
+import { useToast } from "../../../components/ui/use-toast";
 
 import { SigninValidation } from "../../../lib/validation";
-import { useSignInAccount } from "../../../lib/ReactQuery/queries";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
+import { useDispatch } from "react-redux";
+import { setUser, useSigninMutation } from "../../../app/store";
+import {
+  removeLocalStorageUser,
+  setLocalStorageUser,
+} from "../../../utils/localStorageUtils";
 
 const SigninForm = () => {
+  const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const loggedUser = useSelector((state: RootState) => state.user.user);
-
-  const { mutateAsync: signInAccount, isPending } = useSignInAccount();
-
+  const [signin, { isLoading }] = useSigninMutation();
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
     defaultValues: {
@@ -37,16 +38,16 @@ const SigninForm = () => {
   });
 
   const handleSignin = async (user: z.infer<typeof SigninValidation>) => {
-    const session = await signInAccount(user);
-    if (!session) {
-      toast({
-        title: "Login failed. Please try again 1.",
-        variant: "destructive",
-      });
-
-      return;
+    try {
+      const res = await signin(user).unwrap();
+      removeLocalStorageUser();
+      setLocalStorageUser(res);
+      dispatch(setUser(res));
+      navigate("/");
+      toast({ title: "Successfully logged in" });
+    } catch {
+      toast({ title: "Something went wrong" });
     }
-    navigate("/", { replace: true });
   };
 
   return (
@@ -98,7 +99,7 @@ const SigninForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isPending ? (
+            {isLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>

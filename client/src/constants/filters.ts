@@ -26,11 +26,12 @@ export const TagFilters = [
   { name: "Old", value: "old" },
 ];
 
-export const HomePageFilters = [
-  { name: "Event", value: "newest" },
-  { name: "Discussion", value: "discussion" },
-  { name: "Members", value: "members" },
-  { name: "Article", value: "article" },
+export const MainFilters = [
+  { name: "All", value: "all" },
+  { name: "Popular", value: "popular" },
+  { name: "Recent", value: "recent" },
+  { name: "Name", value: "name" },
+  { name: "Old", value: "old" },
 ];
 
 export const GlobalSearchFilters = [

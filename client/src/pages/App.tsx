@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DarkTheme from "../components/DarkTheme";
 import {
   BrowserRouter as Router,
@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { useAppSelector } from "../app/hooks";
-import { setUser } from "../app/store";
+import { RootState, setUser } from "../app/store";
 import { getLocalStorageUser } from "../utils/localStorageUtils";
 import { useDispatch } from "react-redux";
 import Layout from "../Layout";
@@ -28,12 +28,15 @@ import {
 } from "./index";
 import AuthLayout from "./_auth/AuthLayout";
 import { Toaster } from "../components/ui/toaster";
+import UserPage from "./UserPage";
 const App = () => {
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state: RootState) => state.user.user);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!user) {
       const savedUser = getLocalStorageUser();
+      setIsLoading(false);
       dispatch(setUser(savedUser));
     }
   }, []);
@@ -59,7 +62,9 @@ const App = () => {
               <Route path="/sign-in" element={<SignIn />}></Route>
               <Route path="/sign-up" element={<SignUp />}></Route>
             </Route>
-            <Route element={<PrivateRoute user={user!} />}>
+            <Route
+              element={<PrivateRoute user={user!} isLoading={isLoading} />}
+            >
               <Route
                 path="/profile"
                 element={
@@ -121,6 +126,14 @@ const App = () => {
                 element={
                   <Layout>
                     <Article />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/user/:id"
+                element={
+                  <Layout>
+                    <UserPage />
                   </Layout>
                 }
               />

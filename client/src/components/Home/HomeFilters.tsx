@@ -1,16 +1,28 @@
-"use client";
-import { HomePageFilters } from "../../constants/filters";
-import React from "react";
+import { MainFilters } from "../../constants/filters";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 
-const HomeFilters = () => {
-  const active = "newest";
+const HomeFilters = ({
+  onFilterChange,
+}: {
+  onFilterChange: (newQ: string) => void;
+}) => {
+  const params = new URLSearchParams(window.location.search);
+  const [active, setActive] = useState(params.get("q") || "all");
+
+  const handleFilterChange = (newQ: string) => {
+    setActive(newQ);
+    onFilterChange(newQ);
+  };
+
   return (
     <div className="mt-10 hidden flex-wrap gap-3 md:flex">
-      {HomePageFilters.map((item) => (
+      {MainFilters.map((item) => (
         <Button
           key={item.value}
-          onClick={() => {}}
+          onClick={() => {
+            handleFilterChange(item.value);
+          }}
           className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none ${
             active === item.value
               ? "bg-primary-100 text-primary-500"

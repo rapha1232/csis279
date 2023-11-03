@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useContext, createContext, useState, useEffect } from "react";
 
 interface ThemeContextType {

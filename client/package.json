@@ -34,7 +34,6 @@
     "template",
     "template.json"
   ],
-  "proxy": "http://localhost:3001",
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
@@ -83,6 +82,7 @@
     "@radix-ui/react-popover": "^1.0.6",
     "@radix-ui/react-select": "^1.2.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@tailwindcss/typography": "github:tailwindcss/typography",
     "@tanstack/react-query": "^5.4.3",
