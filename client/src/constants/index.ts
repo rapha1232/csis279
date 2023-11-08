@@ -76,12 +76,12 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     imgURL: "/assets/icons/user.svg",
-    route: "/user",
-    label: "Users",
+    route: "/members",
+    label: "Discover Members",
   },
   {
-    imgURL: "/assets/icons/aq.svg",
-    route: "/ask-question",
-    label: "Ask a Question",
+    imgURL: "/assets/icons/apod.svg",
+    route: "/apod",
+    label: "APOD",
   },
 ];

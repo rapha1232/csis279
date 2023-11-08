@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
 import { ReactNode } from "react";
 import React from "react";
+import useGetUser from "../../hooks/useGetUser";
 
 const SignedIn = ({ children }: { children: ReactNode }) => {
-  const user = useSelector((state: RootState) => state.user.user);
+  const user = useGetUser();
   if (user) {
     return <>{children}</>;
   } else {

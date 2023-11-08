@@ -35,10 +35,9 @@ export type Event = {
   Title: string;
   Description: string;
   Date: string;
-  Time: string;
   Location: string;
-  CreatedBy: number;
-  Likes: number;
+  CreatedBy: User;
+  LikesNB: number;
 };
 
 export type EventWithUser = {
@@ -46,12 +45,42 @@ export type EventWithUser = {
   Title: string;
   Description: string;
   Date: string;
-  Time: string;
   Location: string;
-  CreatedBy: number;
-  Likes: number;
+  CreatedBy: User;
+  LikesNB: number;
   likedByUser: boolean;
   savedByUser: boolean;
+};
+
+export type EventFromServer = {
+  EventID: number;
+  Title: string;
+  Description: string;
+  Date: string;
+  Location: string;
+  CreatorID: number;
+  LikesNB: number;
+  CreatedBy: User;
+  Likes: Like[];
+  Saved: Save[];
+};
+
+export type Like = {
+  LikeID: number;
+  UserID: number;
+  EventID?: number;
+  TopicID?: number;
+  QuestionID?: number;
+  User: User;
+};
+
+export type Save = {
+  SavedID: number;
+  UserID: number;
+  EventID?: number;
+  TopicID?: number;
+  QuestionID?: number;
+  User: User;
 };
 
 export type DiscussionTopic = {
@@ -59,8 +88,8 @@ export type DiscussionTopic = {
   Title: string;
   Content: string;
   CreatedAt: string;
-  CreatedBy: number;
-  Likes: number;
+  CreatedBy: User;
+  LikesNb: number;
   // Comments: number;
 };
 
@@ -69,25 +98,73 @@ export type DiscussionTopicWithUser = {
   Title: string;
   Content: string;
   CreatedAt: string;
-  CreatedBy: number;
-  Likes: number;
+  CreatedBy: User;
+  LikesNb: number;
   likedByUser: boolean;
   savedByUser: boolean;
   // Comments: number;
 };
 
-export type Article = {
-  ArticleID: number;
+export type DiscussionTopicFromServer = {
+  TopicID: number;
   Title: string;
-  Description: string;
-  Visits: number;
-  Link: string;
+  Content: string;
+  CreatedAt: string;
+  CreatedBy: User;
+  CreatorID: number;
+  LikesNb: number;
+  Likes: Like[];
+  Saved: Save[];
+  // Comments: number;
 };
 
-export type Comment = {
-  CommentID: number;
-  DiscussionID: number;
-  UserID: number;
-  Comment: string;
-  Date: Date;
+export type Article = {
+  id: number;
+  title: string;
+  url: string;
+  img_url: string;
+  news_site: string;
+  summary: string;
+  published_at: string;
+  updated_at: string;
+  featured: boolean;
+  launches: { launch_id: string; provider: string }[];
+  events: { event_id: number; provider: string }[];
+};
+
+export type Reply = {
+  ReplyID: number;
+  Content: string;
+  CreatedAt: string;
+  CreatorID: number;
+  CreatedBy: User;
+};
+
+export type ReplyWithUser = {
+  ReplyID: number;
+  Content: string;
+  CreatedAt: string;
+  CreatorID: number;
+  CreatedBy: User;
+  likedByUser: boolean;
+};
+
+export type ReplyFromServer = {
+  ReplyID: number;
+  Content: string;
+  CreatedAt: string;
+  CreatorID: number;
+  CreatedBy: User;
+  LikesNB: number;
+  Likes: Like[];
+};
+
+export type APOD = {
+  date: string;
+  explanation: string;
+  hdurl: string;
+  media_type: string;
+  service_version: string;
+  title: string;
+  url: string;
 };

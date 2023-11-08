@@ -18,7 +18,7 @@ import { useToast } from "../../../components/ui/use-toast";
 
 import { SigninValidation } from "../../../lib/validation";
 import { useDispatch } from "react-redux";
-import { setUser, useSigninMutation } from "../../../app/store";
+import { setCookie, setUser, useSigninMutation } from "../../../app/store";
 import {
   removeLocalStorageUser,
   setLocalStorageUser,
@@ -41,8 +41,9 @@ const SigninForm = () => {
     try {
       const res = await signin(user).unwrap();
       removeLocalStorageUser();
-      setLocalStorageUser(res);
-      dispatch(setUser(res));
+      setLocalStorageUser(res.user);
+      dispatch(setUser(res.user));
+      dispatch(setCookie(res.cookie.split(";")[0]));
       navigate("/");
       toast({ title: "Successfully logged in" });
     } catch {

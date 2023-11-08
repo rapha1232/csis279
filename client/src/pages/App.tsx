@@ -24,11 +24,12 @@ import {
   SignIn,
   SignUp,
   SingleEvent,
-  Users,
+  Members,
+  UserPage,
+  APOD,
 } from "./index";
 import AuthLayout from "./_auth/AuthLayout";
 import { Toaster } from "../components/ui/toaster";
-import UserPage from "./UserPage";
 const App = () => {
   const user = useAppSelector((state: RootState) => state.user.user);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,10 +37,13 @@ const App = () => {
   useEffect(() => {
     if (!user) {
       const savedUser = getLocalStorageUser();
-      setIsLoading(false);
-      dispatch(setUser(savedUser));
+      if (savedUser !== null) {
+        // Check if savedUser is not null and not the string "null"
+        setIsLoading(false);
+        dispatch(setUser(savedUser));
+      }
     }
-  }, []);
+  }, [user]);
   return (
     <DarkTheme>
       <CssBaseline />
@@ -98,10 +102,10 @@ const App = () => {
                 }
               />
               <Route
-                path="/user"
+                path="/members"
                 element={
                   <Layout>
-                    <Users />
+                    <Members />
                   </Layout>
                 }
               />
@@ -134,6 +138,14 @@ const App = () => {
                 element={
                   <Layout>
                     <UserPage />
+                  </Layout>
+                }
+              />
+              <Route
+                path="/apod"
+                element={
+                  <Layout>
+                    <APOD />
                   </Layout>
                 }
               />

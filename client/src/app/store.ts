@@ -9,6 +9,7 @@ import { User } from "../types/index";
 import { userApi } from "./userApi";
 import { eventsApi } from "./eventsApi";
 import { discussionApi } from "./discussionApi";
+import { articlesApi, nasaApi } from "./spaceApis";
 
 interface UserState {
   user: User | null;
@@ -23,6 +24,19 @@ const userSlice = createSlice({
     },
     clearUser: (state) => {
       state.user = null;
+    },
+  },
+});
+
+const cookieSlice = createSlice({
+  name: "cookie",
+  initialState: "",
+  reducers: {
+    setCookie: (state, action: PayloadAction<string>) => {
+      return action.payload;
+    },
+    clearCookie: (state) => {
+      return "";
     },
   },
 });
@@ -52,15 +66,20 @@ export const store = configureStore({
     user: userSlice.reducer,
     eventSearch: eventsSearch.reducer,
     topicSearch: topicsSearch.reducer,
+    cookie: cookieSlice.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [eventsApi.reducerPath]: eventsApi.reducer,
     [discussionApi.reducerPath]: discussionApi.reducer,
+    [nasaApi.reducerPath]: nasaApi.reducer,
+    [articlesApi.reducerPath]: articlesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(userApi.middleware)
       .concat(eventsApi.middleware)
-      .concat(discussionApi.middleware),
+      .concat(discussionApi.middleware)
+      .concat(nasaApi.middleware)
+      .concat(articlesApi.middleware),
 });
 export const {
   useSigninMutation,
@@ -75,6 +94,7 @@ export const {
   useUnlikeEventMutation,
   useSaveEventMutation,
   useUnsaveEventMutation,
+  useCreateEventMutation,
 } = eventsApi;
 export const {
   useGetTopicsQuery,
@@ -83,10 +103,14 @@ export const {
   useUnlikeTopicMutation,
   useSaveTopicMutation,
   useUnsaveTopicMutation,
+  useCreateTopicMutation,
 } = discussionApi;
+export const { useApodQuery } = nasaApi;
+export const { useArticlesQuery } = articlesApi;
 export const { setUser, clearUser } = userSlice.actions;
 export const { setEventSearch } = eventsSearch.actions;
 export const { setTopicSearch } = topicsSearch.actions;
+export const { setCookie, clearCookie } = cookieSlice.actions;
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

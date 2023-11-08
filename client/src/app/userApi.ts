@@ -3,44 +3,48 @@ import { NewUser, SignInInfo, User } from "../types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3001/",
+  }),
   endpoints: (builder) => ({
-    signin: builder.mutation<User, SignInInfo>({
+    signin: builder.mutation<{ user: User; cookie: string }, SignInInfo>({
       query: (data) => ({
-        url: "auth/sign-in",
+        url: "login",
         method: "POST",
         body: data,
       }),
       transformResponse: (response: {
-        user: User;
+        data: User;
         message: string;
-        success: boolean;
-        token: string;
+        cookie: string;
       }) => {
-        const { user } = response;
-        return user;
+        const user = response.data;
+        const cookie = response.cookie;
+        return { user, cookie };
       },
     }),
     signup: builder.mutation<User, NewUser>({
       query: (data) => ({
-        url: "auth/sign-up",
+        url: "signup",
         method: "POST",
         body: data,
       }),
       transformResponse: (response: {
         user: User;
         message: string;
-        success: boolean;
-        token: string;
+        cookie: string;
       }) => {
-        const { user } = response;
+        const user = response.user;
         return user;
       },
     }),
-    signout: builder.mutation<string, void>({
-      query: () => ({
-        url: "auth/sign-out",
+    signout: builder.mutation<string, string>({
+      query: (cookie) => ({
+        url: "logout",
         method: "POST",
+        body: {
+          Authorization: cookie,
+        },
       }),
     }),
     getInfo: builder.query<User, number>({

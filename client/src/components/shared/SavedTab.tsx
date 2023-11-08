@@ -4,9 +4,9 @@ import EventCard from "../cards/EventCard";
 import TopicCard from "../cards/TopicCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
-const SavedTab = ({ UserID }: { UserID: number }) => {
-  const { data: eventData } = useGetEventsQuery(UserID);
-  const { data: topicData } = useGetTopicsQuery(UserID);
+const SavedTab = () => {
+  const { data: eventData } = useGetEventsQuery();
+  const { data: topicData } = useGetTopicsQuery();
   const savedEvents = eventData
     ?.filter((d) => d.savedByUser === true)
     .map((savedEvent) => (
@@ -15,6 +15,7 @@ const SavedTab = ({ UserID }: { UserID: number }) => {
         event={savedEvent}
         likedByUser={savedEvent.likedByUser}
         savedByUser={savedEvent.savedByUser}
+        home={true}
       />
     ));
   const savedTopics = topicData
@@ -30,23 +31,23 @@ const SavedTab = ({ UserID }: { UserID: number }) => {
 
   return (
     <div className="mt-2 flex gap-10">
-      <Tabs defaultValue="events" className="flex-1">
+      <Tabs defaultValue="savedEvents" className="flex-1">
         <TabsList className="background-light800_dark400 min-h-[42px] p-1">
-          <TabsTrigger value="events" className="tab">
+          <TabsTrigger value="savedEvents" className="tab">
             Events
           </TabsTrigger>
-          <TabsTrigger value="topics" className="tab">
+          <TabsTrigger value="savedTopics" className="tab">
             Discussion Topics
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="events" className="flex w-full flex-col gap-6">
+        <TabsContent value="savedEvents" className="flex w-full flex-col gap-6">
           {savedEvents && savedEvents.length > 0 ? (
             <>{savedEvents}</>
           ) : (
             <p>No Events Saved</p>
           )}
         </TabsContent>
-        <TabsContent value="topics" className="flex w-full flex-col gap-6">
+        <TabsContent value="savedTopics" className="flex w-full flex-col gap-6">
           {savedTopics && savedTopics.length > 0 ? (
             <>{savedTopics}</>
           ) : (

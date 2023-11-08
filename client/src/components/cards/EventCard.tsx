@@ -1,29 +1,34 @@
 import React, { useState } from "react";
-import { Event } from "../../types";
+import { EventWithUser } from "../../types";
 import { Link } from "react-router-dom";
 import Metric from "../shared/Metric";
-import { getName } from "../../utils/userUtils";
 import {
   useLikeEventMutation,
   useUnlikeEventMutation,
   useGetEventsQuery,
-  RootState,
   useSaveEventMutation,
   useUnsaveEventMutation,
+  useGetEventsWithFilterQuery,
 } from "../../app/store";
-import { useSelector } from "react-redux";
-import { getLocalStorageUser } from "../../utils/localStorageUtils";
+import { toast } from "../ui/use-toast";
+import useGetUser from "../../hooks/useGetUser";
 
 const EventCard = ({
   event,
   likedByUser,
   savedByUser,
   width,
+  home = false,
+  q = "all",
+  s = "",
 }: {
-  event: Event;
+  event: EventWithUser;
   likedByUser: boolean;
   savedByUser: boolean;
   width?: string;
+  home?: boolean;
+  q?: string;
+  s?: string;
 }) => {
   const [like] = useLikeEventMutation();
   const [unlike] = useUnlikeEventMutation();
@@ -31,55 +36,76 @@ const EventCard = ({
   const [unsave] = useUnsaveEventMutation();
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
-  const user =
-    useSelector((state: RootState) => state.user.user) ?? getLocalStorageUser();
-  const { refetch } = useGetEventsQuery(user.UserID);
+  const user = useGetUser();
+  const { refetch } = home
+    ? useGetEventsQuery()
+    : useGetEventsWithFilterQuery(
+        { q: q, search: s },
+        {
+          refetchOnMountOrArgChange: true,
+          refetchOnFocus: true,
+          refetchOnReconnect: true,
+          pollingInterval: 5000,
+          skip: false,
+        }
+      );
 
-  const handleLikeClick = async (eventid: number) => {
+  const handleLikeClick = async (event: EventWithUser) => {
     if (isLiked) {
       try {
-        await unlike({ UserID: user?.UserID ?? 0, EventID: eventid });
+        await unlike({ UserID: user?.UserID ?? 0, EventID: event.EventID });
         setIsLiked(false);
+        toast({ title: "Event unliked!" });
       } catch (e) {
+        toast({ title: "Error unliking event" });
         console.log(e);
+      } finally {
+        refetch();
       }
     } else {
       try {
-        await like({ UserID: user?.UserID ?? 0, EventID: eventid });
+        await like({ UserID: user?.UserID ?? 0, EventID: event.EventID });
         setIsLiked(true);
+        toast({ title: "Event liked!" });
       } catch (e) {
+        toast({ title: "Error liking event" });
         console.log(e);
+      } finally {
+        refetch();
       }
     }
-
-    refetch();
   };
 
-  const handleSaveClick = async (eventid: number) => {
+  const handleSaveClick = async (event: EventWithUser) => {
     if (isSaved) {
       try {
-        await unsave({ UserID: user.UserID, EventID: eventid });
+        await unsave({ UserID: user.UserID, EventID: event.EventID });
         setIsSaved(false);
+        toast({ title: "Event unsaved!" });
       } catch (e) {
+        toast({ title: "Error unsaving event" });
         console.log(e);
+      } finally {
+        refetch();
       }
     } else {
       try {
-        await save({ UserID: user.UserID, EventID: eventid });
+        await save({ UserID: user.UserID, EventID: event.EventID });
         setIsSaved(true);
+        toast({ title: "Event saved!" });
       } catch (e) {
+        toast({ title: "Error saving event" });
         console.log(e);
+      } finally {
+        refetch();
       }
     }
-
-    refetch();
   };
-
   return (
     <div
-      className={`card-wrapper rounded-[10px] p-9 sm:px-11 
-      ${width ? `max-w-[${width}]` : ""}
-      `}
+      className={`card-wrapper rounded-[10px] p-9 sm:px-11 col-span-1 ${
+        width ? `max-w-[${width}]` : ""
+      }`}
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
@@ -97,27 +123,25 @@ const EventCard = ({
 
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          alt="user"
-          title={`by ${getName(event.CreatedBy)} `}
-          href={`/user/${event.CreatedBy}`}
+          icon="user"
+          title={`by ${event.CreatedBy.FirstName} `}
+          href={`/user/${event.CreatedBy.UserID}`}
           textStyles="body-medium text-dark400_light700"
         />
         <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
           <Metric
             icon="heart"
-            alt="Upvotes"
-            value={event.Likes}
+            value={event.LikesNB}
             title="Likes"
             textStyles="small-medium text-dark400_light800"
-            onClick={() => handleLikeClick(event.EventID)}
+            onClick={() => handleLikeClick(event)}
             iconColor={isLiked ? "red" : ""}
           />
           <Metric
             icon="star"
-            alt="Save"
             title="Save"
             textStyles="small-medium text-dark400_light800"
-            onClick={() => handleSaveClick(event.EventID)}
+            onClick={() => handleSaveClick(event)}
             iconColor={isSaved ? "yellow" : ""}
           />
         </div>

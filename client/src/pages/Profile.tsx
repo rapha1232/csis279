@@ -8,14 +8,11 @@ import {
 import React from "react";
 import PostedTab from "../components/shared/PostedTab";
 import SavedTab from "../components/shared/SavedTab";
-import { RootState } from "../app/store";
 import { User2 } from "lucide-react";
-import { useSelector } from "react-redux";
-import { getLocalStorageUser } from "../utils/localStorageUtils";
+import useGetUser from "../hooks/useGetUser";
 
 const Profile = () => {
-  const user =
-    useSelector((state: RootState) => state.user.user) ?? getLocalStorageUser();
+  const user = useGetUser();
   return (
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
@@ -50,7 +47,7 @@ const Profile = () => {
             <PostedTab />
           </TabsContent>
           <TabsContent value="saved" className="flex w-full flex-col gap-6">
-            <SavedTab UserID={user.UserID} />
+            <SavedTab />
           </TabsContent>
         </Tabs>
       </div>

@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 interface MetricProps {
-  alt: string;
   value?: string | number;
   title: string;
   href?: string;
@@ -25,7 +24,6 @@ const getIconComponent = (iconName: string) => {
 };
 
 const Metric = ({
-  alt,
   value,
   title,
   href,

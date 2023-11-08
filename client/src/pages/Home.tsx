@@ -1,33 +1,35 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { RootState, useGetEventsQuery, useGetTopicsQuery } from "../app/store";
+import { useGetEventsQuery, useGetTopicsQuery } from "../app/store";
 import { DiscussionTopicWithUser, EventWithUser } from "../types";
 import EventCard from "../components/cards/EventCard";
-import { getLocalStorageUser } from "../utils/localStorageUtils";
-import { useSelector } from "react-redux";
 import TopicCard from "../components/cards/TopicCard";
+import useGetUser from "../hooks/useGetUser";
 const Home = () => {
   const navigate = useNavigate();
-  const user =
-    useSelector((state: RootState) => state.user.user) ?? getLocalStorageUser();
+  const user = useGetUser();
   const {
     data: eventData,
-    isFetching: isEventFetching,
     isLoading: isEventLoading,
     isSuccess: isEventSuccess,
-  } = useGetEventsQuery(user!.UserID, {
+  } = useGetEventsQuery(undefined, {
     refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    pollingInterval: 5000,
     skip: false,
   });
 
   const {
     data: topicData,
-    isFetching: isTopicFetching,
     isLoading: isTopicLoading,
     isSuccess: isTopicSuccess,
-  } = useGetTopicsQuery(user!.UserID, {
+  } = useGetTopicsQuery(undefined, {
     refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    pollingInterval: 5000,
     skip: false,
   });
 
@@ -52,30 +54,30 @@ const Home = () => {
 
       <div className="mt-10">
         <h2 className="h2-bold text-dark100_light900">Events</h2>
-        <div className="mt-4 flex w-full flex-row gap-6 flex-wrap">
+        <div className="mt-4 w-full flex-row gap-6 flex-wrap grid grid-cols-3 max-md:grid-cols-1">
           {isEventLoading && <div>Loading...</div>}
-          {isEventFetching && <div>Updating...</div>}
-          {isEventSuccess && eventData.length === 0 && <div>No events</div>}
+          {isEventSuccess && eventData.length === 0 && <div>No Events Yet</div>}
           {isEventSuccess &&
             eventData
-              .slice(0, 4)
+              .slice(0, 3)
               .map((event: EventWithUser) => (
                 <EventCard
                   key={event.EventID}
                   event={event}
                   likedByUser={event.likedByUser}
                   savedByUser={event.savedByUser}
-                  width="300px"
+                  home={true}
                 />
               ))}
         </div>
       </div>
       <div className="mt-10">
         <h2 className="h2-bold text-dark100_light900">Discussions</h2>
-        <div className="mt-4 flex w-full flex-row gap-6 flex-wrap">
+        <div className="mt-4 w-full flex-row gap-6 flex-wrap grid grid-cols-2 max-md:grid-cols-1">
           {isTopicLoading && <div>Loading...</div>}
-          {isTopicFetching && <div>Updating...</div>}
-          {isTopicSuccess && topicData.length === 0 && <div>No events</div>}
+          {isTopicSuccess && topicData.length === 0 && (
+            <div>No Discussions Yet</div>
+          )}
           {isTopicSuccess &&
             topicData
               .slice(0, 4)
@@ -85,7 +87,7 @@ const Home = () => {
                   topic={topic}
                   likedByUser={topic.likedByUser}
                   savedByUser={topic.savedByUser}
-                  width="450px"
+                  home={true}
                 />
               ))}
         </div>

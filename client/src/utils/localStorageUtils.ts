@@ -1,7 +1,8 @@
 import { User } from "../types/index";
 
 const getLocalStorageUser = (): User => {
-  const parseUser = JSON.parse(localStorage.getItem("user") || "null");
+  const temp = localStorage.getItem("user") ?? null;
+  const parseUser = JSON.parse(temp || "null");
   delete parseUser?.token;
   return parseUser;
 };
