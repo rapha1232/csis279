@@ -53,15 +53,20 @@ const LogoutDialog = () => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-dark300_light900">
+            Are you absolutely sure?
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-dark300_light900">
             This action will delete your session and log you out. Press
             "Confirm" to logout or "Cancel" to stay logged in.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
-            <Button type="button" className="bg-primary-100/10">
+            <Button
+              type="button"
+              className="bg-primary-100/10 text-dark300_light900"
+            >
               Cancel
             </Button>
           </AlertDialogCancel>
@@ -71,6 +76,7 @@ const LogoutDialog = () => {
               variant={"destructive"}
               onClick={handleSignOut}
               disabled={isLoading}
+              className="text-dark300_light900"
             >
               Confirm
             </Button>

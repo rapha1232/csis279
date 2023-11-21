@@ -72,7 +72,6 @@ export class QuestionsService {
   }
 
   public async create(Title: string, Content: string, CreatedAt: string, CreatorID: number): Promise<void> {
-    console.log(CreatedAt);
     this.questions.create({ data: { Title: Title, Content: Content, CreatedAt: CreatedAt, CreatorID: CreatorID } }).catch(err => console.log(err));
   }
 

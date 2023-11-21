@@ -3,16 +3,12 @@ import { Link } from "react-router-dom";
 import {
   useGetEventsQuery,
   useGetEventsWithFilterQuery,
-  useLikeEventMutation,
-  useSaveEventMutation,
-  useUnlikeEventMutation,
-  useUnsaveEventMutation,
 } from "../../app/store";
+import { useEventClicks } from "../../hooks/eventMutations";
 import useGetUser from "../../hooks/useGetUser";
 import { EventWithUser } from "../../types";
 import { getTimestamp } from "../../utils/utils";
 import Metric from "../shared/Metric";
-import { toast } from "../ui/use-toast";
 
 const EventCard = ({
   event,
@@ -31,13 +27,9 @@ const EventCard = ({
   q?: string;
   s?: string;
 }) => {
-  const [like] = useLikeEventMutation();
-  const [unlike] = useUnlikeEventMutation();
-  const [save] = useSaveEventMutation();
-  const [unsave] = useUnsaveEventMutation();
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
-  const user = useGetUser();
+  const UserID = useGetUser().UserID;
 
   const { refetch } = home
     ? useGetEventsQuery()
@@ -51,94 +43,14 @@ const EventCard = ({
           skip: false,
         }
       );
-
-  const handleLikeClick = async (event: EventWithUser) => {
-    if (isLiked) {
-      try {
-        await unlike({
-          UserID: user?.UserID ?? 0,
-          EventID: event.EventID,
-        });
-        setIsLiked(false);
-        toast({
-          title: "Event unliked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unliking event",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await like({
-          UserID: user?.UserID ?? 0,
-          EventID: event.EventID,
-        });
-        setIsLiked(true);
-        toast({
-          title: "Event liked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error liking event",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
-
-  const handleSaveClick = async (event: EventWithUser) => {
-    if (isSaved) {
-      try {
-        await unsave({
-          UserID: user.UserID,
-          EventID: event.EventID,
-        });
-        setIsSaved(false);
-        toast({
-          title: "Event unsaved!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unsaving event",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await save({
-          UserID: user.UserID,
-          EventID: event.EventID,
-        });
-        setIsSaved(true);
-        toast({
-          title: "Event saved!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error saving event",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
+  const { handleLikeClick, handleSaveClick } = useEventClicks({
+    UserID,
+    isLiked,
+    isSaved,
+    setIsLiked,
+    setIsSaved,
+    refetch,
+  });
   return (
     <div
       className={`card-wrapper rounded-[10px] p-9 sm:px-11 col-span-1 ${

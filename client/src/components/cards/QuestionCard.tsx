@@ -3,16 +3,12 @@ import { Link } from "react-router-dom";
 import {
   useGetQuestionsQuery,
   useGetQuestionsWithFilterQuery,
-  useLikeQuestionMutation,
-  useSaveQuestionMutation,
-  useUnlikeQuestionMutation,
-  useUnsaveQuestionMutation,
 } from "../../app/store";
+import { useQuestionClicks } from "../../hooks/questionsMutations";
 import useGetUser from "../../hooks/useGetUser";
 import { QuestionWithUser } from "../../types";
 import { formatAndDivideNumber, getTimestamp } from "../../utils/utils";
 import Metric from "../shared/Metric";
-import { toast } from "../ui/use-toast";
 
 interface QuestionProps {
   question: QuestionWithUser;
@@ -33,13 +29,9 @@ const QuestionCard = ({
   q = "all",
   s = "",
 }: QuestionProps) => {
-  const [like] = useLikeQuestionMutation();
-  const [unlike] = useUnlikeQuestionMutation();
-  const [save] = useSaveQuestionMutation();
-  const [unsave] = useUnsaveQuestionMutation();
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
-  const user = useGetUser();
+  const UserID = useGetUser().UserID;
 
   const { refetch } = home
     ? useGetQuestionsQuery()
@@ -54,93 +46,14 @@ const QuestionCard = ({
         }
       );
 
-  const handleLikeClick = async (question: QuestionWithUser) => {
-    if (isLiked) {
-      try {
-        await unlike({
-          UserID: user.UserID,
-          QuestionID: question.QuestionID,
-        });
-        setIsLiked(false);
-        toast({
-          title: "Question unliked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unliking question",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await like({
-          UserID: user.UserID,
-          QuestionID: question.QuestionID,
-        });
-        setIsLiked(true);
-        toast({
-          title: "Question liked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error liking question",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
-
-  const handleSaveClick = async (question: QuestionWithUser) => {
-    if (isSaved) {
-      try {
-        await unsave({
-          UserID: user.UserID,
-          QuestionID: question.QuestionID,
-        });
-        setIsSaved(false);
-        toast({
-          title: "Question unsaved!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unsaving question",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await save({
-          UserID: user.UserID,
-          QuestionID: question.QuestionID,
-        });
-        setIsSaved(true);
-        toast({
-          title: "Question saved!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error saving question",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
+  const { handleLikeClick, handleSaveClick } = useQuestionClicks({
+    UserID,
+    isLiked,
+    isSaved,
+    setIsLiked,
+    setIsSaved,
+    refetch,
+  });
 
   return (
     <div

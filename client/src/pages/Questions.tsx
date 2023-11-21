@@ -16,7 +16,6 @@ const Questions = () => {
   const [sp, setSp] = useSearchParams();
   useEffect(() => {
     let q = sp.get("q");
-    console.log("Current q:", q);
   }, [sp]);
 
   const handleFilterChange = (newQ: string) => {

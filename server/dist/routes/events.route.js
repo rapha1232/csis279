@@ -8,8 +8,8 @@ Object.defineProperty(exports, "EventsRoute", {
         return EventsRoute;
     }
 });
-const _express = require("express");
 const _eventscontroller = require("../controllers/events.controller");
+const _express = require("express");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {

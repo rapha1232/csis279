@@ -58,7 +58,11 @@ const EventForm = () => {
                   Title
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -74,7 +78,11 @@ const EventForm = () => {
                   Description
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,7 +100,7 @@ const EventForm = () => {
                 <FormControl>
                   <Input
                     type="date"
-                    className="shad-input"
+                    className="shad-input text-dark300_light900"
                     {...form.register("Date")}
                   />
                 </FormControl>
@@ -109,7 +117,11 @@ const EventForm = () => {
                   Location
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

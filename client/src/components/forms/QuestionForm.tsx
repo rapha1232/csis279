@@ -56,11 +56,13 @@ const QuestionForm = () => {
             name="Title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="shad-form_label text-dark100_light900">
-                  Title
-                </FormLabel>
+                <FormLabel className="shad-form_label">Title</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,11 +74,13 @@ const QuestionForm = () => {
             name="Content"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="shad-form_label text-dark100_light900">
-                  Content
-                </FormLabel>
+                <FormLabel className="shad-form_label">Content</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

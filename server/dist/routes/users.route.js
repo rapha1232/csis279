@@ -8,8 +8,8 @@ Object.defineProperty(exports, "UserRoute", {
         return UserRoute;
     }
 });
-const _express = require("express");
 const _userscontroller = require("../controllers/users.controller");
+const _express = require("express");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {

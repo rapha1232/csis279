@@ -1,12 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import CreateQuestionDialog from "../components/CreateQuestionDialog";
 import RenderEvents from "../components/renders/RenderEvents";
 import RenderQuestions from "../components/renders/RenderQuestions";
 import RenderTopics from "../components/renders/RenderTopics";
 import useGetUser from "../hooks/useGetUser";
 const Home = () => {
-  const navigate = useNavigate();
   const user = useGetUser();
   return (
     <>

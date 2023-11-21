@@ -8,8 +8,8 @@ Object.defineProperty(exports, "QuestionsController", {
         return QuestionsController;
     }
 });
-const _typedi = require("typedi");
 const _questionsservice = require("../services/questions.service");
+const _typedi = require("typedi");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {

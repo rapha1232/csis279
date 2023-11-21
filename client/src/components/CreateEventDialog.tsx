@@ -13,14 +13,16 @@ const CreateEventDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
+        <Button className="primary-gradient min-h-[46px] px-4 py-3 text-dark300_light900">
           Create your own Event
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:w-420 items-center justify-center">
         <DialogHeader>
-          <DialogTitle>Create your own Event</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-dark300_light900">
+            Create your own Event
+          </DialogTitle>
+          <DialogDescription className="text-dark300_light900">
             Please fill out the form below to create your own event.
           </DialogDescription>
         </DialogHeader>

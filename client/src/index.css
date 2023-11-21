@@ -195,7 +195,7 @@ code {
   /* SHADCN COMPONENTS */
   /* Form */
   .shad-form_label {
-    @apply text-white !important;
+    @apply text-dark-100 dark:text-light-900 !important;
   }
 
   .shad-form_message {
@@ -203,7 +203,7 @@ code {
   }
 
   .shad-input {
-    @apply h-12 bg-dark-4 border-none placeholder:text-light-4 focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3 !important;
+    @apply h-12 border-none placeholder:text-light-4 focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3 bg-light-800 dark:bg-dark-300 !important;
   }
 
   .shad-textarea {

@@ -11,9 +11,27 @@ import TopicCard from "../cards/TopicCard";
 
 const RenderPosted = () => {
   const user = useGetUser();
-  const { data: eventData } = useGetEventsQuery();
-  const { data: topicData } = useGetTopicsQuery();
-  const { data: questionData } = useGetQuestionsQuery();
+  const { data: eventData } = useGetEventsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    pollingInterval: 5000,
+    skip: false,
+  });
+  const { data: topicData } = useGetTopicsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    pollingInterval: 5000,
+    skip: false,
+  });
+  const { data: questionData } = useGetQuestionsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    pollingInterval: 5000,
+    skip: false,
+  });
   const postedEvents = eventData
     ?.filter((d) => d.CreatedBy.UserID === user.UserID)
     .map((postedEvent) => (

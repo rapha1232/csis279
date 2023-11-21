@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import {
-  useGetTopicRepliesWithFilterQuery,
-  useLikeReplyMutation,
-  useUnlikeReplyMutation,
-} from "../../app/store";
+import { useGetTopicRepliesWithFilterQuery } from "../../app/store";
 import { MainFilters } from "../../constants/filters";
+import { useReplyClicks } from "../../hooks/replyMutations";
 import useGetUser from "../../hooks/useGetUser";
-import { ReplyWithUser } from "../../types";
 import { getTimestamp } from "../../utils/utils";
-import { toast } from "../ui/use-toast";
 import Filter from "./Filter";
 import Loader from "./Loader";
 import Metric from "./Metric";
@@ -22,8 +17,6 @@ interface Props {
 
 const AllTopicReplies = ({ TopicID, totalReplies }: Props) => {
   const [sp, setSp] = useSearchParams();
-  const [like] = useLikeReplyMutation();
-  const [unlike] = useUnlikeReplyMutation();
 
   const { data, isLoading, isSuccess, refetch } =
     useGetTopicRepliesWithFilterQuery(
@@ -39,56 +32,21 @@ const AllTopicReplies = ({ TopicID, totalReplies }: Props) => {
         skip: false,
       }
     );
+
   useEffect(() => {
     let q = sp.get("q");
-    console.log("Current q:", q);
   }, [sp]);
+
   const handleFilterChange = (newQ: string) => {
     setSp({ q: newQ });
   };
 
-  const user = useGetUser();
-  const handleLikeClick = async (reply: ReplyWithUser) => {
-    if (reply.likedByUser) {
-      try {
-        await unlike({
-          UserID: user.UserID,
-          ReplyID: reply.ReplyID,
-        });
-        toast({
-          title: "Reply unliked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unliking Reply",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await like({
-          UserID: user.UserID,
-          ReplyID: reply.ReplyID,
-        });
-        toast({
-          title: "Reply liked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error liking Reply",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
+  const UserID = useGetUser().UserID;
+
+  const { handleLikeClick } = useReplyClicks({
+    UserID,
+    refetch,
+  });
 
   return (
     <div className="mt-11">

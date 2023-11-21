@@ -8,10 +8,10 @@ Object.defineProperty(exports, "AuthMiddleware", {
         return AuthMiddleware;
     }
 });
-const _client = require("@prisma/client");
-const _jsonwebtoken = require("jsonwebtoken");
 const _config = require("../config");
 const _HttpException = require("../exceptions/HttpException");
+const _client = require("@prisma/client");
+const _jsonwebtoken = require("jsonwebtoken");
 const getAuthorization = (req)=>{
     const { body } = req;
     if (body && body.Authorization) {

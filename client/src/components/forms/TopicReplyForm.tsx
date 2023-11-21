@@ -33,7 +33,6 @@ const TopicReplyForm = ({ TopicID }: { TopicID: number }) => {
   ) => {
     setIsSubmitting(true);
     try {
-      console.log(values, new Date().toISOString(), user.UserID, TopicID);
       await createReply({
         ...values,
         CreatedAt: new Date().toISOString(),

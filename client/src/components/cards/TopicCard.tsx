@@ -3,16 +3,12 @@ import { Link } from "react-router-dom";
 import {
   useGetTopicsQuery,
   useGetTopicsWithFilterQuery,
-  useLikeTopicMutation,
-  useSaveTopicMutation,
-  useUnlikeTopicMutation,
-  useUnsaveTopicMutation,
 } from "../../app/store";
+import { useTopicClicks } from "../../hooks/topicsMutations";
 import useGetUser from "../../hooks/useGetUser";
-import { DiscussionTopic } from "../../types";
+import { DiscussionTopicWithUser } from "../../types";
 import { formatAndDivideNumber, getTimestamp } from "../../utils/utils";
 import Metric from "../shared/Metric";
-import { toast } from "../ui/use-toast";
 
 const TopicCard = ({
   topic,
@@ -23,7 +19,7 @@ const TopicCard = ({
   s = "",
   q = "all",
 }: {
-  topic: DiscussionTopic;
+  topic: DiscussionTopicWithUser;
   likedByUser: boolean;
   savedByUser: boolean;
   width?: string;
@@ -31,13 +27,9 @@ const TopicCard = ({
   s?: string;
   q?: string;
 }) => {
-  const [like] = useLikeTopicMutation();
-  const [unlike] = useUnlikeTopicMutation();
-  const [save] = useSaveTopicMutation();
-  const [unsave] = useUnsaveTopicMutation();
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
-  const user = useGetUser();
+  const UserID = useGetUser().UserID;
 
   const { refetch } = home
     ? useGetTopicsQuery()
@@ -52,93 +44,14 @@ const TopicCard = ({
         }
       );
 
-  const handleLikeClick = async (topic: DiscussionTopic) => {
-    if (isLiked) {
-      try {
-        await unlike({
-          UserID: user.UserID,
-          TopicID: topic.TopicID,
-        });
-        setIsLiked(false);
-        toast({
-          title: "Topic unliked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unliking topic",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await like({
-          UserID: user.UserID,
-          TopicID: topic.TopicID,
-        });
-        setIsLiked(true);
-        toast({
-          title: "Topic liked!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error liking topic",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
-
-  const handleSaveClick = async (topic: DiscussionTopic) => {
-    if (isSaved) {
-      try {
-        await unsave({
-          UserID: user.UserID,
-          TopicID: topic.TopicID,
-        });
-        setIsSaved(false);
-        toast({
-          title: "Topic unsaved!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error unsaving topic",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    } else {
-      try {
-        await save({
-          UserID: user.UserID,
-          TopicID: topic.TopicID,
-        });
-        setIsSaved(true);
-        toast({
-          title: "Topic saved!",
-          description: "Changes may take a few seconds to appear",
-        });
-      } catch (e) {
-        toast({
-          title: "Error saving topic",
-          description: "Changes may take a few seconds to appear",
-        });
-        console.log(e);
-      } finally {
-        refetch();
-      }
-    }
-  };
+  const { handleLikeClick, handleSaveClick } = useTopicClicks({
+    UserID,
+    isLiked,
+    isSaved,
+    setIsLiked,
+    setIsSaved,
+    refetch,
+  });
   return (
     <div
       className={`card-wrapper rounded-[10px] p-9 sm:px-11 col-span-1

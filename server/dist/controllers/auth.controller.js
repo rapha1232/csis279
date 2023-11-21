@@ -8,8 +8,8 @@ Object.defineProperty(exports, "AuthController", {
         return AuthController;
     }
 });
-const _typedi = require("typedi");
 const _authservice = require("../services/auth.service");
+const _typedi = require("typedi");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {

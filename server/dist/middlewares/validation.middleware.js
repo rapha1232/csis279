@@ -8,9 +8,9 @@ Object.defineProperty(exports, "ValidationMiddleware", {
         return ValidationMiddleware;
     }
 });
+const _HttpException = require("../exceptions/HttpException");
 const _classtransformer = require("class-transformer");
 const _classvalidator = require("class-validator");
-const _HttpException = require("../exceptions/HttpException");
 const ValidationMiddleware = (type, skipMissingProperties = false, whitelist = false, forbidNonWhitelisted = false)=>{
     return (req, res, next)=>{
         const dto = (0, _classtransformer.plainToInstance)(type, req.body);

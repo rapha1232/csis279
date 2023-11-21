@@ -57,7 +57,11 @@ const TopicForm = () => {
                   Title
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -73,7 +77,11 @@ const TopicForm = () => {
                   Content
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark300_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

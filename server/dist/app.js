@@ -8,7 +8,9 @@ Object.defineProperty(exports, "App", {
         return App;
     }
 });
-require("reflect-metadata");
+const _config = require("./config");
+const _errormiddleware = require("./middlewares/error.middleware");
+const _logger = require("./utils/logger");
 const _compression = /*#__PURE__*/ _interop_require_default(require("compression"));
 const _cookieparser = /*#__PURE__*/ _interop_require_default(require("cookie-parser"));
 const _cors = /*#__PURE__*/ _interop_require_default(require("cors"));
@@ -16,11 +18,9 @@ const _express = /*#__PURE__*/ _interop_require_default(require("express"));
 const _helmet = /*#__PURE__*/ _interop_require_default(require("helmet"));
 const _hpp = /*#__PURE__*/ _interop_require_default(require("hpp"));
 const _morgan = /*#__PURE__*/ _interop_require_default(require("morgan"));
+require("reflect-metadata");
 const _swaggerjsdoc = /*#__PURE__*/ _interop_require_default(require("swagger-jsdoc"));
 const _swaggeruiexpress = /*#__PURE__*/ _interop_require_default(require("swagger-ui-express"));
-const _config = require("./config");
-const _errormiddleware = require("./middlewares/error.middleware");
-const _logger = require("./utils/logger");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {

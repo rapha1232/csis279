@@ -8,11 +8,11 @@ Object.defineProperty(exports, "AuthRoute", {
         return AuthRoute;
     }
 });
-const _express = require("express");
 const _authcontroller = require("../controllers/auth.controller");
 const _usersdto = require("../dtos/users.dto");
 const _authmiddleware = require("../middlewares/auth.middleware");
 const _validationmiddleware = require("../middlewares/validation.middleware");
+const _express = require("express");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {

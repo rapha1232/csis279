@@ -13,14 +13,16 @@ const CreateQuestionDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
+        <Button className="primary-gradient min-h-[46px] px-4 py-3 text-dark300_light900">
           Ask a new Question
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:w-420 items-center justify-center">
         <DialogHeader>
-          <DialogTitle>Ask a new Question</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-dark300_light900">
+            Ask a new Question
+          </DialogTitle>
+          <DialogDescription className="text-dark300_light900">
             Please fill out the form below to ask a new question.
           </DialogDescription>
         </DialogHeader>

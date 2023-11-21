@@ -5,7 +5,6 @@ import Loader from "../components/shared/Loader";
 import { User } from "../types";
 const Members = () => {
   const { data, isLoading, isSuccess } = useGetAllQuery();
-  console.log(data);
   return (
     <div className="mt-10">
       <h2 className="h2-bold text-dark100_light900">Our Members</h2>

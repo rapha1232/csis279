@@ -8,12 +8,12 @@ Object.defineProperty(exports, "AuthService", {
         return AuthService;
     }
 });
+const _config = require("../config");
+const _HttpException = require("../exceptions/HttpException");
 const _client = require("@prisma/client");
 const _bcrypt = require("bcrypt");
 const _jsonwebtoken = require("jsonwebtoken");
 const _typedi = require("typedi");
-const _config = require("../config");
-const _HttpException = require("../exceptions/HttpException");
 function _define_property(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
