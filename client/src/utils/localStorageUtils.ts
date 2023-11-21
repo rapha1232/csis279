@@ -18,7 +18,7 @@ const getToken = () => {
 };
 export {
   getLocalStorageUser,
-  setLocalStorageUser,
   getToken,
   removeLocalStorageUser,
+  setLocalStorageUser,
 };

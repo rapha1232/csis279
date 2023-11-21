@@ -1,25 +1,26 @@
 import React from "react";
-import { Button } from "./ui/button";
-import { RootState, clearUser, useSignoutMutation } from "../app/store";
-import { toast } from "./ui/use-toast";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState, clearUser, useSignoutMutation } from "../app/store";
 import {
   AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogCancel,
   AlertDialogAction,
-  AlertDialogHeader,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { Button } from "./ui/button";
+import { toast } from "./ui/use-toast";
 
 const LogoutDialog = () => {
+  const cookie = useSelector((state: RootState) => state.cookie);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cookie = useSelector((state: RootState) => state.cookie);
+
   const [signout, { isLoading }] = useSignoutMutation();
   const handleSignOut = async () => {
     try {

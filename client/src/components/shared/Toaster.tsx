@@ -1,7 +1,7 @@
+import React from "react";
 import { Button } from "../../components/ui/button";
 import { ToastAction } from "../../components/ui/toast";
 import { useToast } from "../../components/ui/use-toast";
-import React from "react";
 
 const Toaster = () => {
   const { toast } = useToast();

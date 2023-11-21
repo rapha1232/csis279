@@ -1,4 +1,4 @@
-import { User2, Heart, Star } from "lucide-react";
+import { Heart, MessageSquare, Star, User2 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -10,6 +10,7 @@ interface MetricProps {
   isAuthor?: boolean;
   icon?: string;
   iconColor?: string;
+  iconSize?: number;
   onClick?: () => void;
 }
 
@@ -18,6 +19,7 @@ const getIconComponent = (iconName: string) => {
     user: <User2 />,
     heart: <Heart />,
     star: <Star />,
+    comment: <MessageSquare />,
   };
 
   return iconMap[iconName] || null;
@@ -31,6 +33,7 @@ const Metric = ({
   isAuthor,
   icon,
   iconColor,
+  iconSize,
   onClick,
 }: MetricProps) => {
   const iconComponent = getIconComponent(icon ?? "");
@@ -39,12 +42,12 @@ const Metric = ({
     <>
       {iconComponent &&
         React.cloneElement(iconComponent as React.ReactElement, {
-          width: 16,
-          height: 16,
+          width: iconSize ?? 16,
+          height: iconSize ?? 16,
           className: `${
             href ? "rounded-full" : ""
           } cursor-pointer text-accent-blue`,
-          color: iconColor?.length ? iconColor : "currentColor",
+          color: iconColor?.length ? iconColor : "#CC00FF",
         })}
 
       <p className={`${textStyles} flex items-center gap-1`}>

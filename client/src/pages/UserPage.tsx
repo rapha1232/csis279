@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 
+import { User2 } from "lucide-react";
 import React from "react";
 import { useGetInfoQuery } from "../app/store";
-import { User2 } from "lucide-react";
 
 const UserPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { data } = useGetInfoQuery(Number(id));
+  const { data } = useGetInfoQuery({ id: Number(id) });
 
   return (
     <>
@@ -15,11 +15,13 @@ const UserPage = () => {
           <User2
             width={140}
             height={140}
-            className="rounded-full object-cover"
+            className="rounded-full object-cover text-dark100_light900"
           />
 
           <div className="mt-3">
-            <h2 className="h2-bold text-dark100_light900">{data?.FirstName}</h2>
+            <h2 className="h2-bold text-dark100_light900">
+              {data?.FirstName} {data?.LastName}
+            </h2>
 
             <p className="paragraph-regular text-dark400_light800 mt-8">
               {data?.Email}

@@ -47,9 +47,17 @@ export const userApi = createApi({
         },
       }),
     }),
-    getInfo: builder.query<User, number>({
-      query: (id) => `users/getUserInfo?UserID=${id}`,
-      transformResponse: (response: { user: User }) => response.user,
+    getInfo: builder.query<User, { id: number }>({
+      query: ({ id }) => ({
+        url: `users/getUserInfo?UserID=${id}`,
+      }),
+      transformResponse: (response: { data: User }) => response.data,
+    }),
+    getAll: builder.query<User[], void>({
+      query: () => ({
+        url: "users/getAllUsers",
+      }),
+      transformResponse: (response: { data: User[] }) => response.data,
     }),
   }),
 });

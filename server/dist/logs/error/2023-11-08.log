@@ -1,0 +1,34 @@
+2023-11-08 11:59:06 error: uncaughtException: Route.post() requires a callback function but got a [object Undefined]
+Error: Route.post() requires a callback function but got a [object Undefined]
+    at Route.<computed> [as post] (C:\Users\raphy\Desktop\onlinedb\node_modules\express\lib\router\route.js:211:15)
+    at Function.proto.<computed> [as post] (C:\Users\raphy\Desktop\onlinedb\node_modules\express\lib\router\index.js:521:19)
+    at EventsRoute.initializeRoutes (C:\Users\raphy\Desktop\onlinedb\src\routes\events.route.ts:21:17)
+    at new EventsRoute (C:\Users\raphy\Desktop\onlinedb\src\routes\events.route.ts:11:10)
+    at Object.<anonymous> (C:\Users\raphy\Desktop\onlinedb\src\server.ts:10:56)
+    at Module._compile (node:internal/modules/cjs/loader:1267:14)
+    at Module.m._compile (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1321:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1125:32)
+2023-11-08 14:45:34 error: uncaughtException: ⨯ Unable to compile TypeScript:
+[96msrc/services/events.service.ts[0m:[93m39[0m:[93m46[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m39[0m     }).then(() => this.likes.aggregate(_count: {
+[7m  [0m [91m                                             ~[0m
+
+TSError: ⨯ Unable to compile TypeScript:
+[96msrc/services/events.service.ts[0m:[93m39[0m:[93m46[0m - [91merror[0m[90m TS1005: [0m',' expected.
+
+[7m39[0m     }).then(() => this.likes.aggregate(_count: {
+[7m  [0m [91m                                             ~[0m
+
+    at createTSError (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:863:19)
+    at C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:1379:34
+    at Object.compile (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:1458:13)
+    at Module.m._compile (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1321:10)
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\raphy\Desktop\onlinedb\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1125:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:965:12)
+    at Module.require (node:internal/modules/cjs/loader:1149:19)

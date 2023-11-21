@@ -1,35 +1,13 @@
 import React, { useEffect, useState } from "react";
-import DarkTheme from "../components/DarkTheme";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import { CssBaseline } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import PrivateRoute from "../PrivateRoute";
 import { useAppSelector } from "../app/hooks";
 import { RootState, setUser } from "../app/store";
-import { getLocalStorageUser } from "../utils/localStorageUtils";
-import { useDispatch } from "react-redux";
-import Layout from "../Layout";
-import PrivateRoute from "../PrivateRoute";
-import {
-  Article,
-  Ask,
-  Discussions,
-  Events,
-  Home,
-  Profile,
-  Questions,
-  SignIn,
-  SignUp,
-  SingleEvent,
-  Members,
-  UserPage,
-  APOD,
-} from "./index";
-import AuthLayout from "./_auth/AuthLayout";
+import DarkTheme from "../components/DarkTheme";
 import { Toaster } from "../components/ui/toaster";
+import routes from "../constants/nav";
+import { getLocalStorageUser } from "../utils/localStorageUtils";
 const App = () => {
   const user = useAppSelector((state: RootState) => state.user.user);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,110 +24,30 @@ const App = () => {
   }, [user]);
   return (
     <DarkTheme>
-      <CssBaseline />
       <main>
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/home" />} />
-            <Route
-              path="/home"
-              index
-              element={
-                <>
-                  <Layout>
-                    <Home />
-                  </Layout>
-                </>
+            {routes.map((route, index) => {
+              if (route.private) {
+                return (
+                  <Route key={index} element={<PrivateRoute user={user!} />}>
+                    <Route
+                      path={route.path}
+                      element={route.element}
+                      index={route.exact}
+                    />
+                  </Route>
+                );
               }
-            />
-            <Route element={<AuthLayout />}>
-              <Route path="/sign-in" element={<SignIn />}></Route>
-              <Route path="/sign-up" element={<SignUp />}></Route>
-            </Route>
-            <Route
-              element={<PrivateRoute user={user!} isLoading={isLoading} />}
-            >
-              <Route
-                path="/profile"
-                element={
-                  <Layout>
-                    <Profile />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/events"
-                element={
-                  <Layout>
-                    <Events />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/discussions"
-                element={
-                  <Layout>
-                    <Discussions />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/questions"
-                element={
-                  <Layout>
-                    <Questions />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/members"
-                element={
-                  <Layout>
-                    <Members />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/ask-question"
-                element={
-                  <Layout>
-                    <Ask />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/events/:id"
-                element={
-                  <Layout>
-                    <SingleEvent />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/article/:id"
-                element={
-                  <Layout>
-                    <Article />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/user/:id"
-                element={
-                  <Layout>
-                    <UserPage />
-                  </Layout>
-                }
-              />
-              <Route
-                path="/apod"
-                element={
-                  <Layout>
-                    <APOD />
-                  </Layout>
-                }
-              />
-            </Route>
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.layout ? route.layout : route.element}
+                  index={route.exact}
+                />
+              );
+            })}
           </Routes>
         </Router>
         <Toaster />

@@ -33,10 +33,3 @@ export const MainFilters = [
   { name: "Name", value: "name" },
   { name: "Old", value: "old" },
 ];
-
-export const GlobalSearchFilters = [
-  { name: "Event", value: "event" },
-  { name: "Discussion", value: "discussion" },
-  { name: "Members", value: "members" },
-  { name: "Article", value: "article" },
-];

@@ -4,10 +4,14 @@ import { store } from "./store";
 
 export const eventsApi = createApi({
   reducerPath: "eventsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3001/",
+  }),
   endpoints: (builder) => ({
     getEvents: builder.query<EventWithUser[], void>({
-      query: () => `events/getAll`,
+      query: () => ({
+        url: `events/getAll`,
+      }),
       transformResponse: (response: { data: EventFromServer[] }) => {
         const transformedResponse: EventWithUser[] = response.data.map(
           (event) => {
@@ -37,8 +41,9 @@ export const eventsApi = createApi({
       EventWithUser[],
       { q: string; search: string }
     >({
-      query: ({ q, search }) =>
-        `events/getAllWithFilter?q=${q}&search=${search}`,
+      query: ({ q, search }) => ({
+        url: `events/getAllWithFilter?q=${q}&search=${search}`,
+      }),
       transformResponse: (response: { data: EventFromServer[] }) => {
         const transformedResponse: EventWithUser[] = response.data.map(
           (event) => {

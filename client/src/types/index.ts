@@ -90,7 +90,7 @@ export type DiscussionTopic = {
   CreatedAt: string;
   CreatedBy: User;
   LikesNb: number;
-  // Comments: number;
+  CommentsNb: number;
 };
 
 export type DiscussionTopicWithUser = {
@@ -102,7 +102,7 @@ export type DiscussionTopicWithUser = {
   LikesNb: number;
   likedByUser: boolean;
   savedByUser: boolean;
-  // Comments: number;
+  CommentsNb: number;
 };
 
 export type DiscussionTopicFromServer = {
@@ -115,7 +115,43 @@ export type DiscussionTopicFromServer = {
   LikesNb: number;
   Likes: Like[];
   Saved: Save[];
-  // Comments: number;
+  CommentsNb: number;
+  _count: { Replies: number };
+};
+
+export type Question = {
+  TopicID: number;
+  Title: string;
+  Content: string;
+  CreatedAt: string;
+  CreatedBy: User;
+  LikesNb: number;
+  CommentsNb: number;
+};
+
+export type QuestionWithUser = {
+  QuestionID: number;
+  Title: string;
+  Content: string;
+  CreatedAt: string;
+  CreatedBy: User;
+  LikesNb: number;
+  likedByUser: boolean;
+  savedByUser: boolean;
+  CommentsNb: number;
+};
+
+export type QuestionFromServer = {
+  QuestionID: number;
+  Title: string;
+  Content: string;
+  CreatedAt: string;
+  CreatedBy: User;
+  CreatorID: number;
+  LikesNb: number;
+  Likes: Like[];
+  Saved: Save[];
+  _count: { Replies: number };
 };
 
 export type Article = {
@@ -136,7 +172,6 @@ export type Reply = {
   ReplyID: number;
   Content: string;
   CreatedAt: string;
-  CreatorID: number;
   CreatedBy: User;
 };
 
@@ -145,6 +180,9 @@ export type ReplyWithUser = {
   Content: string;
   CreatedAt: string;
   CreatorID: number;
+  QuestionID?: number;
+  TopicID?: number;
+  LikesNB: number;
   CreatedBy: User;
   likedByUser: boolean;
 };
@@ -154,8 +192,10 @@ export type ReplyFromServer = {
   Content: string;
   CreatedAt: string;
   CreatorID: number;
-  CreatedBy: User;
+  QuestionID?: number;
+  TopicID?: number;
   LikesNB: number;
+  CreatedBy: User;
   Likes: Like[];
 };
 

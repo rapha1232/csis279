@@ -1,7 +1,12 @@
 import React from "react";
-import { Input } from "../../ui/input";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setEventSearch, setTopicSearch } from "../../../app/store";
+import {
+  RootState,
+  setEventSearch,
+  setQuestionSearch,
+  setTopicSearch,
+} from "../../../app/store";
+import { Input } from "../../ui/input";
 
 interface CustomInputProps {
   route: string;
@@ -9,7 +14,7 @@ interface CustomInputProps {
   imageSrc: string;
   placeholder: string;
   otherClasses?: string;
-  slice: "eventSearch" | "topicSearch";
+  slice: "eventSearch" | "topicSearch" | "questionsSearch";
 }
 
 const LocalSearchBar = ({
@@ -27,6 +32,8 @@ const LocalSearchBar = ({
       dispatch(setEventSearch(e.target.value));
     } else if (slice === "topicSearch") {
       dispatch(setTopicSearch(e.target.value));
+    } else if (slice === "questionsSearch") {
+      dispatch(setQuestionSearch(e.target.value));
     }
   };
   return (

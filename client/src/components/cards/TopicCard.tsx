@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { DiscussionTopic } from "../../types";
 import { Link } from "react-router-dom";
-import Metric from "../shared/Metric";
 import {
-  useLikeTopicMutation,
-  useUnlikeTopicMutation,
-  useSaveTopicMutation,
-  useUnsaveTopicMutation,
   useGetTopicsQuery,
   useGetTopicsWithFilterQuery,
+  useLikeTopicMutation,
+  useSaveTopicMutation,
+  useUnlikeTopicMutation,
+  useUnsaveTopicMutation,
 } from "../../app/store";
-import { toast } from "../ui/use-toast";
 import useGetUser from "../../hooks/useGetUser";
+import { DiscussionTopic } from "../../types";
+import { formatAndDivideNumber, getTimestamp } from "../../utils/utils";
+import Metric from "../shared/Metric";
+import { toast } from "../ui/use-toast";
 
 const TopicCard = ({
   topic,
@@ -37,6 +38,7 @@ const TopicCard = ({
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
   const user = useGetUser();
+
   const { refetch } = home
     ? useGetTopicsQuery()
     : useGetTopicsWithFilterQuery(
@@ -53,22 +55,40 @@ const TopicCard = ({
   const handleLikeClick = async (topic: DiscussionTopic) => {
     if (isLiked) {
       try {
-        await unlike({ UserID: user.UserID, TopicID: topic.TopicID });
+        await unlike({
+          UserID: user.UserID,
+          TopicID: topic.TopicID,
+        });
         setIsLiked(false);
-        toast({ title: "Topic unliked!" });
+        toast({
+          title: "Topic unliked!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error unliking topic" });
+        toast({
+          title: "Error unliking topic",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
       }
     } else {
       try {
-        await like({ UserID: user.UserID, TopicID: topic.TopicID });
+        await like({
+          UserID: user.UserID,
+          TopicID: topic.TopicID,
+        });
         setIsLiked(true);
-        toast({ title: "Topic liked!" });
+        toast({
+          title: "Topic liked!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error liking topic" });
+        toast({
+          title: "Error liking topic",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
@@ -79,22 +99,40 @@ const TopicCard = ({
   const handleSaveClick = async (topic: DiscussionTopic) => {
     if (isSaved) {
       try {
-        await unsave({ UserID: user.UserID, TopicID: topic.TopicID });
+        await unsave({
+          UserID: user.UserID,
+          TopicID: topic.TopicID,
+        });
         setIsSaved(false);
-        toast({ title: "Topic unsaved!" });
+        toast({
+          title: "Topic unsaved!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error unsaving topic" });
+        toast({
+          title: "Error unsaving topic",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
       }
     } else {
       try {
-        await save({ UserID: user.UserID, TopicID: topic.TopicID });
+        await save({
+          UserID: user.UserID,
+          TopicID: topic.TopicID,
+        });
         setIsSaved(true);
-        toast({ title: "Topic saved!" });
+        toast({
+          title: "Topic saved!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error saving topic" });
+        toast({
+          title: "Error saving topic",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
@@ -109,7 +147,7 @@ const TopicCard = ({
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
-          <Link to={`/events/${topic.TopicID}`}>
+          <Link to={`/topic/${topic.TopicID}`}>
             <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
               {topic.Title}
             </h3>
@@ -124,11 +162,18 @@ const TopicCard = ({
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
           icon="user"
-          title={`by ${topic.CreatedBy.FirstName} `}
+          value={topic.CreatedBy.FirstName}
+          title={` - started ${getTimestamp(topic.CreatedAt)}`}
           href={`/user/${topic.CreatedBy.UserID}`}
           textStyles="body-medium text-dark400_light700"
         />
         <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metric
+            icon="comment"
+            value={formatAndDivideNumber(topic.CommentsNb)}
+            title=" Replies"
+            textStyles="small-medium text-dark400_light800"
+          />
           <Metric
             icon="heart"
             value={topic.LikesNb}

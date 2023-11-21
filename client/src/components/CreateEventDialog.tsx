@@ -1,4 +1,5 @@
-import EventForm from "./EventForm";
+import React from "react";
+import EventForm from "./forms/EventForm";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import React from "react";
 const CreateEventDialog = () => {
   return (
     <Dialog>

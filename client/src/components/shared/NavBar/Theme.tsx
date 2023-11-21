@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "../../../context/ThemeProvider";
 import {
   Menubar,
   MenubarContent,
@@ -8,6 +7,7 @@ import {
   MenubarTrigger,
 } from "../../../components/ui/menubar";
 import { themes } from "../../../constants";
+import { useTheme } from "../../../context/ThemeProvider";
 
 const Theme = () => {
   const { mode, setMode } = useTheme();

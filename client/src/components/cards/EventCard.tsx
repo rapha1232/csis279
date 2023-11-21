@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { EventWithUser } from "../../types";
 import { Link } from "react-router-dom";
-import Metric from "../shared/Metric";
 import {
-  useLikeEventMutation,
-  useUnlikeEventMutation,
   useGetEventsQuery,
-  useSaveEventMutation,
-  useUnsaveEventMutation,
   useGetEventsWithFilterQuery,
+  useLikeEventMutation,
+  useSaveEventMutation,
+  useUnlikeEventMutation,
+  useUnsaveEventMutation,
 } from "../../app/store";
-import { toast } from "../ui/use-toast";
 import useGetUser from "../../hooks/useGetUser";
+import { EventWithUser } from "../../types";
+import { getTimestamp } from "../../utils/utils";
+import Metric from "../shared/Metric";
+import { toast } from "../ui/use-toast";
 
 const EventCard = ({
   event,
@@ -37,6 +38,7 @@ const EventCard = ({
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
   const user = useGetUser();
+
   const { refetch } = home
     ? useGetEventsQuery()
     : useGetEventsWithFilterQuery(
@@ -53,22 +55,40 @@ const EventCard = ({
   const handleLikeClick = async (event: EventWithUser) => {
     if (isLiked) {
       try {
-        await unlike({ UserID: user?.UserID ?? 0, EventID: event.EventID });
+        await unlike({
+          UserID: user?.UserID ?? 0,
+          EventID: event.EventID,
+        });
         setIsLiked(false);
-        toast({ title: "Event unliked!" });
+        toast({
+          title: "Event unliked!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error unliking event" });
+        toast({
+          title: "Error unliking event",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
       }
     } else {
       try {
-        await like({ UserID: user?.UserID ?? 0, EventID: event.EventID });
+        await like({
+          UserID: user?.UserID ?? 0,
+          EventID: event.EventID,
+        });
         setIsLiked(true);
-        toast({ title: "Event liked!" });
+        toast({
+          title: "Event liked!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error liking event" });
+        toast({
+          title: "Error liking event",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
@@ -79,22 +99,40 @@ const EventCard = ({
   const handleSaveClick = async (event: EventWithUser) => {
     if (isSaved) {
       try {
-        await unsave({ UserID: user.UserID, EventID: event.EventID });
+        await unsave({
+          UserID: user.UserID,
+          EventID: event.EventID,
+        });
         setIsSaved(false);
-        toast({ title: "Event unsaved!" });
+        toast({
+          title: "Event unsaved!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error unsaving event" });
+        toast({
+          title: "Error unsaving event",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
       }
     } else {
       try {
-        await save({ UserID: user.UserID, EventID: event.EventID });
+        await save({
+          UserID: user.UserID,
+          EventID: event.EventID,
+        });
         setIsSaved(true);
-        toast({ title: "Event saved!" });
+        toast({
+          title: "Event saved!",
+          description: "Changes may take a few seconds to appear",
+        });
       } catch (e) {
-        toast({ title: "Error saving event" });
+        toast({
+          title: "Error saving event",
+          description: "Changes may take a few seconds to appear",
+        });
         console.log(e);
       } finally {
         refetch();
@@ -124,7 +162,8 @@ const EventCard = ({
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
           icon="user"
-          title={`by ${event.CreatedBy.FirstName} `}
+          value={event.CreatedBy.FirstName}
+          title={` - in ${getTimestamp(event.Date)}`}
           href={`/user/${event.CreatedBy.UserID}`}
           textStyles="body-medium text-dark400_light700"
         />

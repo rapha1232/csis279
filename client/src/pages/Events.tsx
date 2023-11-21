@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-import LocalSearchBar from "../components/shared/search/LocalSearchBar";
-import Filter from "../components/shared/Filter";
-import { MainFilters } from "../constants/filters";
-import HomeFilters from "../components/Home/HomeFilters";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { RootState, useGetEventsWithFilterQuery } from "../app/store";
-import EventCard from "../components/cards/EventCard";
-import { EventWithUser } from "../types";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { RootState, useGetEventsWithFilterQuery } from "../app/store";
 import CreateEventDialog from "../components/CreateEventDialog";
+import EventCard from "../components/cards/EventCard";
+import Filter from "../components/shared/Filter";
+import HomeFilters from "../components/shared/HomeFilters";
+import Loader from "../components/shared/Loader";
+import LocalSearchBar from "../components/shared/search/LocalSearchBar";
+import { MainFilters } from "../constants/filters";
+import { EventWithUser } from "../types";
 
 const Events = () => {
   const searchValue = useSelector((state: RootState) => state.eventSearch);
@@ -64,7 +65,7 @@ const Events = () => {
       <div className="mt-10">
         <h2 className="h2-bold text-dark100_light900">Events</h2>
         <div className="mt-10 flex w-full flex-col gap-6 max-sm:mt-20">
-          {isLoading && <div>Loading...</div>}
+          {isLoading && <Loader />}
           {isSuccess && data.length === 0 && <div>No events</div>}
           {isSuccess &&
             data.map((event: EventWithUser) => (

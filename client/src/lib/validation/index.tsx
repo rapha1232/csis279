@@ -56,6 +56,15 @@ export const TopicFormValidation = z.object({
     .max(2000, { message: "Content must be at most 2,000 characters." }),
 });
 
+export const QuestionFormValidation = TopicFormValidation;
+
+export const ReplyFormValidation = z.object({
+  Content: z
+    .string()
+    .min(10, { message: "Reply must be at least 10 characters." })
+    .max(2000, { message: "Reply must be at most 2,000 characters." }),
+});
+
 // export const ProfileValidation = z.object({
 //   file: z.custom<File[]>(),
 //   name: z.string().min(2, { message: "Name must be at least 2 characters." }),

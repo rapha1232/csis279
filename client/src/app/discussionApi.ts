@@ -4,10 +4,14 @@ import { store } from "./store";
 
 export const discussionApi = createApi({
   reducerPath: "topicsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3001/",
+  }),
   endpoints: (builder) => ({
     getTopics: builder.query<DiscussionTopicWithUser[], void>({
-      query: () => `discussions/getAllTopics`,
+      query: () => ({
+        url: `discussions/getAllTopics`,
+      }),
       transformResponse: (response: { data: DiscussionTopicFromServer[] }) => {
         const transformedResponse: DiscussionTopicWithUser[] =
           response.data.map((topic) => {
@@ -26,6 +30,7 @@ export const discussionApi = createApi({
               LikesNb: topic.LikesNb,
               likedByUser: likedByUser,
               savedByUser: savedByUser,
+              CommentsNb: topic._count.Replies,
             };
           });
         return transformedResponse;
@@ -35,8 +40,9 @@ export const discussionApi = createApi({
       DiscussionTopicWithUser[],
       { q: string; search: string }
     >({
-      query: ({ q, search }) =>
-        `discussions/getAllWithFilter?q=${q}&search=${search}`,
+      query: ({ q, search }) => ({
+        url: `discussions/getAllWithFilter?q=${q}&search=${search}`,
+      }),
       transformResponse: (response: { data: DiscussionTopicFromServer[] }) => {
         const transformedResponse: DiscussionTopicWithUser[] =
           response.data.map((topic) => {
@@ -55,6 +61,7 @@ export const discussionApi = createApi({
               LikesNb: topic.LikesNb,
               likedByUser: likedByUser,
               savedByUser: savedByUser,
+              CommentsNb: topic._count.Replies,
             };
           });
         return transformedResponse;
@@ -107,6 +114,29 @@ export const discussionApi = createApi({
           CreatorID: CreatorID,
         },
       }),
+    }),
+    getOneTopic: builder.query<DiscussionTopicWithUser, { TopicID: number }>({
+      query: ({ TopicID }) => ({
+        url: `discussions/getOne?TopicID=${TopicID}`,
+      }),
+      transformResponse: (response: { data: DiscussionTopicFromServer }) => {
+        const transformedResponse: DiscussionTopicWithUser = {
+          TopicID: response.data.TopicID,
+          Title: response.data.Title,
+          Content: response.data.Content,
+          CreatedAt: response.data.CreatedAt,
+          CreatedBy: response.data.CreatedBy,
+          LikesNb: response.data.LikesNb,
+          CommentsNb: response.data._count.Replies,
+          likedByUser: response.data.Likes.some(
+            (like) => like.UserID === store.getState().user.user?.UserID
+          ),
+          savedByUser: response.data.Saved.some(
+            (save) => save.UserID === store.getState().user.user?.UserID
+          ),
+        };
+        return transformedResponse;
+      },
     }),
   }),
 });

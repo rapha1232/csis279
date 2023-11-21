@@ -3,7 +3,7 @@ import { useApodQuery } from "../app/store";
 import Loader from "../components/shared/Loader";
 
 const APOD = () => {
-  const { data, isLoading, isSuccess } = useApodQuery(undefined, {
+  const { data, isLoading, isSuccess, isError } = useApodQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
     pollingInterval: 1000 * 60 * 60 * 24, // 24 hours
@@ -11,6 +11,9 @@ const APOD = () => {
     skip: false,
   });
   isLoading && <Loader />;
+  isError && <div>Something went wrong</div>;
+  if (!data) return <Loader />;
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -19,11 +22,11 @@ const APOD = () => {
         </h1>
       </div>
       <div className="my-11 flex items-center justify-between gap-5 max-sm:flex-col">
-        <h2 className="h2-bold">{data?.title}</h2>
+        <h2 className="h2-bold text-dark100_light900">{data.title}</h2>
       </div>
-      <img src={data?.url} alt={data?.title} className="w-full" />
+      <img src={data?.url} alt={data.title} className="w-full" />
       <div className="my-10">
-        <h4 className="h3-bold">{data?.explanation}</h4>
+        <h4 className="h3-bold text-dark100_light900">{data.explanation}</h4>
       </div>
     </>
   );

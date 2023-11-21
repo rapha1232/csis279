@@ -1,36 +1,9 @@
 import React from "react";
-import { useGetEventsQuery, useGetTopicsQuery } from "../../app/store";
-import EventCard from "../cards/EventCard";
-import TopicCard from "../cards/TopicCard";
+import RenderPosted from "../renders/RenderPosted";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import useGetUser from "../../hooks/useGetUser";
 
 const PostedTab = () => {
-  const user = useGetUser();
-  const { data: eventData } = useGetEventsQuery();
-  const { data: topicData } = useGetTopicsQuery();
-  const postedEvents = eventData
-    ?.filter((d) => d.CreatedBy.UserID === user.UserID)
-    .map((savedEvent) => (
-      <EventCard
-        key={savedEvent.EventID}
-        event={savedEvent}
-        likedByUser={savedEvent.likedByUser}
-        savedByUser={savedEvent.savedByUser}
-        home={true}
-      />
-    ));
-  const postedTopics = topicData
-    ?.filter((d) => d.CreatedBy.UserID === user.UserID)
-    .map((savedTopic) => (
-      <TopicCard
-        key={savedTopic.TopicID}
-        topic={savedTopic}
-        likedByUser={savedTopic.likedByUser}
-        savedByUser={savedTopic.savedByUser}
-      />
-    ));
-
+  const { postedEvents, postedTopics, postedQuestions } = RenderPosted();
   return (
     <div className="mt-2 flex gap-10">
       <Tabs defaultValue="postedEvents" className="flex-1">
@@ -41,6 +14,9 @@ const PostedTab = () => {
           <TabsTrigger value="postedTopics" className="tab">
             Discussion Topics
           </TabsTrigger>
+          <TabsTrigger value="postedQuestions" className="tab">
+            Questions
+          </TabsTrigger>
         </TabsList>
         <TabsContent
           value="postedEvents"
@@ -49,7 +25,7 @@ const PostedTab = () => {
           {postedEvents && postedEvents.length > 0 ? (
             <>{postedEvents}</>
           ) : (
-            <p>No Events Saved</p>
+            <p>No Events Posted</p>
           )}
         </TabsContent>
         <TabsContent
@@ -59,7 +35,17 @@ const PostedTab = () => {
           {postedTopics && postedTopics.length > 0 ? (
             <>{postedTopics}</>
           ) : (
-            <p>No Discussion Topics Saved</p>
+            <p>No Discussion Topics Posted</p>
+          )}
+        </TabsContent>
+        <TabsContent
+          value="postedQuestions"
+          className="flex w-full flex-col gap-6"
+        >
+          {postedQuestions && postedQuestions.length > 0 ? (
+            <>{postedQuestions}</>
+          ) : (
+            <p>No Questions Posted</p>
           )}
         </TabsContent>
       </Tabs>

@@ -1,33 +1,9 @@
 import React from "react";
-import { useGetEventsQuery, useGetTopicsQuery } from "../../app/store";
-import EventCard from "../cards/EventCard";
-import TopicCard from "../cards/TopicCard";
+import RenderSaved from "../renders/RenderSaved";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 const SavedTab = () => {
-  const { data: eventData } = useGetEventsQuery();
-  const { data: topicData } = useGetTopicsQuery();
-  const savedEvents = eventData
-    ?.filter((d) => d.savedByUser === true)
-    .map((savedEvent) => (
-      <EventCard
-        key={savedEvent.EventID}
-        event={savedEvent}
-        likedByUser={savedEvent.likedByUser}
-        savedByUser={savedEvent.savedByUser}
-        home={true}
-      />
-    ));
-  const savedTopics = topicData
-    ?.filter((d) => d.savedByUser === true)
-    .map((savedTopic) => (
-      <TopicCard
-        key={savedTopic.TopicID}
-        topic={savedTopic}
-        likedByUser={savedTopic.likedByUser}
-        savedByUser={savedTopic.savedByUser}
-      />
-    ));
+  const { savedEvents, savedTopics, savedQuestions } = RenderSaved();
 
   return (
     <div className="mt-2 flex gap-10">
@@ -38,6 +14,9 @@ const SavedTab = () => {
           </TabsTrigger>
           <TabsTrigger value="savedTopics" className="tab">
             Discussion Topics
+          </TabsTrigger>
+          <TabsTrigger value="savedQuestions" className="tab">
+            Questions
           </TabsTrigger>
         </TabsList>
         <TabsContent value="savedEvents" className="flex w-full flex-col gap-6">
@@ -52,6 +31,16 @@ const SavedTab = () => {
             <>{savedTopics}</>
           ) : (
             <p>No Discussion Topics Saved</p>
+          )}
+        </TabsContent>
+        <TabsContent
+          value="savedQuestions"
+          className="flex w-full flex-col gap-6"
+        >
+          {savedQuestions && savedQuestions.length > 0 ? (
+            <>{savedQuestions}</>
+          ) : (
+            <p>No Questions Saved</p>
           )}
         </TabsContent>
       </Tabs>

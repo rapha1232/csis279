@@ -1,28 +1,26 @@
-import SignIn from "./_auth/forms/SignIn";
-import SignUp from "./_auth/forms/SignUp";
-import Article from "./Article";
-import Ask from "./Ask";
+import APOD from "./APOD";
 import Discussions from "./Discussions";
 import Events from "./Events";
 import Home from "./Home";
 import Members from "./Members";
 import Profile from "./Profile";
 import Questions from "./Questions";
-import SingleEvent from "./SingleEvent";
+import SingleDiscussion from "./SingleDiscussion";
+import SingleQuestion from "./SingleQuestion";
 import UserPage from "./UserPage";
-import APOD from "./APOD";
+import SignIn from "./_auth/forms/SignIn";
+import SignUp from "./_auth/forms/SignUp";
 export {
-  Article,
-  Ask,
+  APOD,
   Discussions,
   Events,
   Home,
+  Members,
   Profile,
   Questions,
   SignIn,
   SignUp,
-  SingleEvent,
-  Members,
+  SingleDiscussion,
+  SingleQuestion,
   UserPage,
-  APOD,
 };

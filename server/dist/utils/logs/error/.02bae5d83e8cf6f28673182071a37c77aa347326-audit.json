@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\raphy\\Desktop\\onlinedb\\dist\\utils\\logs\\error\\.02bae5d83e8cf6f28673182071a37c77aa347326-audit.json",
+    "files": [
+        {
+            "date": 1700516240476,
+            "name": "C:\\Users\\raphy\\Desktop\\onlinedb\\dist\\utils\\logs\\error\\2023-11-20.log",
+            "hash": "5e2115e57a43df4b0ac614a25e56e7e02c8919c00f12dd79fd79249826fc481e"
+        }
+    ],
+    "hashType": "sha256"
+}

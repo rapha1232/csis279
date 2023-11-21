@@ -5,10 +5,10 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 
+import { User2 } from "lucide-react";
 import React from "react";
 import PostedTab from "../components/shared/PostedTab";
 import SavedTab from "../components/shared/SavedTab";
-import { User2 } from "lucide-react";
 import useGetUser from "../hooks/useGetUser";
 
 const Profile = () => {
@@ -20,7 +20,7 @@ const Profile = () => {
           <User2
             width={140}
             height={140}
-            className="rounded-full object-cover"
+            className="rounded-full object-cover text-dark100_light900"
           />
 
           <div className="mt-3">

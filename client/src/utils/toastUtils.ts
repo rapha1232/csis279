@@ -1,9 +1,9 @@
 export const handleClose = (
   setOpen: React.Dispatch<React.SetStateAction<boolean>>,
   event?: React.SyntheticEvent | Event,
-  reason?: string,
+  reason?: string
 ) => {
-  if (reason === 'clickaway') {
+  if (reason === "clickaway") {
     return;
   }
 

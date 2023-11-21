@@ -1,7 +1,7 @@
 import React from "react";
-import RenderTag from "../RenderTag";
-import { Link } from "react-router-dom";
 import { useArticlesQuery, useGetEventsQuery } from "../../../app/store";
+import Loader from "../Loader";
+import Tag from "../Tag";
 
 const RightSideBar = () => {
   const { data, isLoading, isSuccess } = useGetEventsQuery(undefined, {
@@ -28,43 +28,31 @@ const RightSideBar = () => {
       <div>
         <h3 className="h3-bold text-dark200_light900">Upcoming Events</h3>
         <div className="mt-7 flex w-full flex-col gap-[30px]">
-          {isLoading && <div>Loading...</div>}
-          {isSuccess && data.length === 0 && <div>No Events Yet</div>}
+          {isLoading && <Loader />}
+          {isSuccess && data.length === 0 && (
+            <div className="text-dark200_light900">No Events Yet</div>
+          )}
           {isSuccess &&
             data.slice(0, 5).map((event) => (
-              <Link
-                to={`/events/${event.EventID}`}
+              <p
+                className="body-medium text-dark500_light700"
                 key={event.EventID}
-                className="flex cursor-pointer items-center justify-between gap-7"
               >
-                <p className="body-medium text-dark500_light700">
-                  {event.Title}
-                </p>
-                <img
-                  src="/assets/icons/chevron-right.svg"
-                  alt="chevron-right"
-                  width={20}
-                  height={20}
-                  className="invert-colors"
-                />
-              </Link>
+                {event.Title}
+              </p>
             ))}
         </div>
       </div>
       <div className="mt-14">
         <h3 className="h3-bold text-dark200_light900">Articles of the day</h3>
         <div className="mt-7 flex flex-col gap-4">
-          {isArticleLoading && <div>Loading...</div>}
+          {isArticleLoading && <Loader />}
           {isArticleSuccess && articles.length === 0 && (
             <div>No Events Yet</div>
           )}
           {isArticleSuccess &&
             articles.map((article) => (
-              <RenderTag
-                key={article.id}
-                url={article.url}
-                name={article.title}
-              />
+              <Tag key={article.id} url={article.url} name={article.title} />
             ))}
         </div>
       </div>

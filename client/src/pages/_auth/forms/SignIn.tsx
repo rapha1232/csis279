@@ -1,8 +1,10 @@
-import * as z from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router-dom";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import * as z from "zod";
+import Loader from "../../../components/shared/Loader";
+import { Button } from "../../../components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,13 +14,11 @@ import {
   FormMessage,
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
-import Loader from "../../../components/shared/Loader";
 import { useToast } from "../../../components/ui/use-toast";
 
-import { SigninValidation } from "../../../lib/validation";
 import { useDispatch } from "react-redux";
 import { setCookie, setUser, useSigninMutation } from "../../../app/store";
+import { SigninValidation } from "../../../lib/validation";
 import {
   removeLocalStorageUser,
   setLocalStorageUser,
@@ -61,7 +61,7 @@ const SigninForm = () => {
           height={200}
         />
 
-        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">
+        <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12 text-dark100_light900">
           Log in to your account
         </h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">

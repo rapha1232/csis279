@@ -1,9 +1,9 @@
+import { User2 } from "lucide-react";
 import React from "react";
-import Theme from "./Theme";
-import MobileNav from "./MobileNav";
 import { Link, useNavigate } from "react-router-dom";
 import SignedIn from "../../auth/SignedIn";
-import { User2 } from "lucide-react";
+import MobileNav from "./MobileNav";
+import Theme from "./Theme";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const NavBar = () => {
             onClick={() => {
               navigate("/profile");
             }}
-            className="cursor-pointer hover:text-primary-500"
+            className="cursor-pointer text-dark100_light900 hover:!text-primary-500 "
           />
         </SignedIn>
         <MobileNav />
