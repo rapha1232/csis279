@@ -5,7 +5,7 @@ import { store } from "./store";
 export const eventsApi = createApi({
   reducerPath: "eventsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/",
+    baseUrl: "https://csis279server-production.up.railway.app/",
   }),
   endpoints: (builder) => ({
     getEvents: builder.query<EventWithUser[], void>({

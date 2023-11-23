@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   useGetEventsQuery,
   useGetEventsWithFilterQuery,
@@ -59,11 +58,9 @@ const EventCard = ({
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
-          <Link to={`/events/${event.EventID}`}>
-            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
-              {event.Title}
-            </h3>
-          </Link>
+          <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+            {event.Title}
+          </h3>
         </div>
       </div>
 
