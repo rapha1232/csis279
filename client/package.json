@@ -6,7 +6,8 @@
     "lint": "eslint './template/src/**/*.{ts,tsx}'",
     "test": "jest",
     "type-check": "tsc",
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "keywords": [
     "react",
@@ -18,7 +19,7 @@
     "react-redux"
   ],
   "description": "The official Redux+TS template for Create React App",
-  "main": "template.json",
+  "main": "./src/index.tsx",
   "repository": {
     "type": "git",
     "url": "https://github.com/reduxjs/cra-template-redux-typescript.git"
