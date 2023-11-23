@@ -4,7 +4,7 @@ import { NewUser, SignInInfo, User } from "../types";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://csis279server-production.up.railway.app/",
+    baseUrl: "https://csis279server-production.up.railway.app/",
   }),
   endpoints: (builder) => ({
     signin: builder.mutation<{ user: User; cookie: string }, SignInInfo>({

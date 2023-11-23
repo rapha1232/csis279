@@ -5,7 +5,7 @@ import { store } from "./store";
 export const questionsApi = createApi({
   reducerPath: "questionsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://csis279server-production.up.railway.app/",
+    baseUrl: "https://csis279server-production.up.railway.app/",
   }),
   endpoints: (builder) => ({
     getQuestions: builder.query<QuestionWithUser[], void>({
