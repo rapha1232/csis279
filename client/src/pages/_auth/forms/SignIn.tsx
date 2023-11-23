@@ -78,7 +78,11 @@ const SigninForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Email</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark100_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,7 +96,11 @@ const SigninForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Password</FormLabel>
                 <FormControl>
-                  <Input type="password" className="shad-input" {...field} />
+                  <Input
+                    type="password"
+                    className="shad-input text-dark100_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -101,7 +109,7 @@ const SigninForm = () => {
 
           <Button type="submit" className="shad-button_primary">
             {isLoading ? (
-              <div className="flex-center gap-2">
+              <div className="flex-center gap-2 text-dark100_light900">
                 <Loader /> Loading...
               </div>
             ) : (
@@ -109,7 +117,7 @@ const SigninForm = () => {
             )}
           </Button>
 
-          <p className="text-small-regular text-light-2 text-center mt-2">
+          <p className="text-small-regular text-dark100_light900 text-center mt-2">
             Don&apos;t have an account?
             <Link
               to="/sign-up"

@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import Layout from "../Layout";
 import {
   APOD,
@@ -9,16 +8,12 @@ import {
   Members,
   Profile,
   Questions,
-  SignIn,
-  SignUp,
   SingleDiscussion,
   SingleQuestion,
   UserPage,
 } from "../pages";
-import AuthLayout from "../pages/_auth/AuthLayout";
 
 const routes = [
-  { path: "/", element: <Navigate to="/home" /> },
   {
     path: "/home",
     element: (
@@ -26,17 +21,6 @@ const routes = [
         <Home />
       </Layout>
     ),
-    exact: true,
-  },
-  {
-    path: "/sign-in",
-    element: <SignIn />,
-    layout: <AuthLayout />,
-  },
-  {
-    path: "/sign-up",
-    element: <SignUp />,
-    layout: <AuthLayout />,
   },
   {
     path: "/profile",
@@ -45,7 +29,6 @@ const routes = [
         <Profile />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/events",
@@ -54,7 +37,6 @@ const routes = [
         <Events />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/discussions",
@@ -63,7 +45,6 @@ const routes = [
         <Discussions />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/questions",
@@ -72,7 +53,6 @@ const routes = [
         <Questions />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/members",
@@ -81,7 +61,6 @@ const routes = [
         <Members />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/user/:id",
@@ -90,7 +69,6 @@ const routes = [
         <UserPage />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/apod",
@@ -99,7 +77,6 @@ const routes = [
         <APOD />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/question/:id",
@@ -108,7 +85,6 @@ const routes = [
         <SingleQuestion />
       </Layout>
     ),
-    private: true,
   },
   {
     path: "/topic/:id",
@@ -117,7 +93,6 @@ const routes = [
         <SingleDiscussion />
       </Layout>
     ),
-    private: true,
   },
 ];
 

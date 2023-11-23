@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ import { removeLocalStorageUser } from "../../../utils/localStorageUtils";
 const SignupForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [signup] = useSignupMutation();
+  const [signup, { isLoading }] = useSignupMutation();
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -71,7 +72,11 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">First Name</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark100_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,7 +90,11 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Last Name</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark100_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,7 +108,11 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Email</FormLabel>
                 <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
+                  <Input
+                    type="text"
+                    className="shad-input text-dark100_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,7 +126,11 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel className="shad-form_label">Password</FormLabel>
                 <FormControl>
-                  <Input type="password" className="shad-input" {...field} />
+                  <Input
+                    type="password"
+                    className="shad-input text-dark100_light900"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -121,14 +138,13 @@ const SignupForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {/* {isCreatingAccount || isSigningInUser || isUserLoading ? (
+            {isLoading ? (
               <div className="flex-center gap-2">
                 <Loader /> Loading...
               </div>
             ) : (
               "Sign Up"
-            )} */}
-            SignUp
+            )}
           </Button>
 
           <p className="text-small-regular text-light-2 text-center mt-2">
