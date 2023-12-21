@@ -1,8 +1,0 @@
--- AlterTable
-ALTER TABLE "Questions" ALTER COLUMN "CreatedAt" SET DATA TYPE TIMESTAMP(3);
-
--- AlterTable
-ALTER TABLE "Replies" ALTER COLUMN "CreatedAt" SET DATA TYPE TIMESTAMP(3);
-
--- AlterTable
-ALTER TABLE "Topics" ALTER COLUMN "CreatedAt" SET DATA TYPE TIMESTAMP(3);

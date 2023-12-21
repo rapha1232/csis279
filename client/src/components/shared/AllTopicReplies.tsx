@@ -99,7 +99,7 @@ const AllTopicReplies = ({ TopicID, totalReplies }: Props) => {
                   iconColor={reply.likedByUser ? "red" : ""}
                 />
               </div>
-              <div>{reply.Content}</div>
+              <div className="text-dark400_light800">{reply.Content}</div>
             </article>
           ))}
       </div>
