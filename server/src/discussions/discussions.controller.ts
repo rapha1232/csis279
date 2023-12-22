@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { Topics } from '@prisma/client';
 import { CreateTopicDto } from 'src/dtos/create.dto';
+import { UpdateTopicDto } from 'src/dtos/edit.dto';
 import { TopicInteractionDTO } from 'src/dtos/interactions.dto';
 import { DiscussionsService } from './discussions.service';
 
@@ -247,5 +249,26 @@ export class DiscussionsController {
   @Delete('deleteTopic')
   async delete(@Query('TopicID') TopicID: number): Promise<void> {
     return this.d.delete(Number(TopicID));
+  }
+
+  /**
+   * Updates topic info.
+   * @param {UpdateTopicDto} editDto - The new topic info.
+   * @returns {Promise<Topics>} A promise that resolves to the updated topic.
+   */
+  @ApiOkResponse({
+    description: 'Topic updated successfully.',
+  })
+  @ApiBody({
+    type: UpdateTopicDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Topic not found.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Put('updateTopic')
+  async update(@Body() editDto: UpdateTopicDto): Promise<Topics> {
+    return this.d.updateTopic(editDto);
   }
 }

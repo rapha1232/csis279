@@ -10,10 +10,35 @@ export type NewUser = {
 };
 
 export type UpdateUser = {
-  FirstName?: string;
-  LastName?: string;
-  Email?: string;
-  Password?: string;
+  UserID: number;
+  FirstName: string;
+  LastName: string;
+  Password: string;
+};
+
+export type UpdateEvent = {
+  EventID: number;
+  Title: string;
+  Description: string;
+  Date: string;
+  Location: string;
+};
+
+export type UpdateQuestion = {
+  QuestionID: number;
+  Title: string;
+  Content: string;
+};
+
+export type UpdateTopic = {
+  TopicID: number;
+  Title: string;
+  Content: string;
+};
+
+export type UpdateReply = {
+  ReplyID: number;
+  Content: string;
 };
 
 export type User = {

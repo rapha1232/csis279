@@ -6,6 +6,19 @@ import {
 } from "../app/store";
 import { toast } from "../components/ui/use-toast";
 import { DiscussionTopicWithUser } from "../types";
+
+/**
+ * @description
+ * Custom hook for handling topic clicks
+ * @param UserID - ID of the user
+ * @param isLiked - Whether the topic is liked by the user
+ * @param isSaved - Whether the topic is saved by the user
+ * @param setIsLiked - Setter for isLiked
+ * @param setIsSaved - Setter for isSaved
+ * @param refetch - Function to refetch the topic
+ * @returns handleSaveClick - Function to handle saving the topic
+ * @returns handleLikeClick - Function to handle liking the topic
+ */
 export const useTopicClicks = ({
   UserID,
   isLiked,

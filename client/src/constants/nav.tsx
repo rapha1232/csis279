@@ -12,7 +12,9 @@ import {
   SingleQuestion,
   UserPage,
 } from "../pages";
+import SolarSystem from "../pages/SolarSystem";
 
+// Routes
 const routes = [
   {
     path: "/home",
@@ -93,6 +95,10 @@ const routes = [
         <SingleDiscussion />
       </Layout>
     ),
+  },
+  {
+    path: "/3d-solar-system",
+    element: <SolarSystem />,
   },
 ];
 

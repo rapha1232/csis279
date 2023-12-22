@@ -18,6 +18,9 @@ import {
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 
+/**
+ * Component for creating a new event using a form.
+ */
 const EventForm = () => {
   const user = useGetUser();
   const [createEvent, { isLoading }] = useCreateEventMutation();
@@ -30,6 +33,11 @@ const EventForm = () => {
       Location: "",
     },
   });
+
+  /**
+   * Handles the form submission.
+   * @param {Object} event - The event data submitted.
+   */
   const handleSubmit = async (event: z.infer<typeof EventFormValidation>) => {
     try {
       const res = await createEvent({

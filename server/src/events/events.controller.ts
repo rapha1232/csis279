@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { Events } from '@prisma/client';
 import { CreateEventDto } from 'src/dtos/create.dto';
+import { UpdateEventDto } from 'src/dtos/edit.dto';
 import { EventInteractionDTO } from 'src/dtos/interactions.dto';
 import { EventsService } from './events.service';
 
@@ -226,5 +228,26 @@ export class EventsController {
   @Delete('deleteEvent')
   async delete(@Query('EventID') EventID: number): Promise<void> {
     return this.e.delete(Number(EventID));
+  }
+
+  /**
+   * Updates event info.
+   * @param {UpdateEventDto} editDto - The new event info.
+   * @returns {Promise<Events>} A promise that resolves to the updated event.
+   */
+  @ApiOkResponse({
+    description: 'Event updated successfully.',
+  })
+  @ApiBody({
+    type: UpdateEventDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Event not found.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Put('updateEvent')
+  async update(@Body() editDto: UpdateEventDto): Promise<Events> {
+    return this.e.updateEvent(editDto);
   }
 }

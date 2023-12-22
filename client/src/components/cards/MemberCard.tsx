@@ -2,6 +2,12 @@ import React from "react";
 import { User } from "../../types";
 import Metric from "../shared/Metric";
 
+/**
+ * Functional component representing a member card.
+ * @param {Object} props - Component props.
+ * @param {User} props.user - Search parameter.
+ * @returns {JSX.Element} - Rendered MemberCard component.
+ */
 const MemberCard = ({ user }: { user: User }) => {
   return (
     <article className="background-light900_dark200 light-border flex w-full flex-col items-center justify-center rounded-2xl border p-8 max-w-[400px] col-span-1">

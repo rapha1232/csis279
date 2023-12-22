@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { PrismaClient, Questions } from '@prisma/client';
 import { CreateQuestionDto } from 'src/dtos/create.dto';
+import { UpdateQuestionDto } from 'src/dtos/edit.dto';
 
 /**
  * Service responsible for handling questions-related operations.
@@ -22,7 +23,7 @@ export class QuestionsService {
   /**
    * Retrieves all questions.
    * @returns A promise that resolves to an array of questions.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async getAll(): Promise<Questions[]> {
     try {
@@ -37,7 +38,7 @@ export class QuestionsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -46,7 +47,7 @@ export class QuestionsService {
    * @param {number} QuestionID - The ID of the question to be liked.
    * @param {number} UserID - The ID of the user liking the question.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async likeQuestion(QuestionID: number, UserID: number): Promise<void> {
     try {
@@ -60,7 +61,7 @@ export class QuestionsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -69,7 +70,7 @@ export class QuestionsService {
    * @param {number} QuestionID - The ID of the question to be unliked.
    * @param {number} UserID - The ID of the user unliking the question.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async unlikeQuestion(QuestionID: number, UserID: number): Promise<void> {
     try {
@@ -85,7 +86,7 @@ export class QuestionsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -94,7 +95,7 @@ export class QuestionsService {
    * @param {number} QuestionID - The ID of the question to be Saved.
    * @param {number} UserID - The ID of the user saving the question.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async saveQuestion(QuestionID: number, UserID: number): Promise<void> {
     try {
@@ -103,7 +104,7 @@ export class QuestionsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -112,7 +113,7 @@ export class QuestionsService {
    * @param {number} QuestionID - The ID of the question to be Saved.
    * @param {number} UserID - The ID of the user saving the question.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async unsaveQuestion(QuestionID: number, UserID: number): Promise<void> {
     try {
@@ -123,7 +124,7 @@ export class QuestionsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -132,7 +133,7 @@ export class QuestionsService {
    * @param {string} q - The query parameter.
    * @param {string} search - The search parameter.
    * @returns A promise that resolves to an array of questions.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async filtered(
     q: 'all' | 'popular' | 'recent' | 'name' | 'old',
@@ -176,7 +177,7 @@ export class QuestionsService {
       return allquestions;
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -184,7 +185,7 @@ export class QuestionsService {
    * Creates a question.
    * @param {CreateQuestionDto} createQuestionDto - The info of the question to be created.
    * @returns A promise that resolves to the created question.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    * @throws {BadRequestException} If the request body is missing data.
    */
   async create(createQuestionDto: CreateQuestionDto): Promise<Questions> {
@@ -213,7 +214,7 @@ export class QuestionsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -221,7 +222,7 @@ export class QuestionsService {
    * Gets a single desired question.
    * @param {number} QuestionID - The ID of the question to be selected.
    * @returns A promise that resolves to the desired questions.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    * @throws {NotFoundException} If the question is not found.
    */
   async getOne(QuestionID: number): Promise<Questions> {
@@ -243,7 +244,7 @@ export class QuestionsService {
       return question;
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -257,14 +258,46 @@ export class QuestionsService {
   async delete(QuestionID: number): Promise<void> {
     try {
       const question: Questions | null = await this.questions.findUnique({
-        where: { QuestionID: QuestionID },
+        where: { QuestionID: Number(QuestionID) },
       });
 
       if (!question) {
         throw new NotFoundException('Question not found');
       }
 
-      await this.questions.delete({ where: { QuestionID: QuestionID } });
+      await this.questions.delete({
+        where: { QuestionID: Number(QuestionID) },
+      });
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  /**
+   * Updates question info.
+   * @param {UpdateQuestionDto} editDto - The new question info.
+   * @returns A promise that resolves to the new question.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
+   * @throws {NotFoundException} If the question is not found.
+   */
+  async updateQuestion(editDto: UpdateQuestionDto): Promise<Questions> {
+    try {
+      const question: Questions | null = await this.questions.findUnique({
+        where: { QuestionID: Number(editDto.QuestionID) },
+      });
+
+      if (!question) {
+        throw new NotFoundException('Question not found');
+      }
+
+      return this.questions.update({
+        where: { QuestionID: Number(editDto.QuestionID) },
+        data: {
+          Title: editDto.Title,
+          Content: editDto.Content,
+        },
+      });
     } catch (error) {
       this.logger.error(error.message);
       throw new InternalServerErrorException('Internal Server Error');

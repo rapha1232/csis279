@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { Questions } from '@prisma/client';
 import { CreateQuestionDto } from 'src/dtos/create.dto';
+import { UpdateQuestionDto } from 'src/dtos/edit.dto';
 import { QuestionInteractionDTO } from 'src/dtos/interactions.dto';
 import { QuestionsService } from './questions.service';
 
@@ -253,5 +255,26 @@ export class QuestionsController {
   @Delete('deleteQuestion')
   async delete(@Query('QuestionID') QuestionID: number): Promise<void> {
     return this.q.delete(Number(QuestionID));
+  }
+
+  /**
+   * Updates question info.
+   * @param {UpdateQuestionDto} editDto - The new question info.
+   * @returns {Promise<Questions>} A promise that resolves to the updated question.
+   */
+  @ApiOkResponse({
+    description: 'Question updated successfully.',
+  })
+  @ApiBody({
+    type: UpdateQuestionDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Question not found.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Put('updateQuestion')
+  async update(@Body() editDto: UpdateQuestionDto): Promise<Questions> {
+    return this.q.updateQuestion(editDto);
   }
 }

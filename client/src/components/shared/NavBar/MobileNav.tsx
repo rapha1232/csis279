@@ -10,6 +10,12 @@ import {
 import { sidebarLinks } from "../../../constants";
 import SignedOut from "../../auth/SignedOut";
 
+/**
+ * NavContent component represents the navigation content for the mobile navigation menu.
+ *
+ * @returns {JSX.Element} The JSX for the NavContent component.
+ */
+
 const NavContent = () => {
   const pathname = window.location.href;
   return (
@@ -47,6 +53,11 @@ const NavContent = () => {
   );
 };
 
+/**
+ * MobileNav component represents the mobile navigation menu in the application.
+ *
+ * @returns {JSX.Element} The JSX for the MobileNav component.
+ */
 const MobileNav = () => {
   return (
     <Sheet>

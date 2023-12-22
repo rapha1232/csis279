@@ -6,6 +6,19 @@ import {
 } from "../app/store";
 import { toast } from "../components/ui/use-toast";
 import { QuestionWithUser } from "../types";
+
+/**
+ * @description
+ * Custom hook for handling question clicks
+ * @param UserID - ID of the user
+ * @param isLiked - Whether the question is liked by the user
+ * @param isSaved - Whether the question is saved by the user
+ * @param setIsLiked - Setter for isLiked
+ * @param setIsSaved - Setter for isSaved
+ * @param refetch - Function to refetch the question
+ * @returns handleSaveClick - Function to handle saving the question
+ * @returns handleLikeClick - Function to handle liking the question
+ */
 export const useQuestionClicks = ({
   UserID,
   isLiked,

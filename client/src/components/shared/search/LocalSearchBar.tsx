@@ -8,6 +8,9 @@ import {
 } from "../../../app/store";
 import { Input } from "../../ui/input";
 
+/**
+ * CustomInputProps interface represents the props expected by the LocalSearchBar component.
+ */
 interface CustomInputProps {
   route: string;
   iconPosition: string;
@@ -17,6 +20,12 @@ interface CustomInputProps {
   slice: "eventSearch" | "topicSearch" | "questionsSearch";
 }
 
+/**
+ * LocalSearchBar component represents a custom search bar with dynamic functionality.
+ *
+ * @param {CustomInputProps} props - The properties passed to the component.
+ * @returns {JSX.Element} The JSX for the LocalSearchBar component.
+ */
 const LocalSearchBar = ({
   route,
   iconPosition,
@@ -27,7 +36,15 @@ const LocalSearchBar = ({
 }: CustomInputProps) => {
   const value = useSelector((state: RootState) => state[slice]);
   const dispatch = useDispatch();
+
+  /**
+   * handleChange function is called when the input value changes.
+   * It dispatches the appropriate action to update the search value in the Redux store.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Dispatch the appropriate action based on the specified slice
     if (slice === "eventSearch") {
       dispatch(setEventSearch(e.target.value));
     } else if (slice === "topicSearch") {
@@ -55,7 +72,7 @@ const LocalSearchBar = ({
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
+        className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none text-dark100_light900"
       />
 
       {iconPosition === "right" && (

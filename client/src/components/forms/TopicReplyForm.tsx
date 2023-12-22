@@ -16,6 +16,11 @@ import {
 import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/use-toast";
 
+/**
+ * Component for creating a reply to a topic using a form.
+ * @param {Object} props - Component props.
+ * @param {number} props.TopicID - ID of the topic for which the reply is created.
+ */
 const TopicReplyForm = ({ TopicID }: { TopicID: number }) => {
   const user = useGetUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +33,10 @@ const TopicReplyForm = ({ TopicID }: { TopicID: number }) => {
 
   const [createReply, { isLoading, isSuccess }] = useCreateTopicReplyMutation();
 
+  /**
+   * Handles the creation of a reply to a topic.
+   * @param {Object} values - The reply data submitted.
+   */
   const handleCreateTopicReply = async (
     values: z.infer<typeof ReplyFormValidation>
   ) => {
@@ -37,7 +46,7 @@ const TopicReplyForm = ({ TopicID }: { TopicID: number }) => {
         ...values,
         CreatedAt: new Date().toISOString(),
         CreatorID: user.UserID,
-        TopicID: TopicID,
+        TargetID: TopicID,
       });
 
       form.reset();

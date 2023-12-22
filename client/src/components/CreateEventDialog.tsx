@@ -9,6 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+
+/**
+ * @returns {JSX.Element} - A dialog to create a new event
+ */
 const CreateEventDialog = () => {
   return (
     <Dialog>

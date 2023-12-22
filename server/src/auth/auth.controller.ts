@@ -1,9 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Put,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -15,12 +19,16 @@ import {
   ApiCreatedResponse,
   ApiHeader,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { User } from '@prisma/client';
 import { Response } from 'express';
+import { UpdateUserDto } from 'src/dtos/edit.dto';
 import { RequestWithUser } from 'src/middlewares/token.middleware';
 import { CreateUserDto, LoginDto } from '../dtos/users.dto';
 import { AuthGuard, SkipAuth } from './auth.guard';
@@ -93,7 +101,7 @@ export class AuthController {
     description: 'Unauthorized. Token was not sent in the header.',
   })
   @ApiHeader({
-    name: 'autorization',
+    name: 'authorization',
     description: 'The token needed for auth.',
     required: true,
     schema: {
@@ -101,22 +109,104 @@ export class AuthController {
       example: `Bearer {token}`,
     },
   })
-  @ApiBody({
-    type: LoginDto,
-    description: 'User signin credentials to verify authentication.',
-  })
   @ApiOkResponse({
     description: 'User logged out successfully.',
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   async logOut(
-    @Body() userData: LoginDto,
     @Req() req: RequestWithUser,
     @Res() res: Response,
-  ): Promise<void> {
-    const logOutUserData = await this.authService.logout(userData);
+  ): Promise<Response<any, Record<string, any>>> {
+    req.userEntity = null;
     res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
-    res.status(200).json({ data: logOutUserData, message: 'logout' });
+    return res.json({ message: 'logout' });
+  }
+
+  /**
+   * Retrieves a single user by ID.
+   * @param {number} UserID - The ID of the user to be retrieved.
+   * @returns {Promise<User>} A promise that resolves to the retrieved User.
+   */
+  @Get('getOneUser')
+  @ApiParam({
+    name: 'UserID',
+    description: 'The id of the desired user.',
+    example: 1,
+  })
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized. Token was not sent in the header.',
+  })
+  @ApiOkResponse({
+    description: 'User found successfully.',
+  })
+  @ApiNotFoundResponse({
+    description: 'User does not exist.',
+  })
+  @HttpCode(HttpStatus.OK)
+  async getOneUser(@Query('UserID') UserID: number): Promise<User> {
+    return this.authService.getOneUser(UserID);
+  }
+
+  /**
+   * Retrieves all users.
+   * @returns {Promise<User[]>} A promise that resolves to the retrieved Users.
+   */
+  @Get('getAllUsers')
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized. Token was not sent in the header.',
+  })
+  @ApiOkResponse({
+    description: 'Successful request.',
+  })
+  @HttpCode(HttpStatus.OK)
+  async getAllUsers(): Promise<User[]> {
+    return this.authService.getAllUsers();
+  }
+
+  /**
+   * Deletes selected user.
+   * @param {number} UserID - The ID of the user to delete.
+   * @returns {Promise<void>} A promise that resolves when the operation is successfull.
+   */
+  @ApiNoContentResponse({
+    description: 'User deleted successfully.',
+  })
+  @ApiParam({
+    name: 'UserID',
+    description: 'ID of the user to be deleted.',
+    example: '1',
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete('deleteUser')
+  async delete(@Query('UserID') UserID: number): Promise<void> {
+    return this.authService.deleteUser(Number(UserID));
+  }
+
+  /**
+   * Updates user info.
+   * @param {UpdateUserDto} editDto - The new user info.
+   * @returns {Promise<User>} A promise that resolves to the updated user.
+   */
+  @ApiOkResponse({
+    description: 'User updated successfully.',
+  })
+  @ApiBody({
+    type: UpdateUserDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'User not found.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Put('updateUser')
+  async update(@Body() editDto: UpdateUserDto): Promise<User> {
+    return this.authService.updateUser(editDto);
   }
 }

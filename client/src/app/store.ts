@@ -17,6 +17,7 @@ interface UserState {
   user: User | null;
 }
 
+// Configure the user slice
 const userSlice = createSlice({
   name: "user",
   initialState: { user: null } as UserState,
@@ -30,6 +31,7 @@ const userSlice = createSlice({
   },
 });
 
+// Configure the cookie/token slice
 const cookieSlice = createSlice({
   name: "cookie",
   initialState: "",
@@ -43,6 +45,7 @@ const cookieSlice = createSlice({
   },
 });
 
+// Configure the eventsSearch slice
 const eventsSearch = createSlice({
   name: "eventsSearch",
   initialState: "",
@@ -53,6 +56,7 @@ const eventsSearch = createSlice({
   },
 });
 
+// Configure the topicSearch slice
 const topicsSearch = createSlice({
   name: "topicsSearch",
   initialState: "",
@@ -63,6 +67,7 @@ const topicsSearch = createSlice({
   },
 });
 
+// Configure the questionSearch slice
 const questionsSearch = createSlice({
   name: "questionsSearch",
   initialState: "",
@@ -73,6 +78,7 @@ const questionsSearch = createSlice({
   },
 });
 
+// Configure the store
 export const store = configureStore({
   reducer: {
     user: userSlice.reducer,
@@ -98,12 +104,16 @@ export const store = configureStore({
       .concat(questionsApi.middleware)
       .concat(repliesApi.middleware),
 });
+
+//All Exported Hooks
 export const {
   useSigninMutation,
   useSignupMutation,
   useSignoutMutation,
   useGetInfoQuery,
   useGetAllQuery,
+  useDeleteUserMutation,
+  useUpdateUserMutation,
 } = userApi;
 export const {
   useGetEventsQuery,
@@ -113,6 +123,8 @@ export const {
   useSaveEventMutation,
   useUnsaveEventMutation,
   useCreateEventMutation,
+  useDeleteEventMutation,
+  useUpdateEventMutation,
 } = eventsApi;
 export const {
   useGetTopicsQuery,
@@ -123,6 +135,8 @@ export const {
   useUnsaveTopicMutation,
   useCreateTopicMutation,
   useGetOneTopicQuery,
+  useDeleteTopicMutation,
+  useUpdateTopicMutation,
 } = discussionApi;
 export const {
   useCreateQuestionMutation,
@@ -133,6 +147,8 @@ export const {
   useUnsaveQuestionMutation,
   useGetQuestionsWithFilterQuery,
   useGetOneQuestionQuery,
+  useDeleteQuestionMutation,
+  useUpdateQuestionMutation,
 } = questionsApi;
 export const {
   useGetQuestionRepliesWithFilterQuery,
@@ -141,6 +157,8 @@ export const {
   useUnlikeReplyMutation,
   useCreateQuestionReplyMutation,
   useCreateTopicReplyMutation,
+  useDeleteReplyMutation,
+  useUpdateReplyMutation,
 } = repliesApi;
 export const { useApodQuery } = nasaApi;
 export const { useArticlesQuery } = articlesApi;

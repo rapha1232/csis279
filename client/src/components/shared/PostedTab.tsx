@@ -2,6 +2,11 @@ import React from "react";
 import RenderPosted from "../renders/RenderPosted";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
+/**
+ * PostedTab component represents a tabbed view for displaying posted events, topics, and questions.
+ *
+ * @returns {JSX.Element} The JSX for the PostedTab component.
+ */
 const PostedTab = () => {
   const { postedEvents, postedTopics, postedQuestions } = RenderPosted();
   return (

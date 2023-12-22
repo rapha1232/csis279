@@ -1,6 +1,14 @@
 import { useLikeReplyMutation, useUnlikeReplyMutation } from "../app/store";
 import { toast } from "../components/ui/use-toast";
 import { ReplyWithUser } from "../types";
+
+/**
+ * @description
+ * Custom hook for handling reply clicks
+ * @param UserID - ID of the user
+ * @param refetch - Function to refetch the reply
+ * @returns handleLikeClick - Function to handle liking the reply
+ */
 export const useReplyClicks = ({
   UserID,
   refetch,

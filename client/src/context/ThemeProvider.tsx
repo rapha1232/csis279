@@ -6,8 +6,15 @@ interface ThemeContextType {
 }
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+/**
+ * ThemeProvider component
+ * @param {React.ReactNode} children - children
+ * @returns {JSX.Element} ThemeProvider component
+ */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mode, setMode] = useState("dark");
+
+  // Set the theme to dark if the user has dark mode enabled
   const handleThemeChange = () => {
     if (
       localStorage.theme === "dark" ||

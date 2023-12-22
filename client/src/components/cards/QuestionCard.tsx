@@ -9,6 +9,8 @@ import useGetUser from "../../hooks/useGetUser";
 import { QuestionWithUser } from "../../types";
 import { formatAndDivideNumber, getTimestamp } from "../../utils/utils";
 import Metric from "../shared/Metric";
+import Delete from "../update/Delete";
+import UpdateQuestion from "../update/UpdateQuestion";
 
 interface QuestionProps {
   question: QuestionWithUser;
@@ -18,7 +20,22 @@ interface QuestionProps {
   home?: boolean;
   q?: string;
   s?: string;
+  editable?: boolean;
 }
+
+/**
+ * Functional component representing a question card.
+ * @param {Object} props - Component props.
+ * @param {QuestionWithUser} props.question - The question data.
+ * @param {boolean} props.likedByUser - Indicates if the question is liked by the user.
+ * @param {boolean} props.savedByUser - Indicates if the question is saved by the user.
+ * @param {string} props.width - Width of the card.
+ * @param {boolean} props.home - Indicates if the card is displayed in the home view.
+ * @param {string} props.q - Query parameter.
+ * @param {string} props.s - Search parameter.
+ * @param {boolean} props.editable - Indicates if the card is editable.
+ * @returns {JSX.Element} - Rendered QuestionCard component.
+ */
 
 const QuestionCard = ({
   question,
@@ -28,11 +45,15 @@ const QuestionCard = ({
   home = false,
   q = "all",
   s = "",
+  editable = false,
 }: QuestionProps) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
   const UserID = useGetUser().UserID;
 
+  /**
+   * Fetch questions based on conditions.
+   */
   const { refetch } = home
     ? useGetQuestionsQuery()
     : useGetQuestionsWithFilterQuery(
@@ -46,6 +67,9 @@ const QuestionCard = ({
         }
       );
 
+  /**
+   * Question click handling functions.
+   */
   const { handleLikeClick, handleSaveClick } = useQuestionClicks({
     UserID,
     isLiked,
@@ -63,7 +87,13 @@ const QuestionCard = ({
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
-          <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
+          <div className="flex flex-row justify-between items-center">
+            {editable && <UpdateQuestion prev={question} />}
+            {editable && (
+              <Delete type="question" TargetID={question.QuestionID} />
+            )}
+          </div>
+          <span className="mt-2 subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
             {getTimestamp(question.CreatedAt)}
           </span>
           <Link to={`/question/${question.QuestionID}`}>

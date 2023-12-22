@@ -16,6 +16,10 @@ import {
 import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
 
+/**
+ * This component is used to display a dialog to log out.
+ * @returns {JSX.Element} - A dialog to log out
+ */
 const LogoutDialog = () => {
   const cookie = useSelector((state: RootState) => state.cookie);
   const navigate = useNavigate();
@@ -24,7 +28,7 @@ const LogoutDialog = () => {
   const [signout, { isLoading }] = useSignoutMutation();
   const handleSignOut = async () => {
     try {
-      await signout(cookie);
+      await signout();
       navigate("/sign-in");
       dispatch(clearUser());
       toast({ title: "Successfully logged out" });

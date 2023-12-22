@@ -9,6 +9,22 @@ import useGetUser from "../../hooks/useGetUser";
 import { DiscussionTopicWithUser } from "../../types";
 import { formatAndDivideNumber, getTimestamp } from "../../utils/utils";
 import Metric from "../shared/Metric";
+import Delete from "../update/Delete";
+import UpdateTopic from "../update/UpdateTopic";
+
+/**
+ * Functional component representing a topic card.
+ * @param {Object} props - Component props.
+ * @param {DiscussionTopicWithUser} props.topic - The topic data.
+ * @param {boolean} props.likedByUser - Indicates if the topic is liked by the user.
+ * @param {boolean} props.savedByUser - Indicates if the topic is saved by the user.
+ * @param {string} props.width - Width of the card.
+ * @param {boolean} props.home - Indicates if the card is displayed in the home view.
+ * @param {string} props.q - Query parameter.
+ * @param {string} props.s - Search parameter.
+ * @param {boolean} props.editable - Indicates if the card is editable.
+ * @returns {JSX.Element} - Rendered TopicCard component.
+ */
 
 const TopicCard = ({
   topic,
@@ -18,6 +34,7 @@ const TopicCard = ({
   home = false,
   s = "",
   q = "all",
+  editable = false,
 }: {
   topic: DiscussionTopicWithUser;
   likedByUser: boolean;
@@ -26,6 +43,7 @@ const TopicCard = ({
   home?: boolean;
   s?: string;
   q?: string;
+  editable?: boolean;
 }) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
@@ -60,8 +78,12 @@ const TopicCard = ({
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
+          <div className="flex flex-row justify-between items-center">
+            {editable && <UpdateTopic prev={topic} />}
+            {editable && <Delete type="topic" TargetID={topic.TopicID} />}
+          </div>
           <Link to={`/topic/${topic.TopicID}`}>
-            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+            <h3 className="mt-2 sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
               {topic.Title}
             </h3>
           </Link>

@@ -6,6 +6,12 @@ import SignedIn from "../../auth/SignedIn";
 import SignedOut from "../../auth/SignedOut";
 import { Button } from "../../ui/button";
 
+/**
+ * LeftSideBar component represents the left sidebar of the application.
+ * It includes navigation links, login/logout buttons, and a logout dialog.
+ *
+ * @returns {JSX.Element} The JSX for the LeftSideBar component.
+ */
 const LeftSideBar = () => {
   const pathname = window.location.href;
   return (

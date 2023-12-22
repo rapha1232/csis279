@@ -1,5 +1,6 @@
 import { User } from "../types/index";
 
+// Local storage utils
 const getLocalStorageUser = (): User => {
   const temp = localStorage.getItem("user") ?? null;
   const parseUser = JSON.parse(temp || "null");
@@ -12,13 +13,18 @@ const setLocalStorageUser = (user: User) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
 
-const getToken = () => {
-  const parsedUser = JSON.parse(localStorage.getItem("user") || "null");
-  return parsedUser.token;
+const setLocalStorageToken = (token: string) => {
+  localStorage.setItem("token", JSON.stringify(token));
+};
+
+const getLocalStorageToken = () => {
+  const token = JSON.parse(localStorage.getItem("token") || "null");
+  return token;
 };
 export {
+  getLocalStorageToken,
   getLocalStorageUser,
-  getToken,
   removeLocalStorageUser,
+  setLocalStorageToken,
   setLocalStorageUser,
 };

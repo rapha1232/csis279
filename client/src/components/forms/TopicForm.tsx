@@ -18,6 +18,9 @@ import {
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 
+/**
+ * Component for creating a new topic using a form.
+ */
 const TopicForm = () => {
   const user = useGetUser();
   const [createTopic, { isLoading }] = useCreateTopicMutation();
@@ -28,6 +31,11 @@ const TopicForm = () => {
       Content: "",
     },
   });
+
+  /**
+   * Handles the form submission.
+   * @param {Object} topic - The topic data submitted.
+   */
   const handleSubmit = async (topic: z.infer<typeof TopicFormValidation>) => {
     try {
       const res = await createTopic({

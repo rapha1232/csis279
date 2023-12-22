@@ -54,31 +54,3 @@ export class LoginDto {
   })
   public Password: string;
 }
-
-export class UpdateUserDto {
-  @ApiProperty({
-    description: 'The new first name of the user.',
-    example: 'John',
-    minLength: 2,
-    maxLength: 30,
-  })
-  public FirstName: string;
-
-  @ApiProperty({
-    description: 'The new last name of the user.',
-    example: 'Doe',
-    minLength: 2,
-    maxLength: 30,
-  })
-  public LastName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    description: 'The new password of the user.',
-    example: 'password123',
-    minLength: 6,
-    maxLength: 32,
-  })
-  public password: string;
-}

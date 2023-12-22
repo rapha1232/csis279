@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Events, PrismaClient } from '@prisma/client';
 import { CreateEventDto } from 'src/dtos/create.dto';
+import { UpdateEventDto } from 'src/dtos/edit.dto';
 
 /**
  * Service responsible for handling events-related operations.
@@ -22,7 +23,7 @@ export class EventsService {
   /**
    * Retrieves all events.
    * @returns A promise that resolves to an array of events.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async getAll(): Promise<Events[]> {
     try {
@@ -36,7 +37,7 @@ export class EventsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -45,7 +46,7 @@ export class EventsService {
    * @param {number} EventID - The ID of the event to be liked.
    * @param {number} UserID - The ID of the user liking the event.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async likeEvent(EventID: number, UserID: number): Promise<void> {
     try {
@@ -59,7 +60,7 @@ export class EventsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -68,7 +69,7 @@ export class EventsService {
    * @param {number} EventID - The ID of the event to be unliked.
    * @param {number} UserID - The ID of the user unliking the event.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async unlikeEvent(EventID: number, UserID: number): Promise<void> {
     try {
@@ -82,7 +83,7 @@ export class EventsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -91,7 +92,7 @@ export class EventsService {
    * @param {number} EventID - The ID of the event to be Saved.
    * @param {number} UserID - The ID of the user saving the event.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async saveEvent(EventID: number, UserID: number): Promise<void> {
     try {
@@ -100,7 +101,7 @@ export class EventsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -109,7 +110,7 @@ export class EventsService {
    * @param {number} EventID - The ID of the event to be Saved.
    * @param {number} UserID - The ID of the user saving the event.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async unsaveEvent(EventID: number, UserID: number): Promise<void> {
     try {
@@ -118,7 +119,7 @@ export class EventsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -127,7 +128,7 @@ export class EventsService {
    * @param {string} q - The query parameter.
    * @param {string} search - The search parameter.
    * @returns A promise that resolves to an array of events.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async filtered(
     q: 'all' | 'popular' | 'recent' | 'name' | 'old',
@@ -170,7 +171,7 @@ export class EventsService {
       return allevents;
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -178,7 +179,7 @@ export class EventsService {
    * Creates an event.
    * @param {CreateEventDto} createEventDto - The info of the event to be created.
    * @returns A promise that resolves to the created event.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    * @throws {BadRequestException} If the request body is missing data.
    */
   async create(createEventDto: CreateEventDto): Promise<Events> {
@@ -208,7 +209,7 @@ export class EventsService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -222,14 +223,46 @@ export class EventsService {
   async delete(EventID: number): Promise<void> {
     try {
       const event: Events | null = await this.events.findUnique({
-        where: { EventID: EventID },
+        where: { EventID: Number(EventID) },
       });
 
       if (!event) {
         throw new NotFoundException('Event not found');
       }
 
-      await this.events.delete({ where: { EventID: EventID } });
+      await this.events.delete({ where: { EventID: Number(EventID) } });
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  /**
+   * Updates event info.
+   * @param {UpdateEventDto} editDto - The new event info.
+   * @returns A promise that resolves to the new event.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
+   * @throws {NotFoundException} If the event is not found.
+   */
+  async updateEvent(editDto: UpdateEventDto): Promise<Events> {
+    try {
+      const event: Events | null = await this.events.findUnique({
+        where: { EventID: Number(editDto.EventID) },
+      });
+
+      if (!event) {
+        throw new NotFoundException('Event not found');
+      }
+
+      return this.events.update({
+        where: { EventID: Number(editDto.EventID) },
+        data: {
+          Title: editDto.Title,
+          Description: editDto.Description,
+          Date: editDto.Date,
+          Location: editDto.Location,
+        },
+      });
     } catch (error) {
       this.logger.error(error.message);
       throw new InternalServerErrorException('Internal Server Error');

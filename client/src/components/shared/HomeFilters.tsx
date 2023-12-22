@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { MainFilters } from "../../constants/filters";
 import { Button } from "../ui/button";
 
+/**
+ * This is a component that is used to add the main filters to the page.
+ * @returns {JSX.Element} - A component that renders the main filters.
+ */
 const HomeFilters = ({
   onFilterChange,
 }: {

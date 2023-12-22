@@ -4,7 +4,11 @@ import { DiscussionTopicWithUser } from "../../types";
 import TopicCard from "../cards/TopicCard";
 import Loader from "../shared/Loader";
 
+/**
+ * Component for rendering a list of topics.
+ */
 const RenderTopics = () => {
+  // Fetch topics data using the useGetTopicsQuery hook from the Redux store.
   const {
     data: topicData,
     isLoading: isTopicLoading,

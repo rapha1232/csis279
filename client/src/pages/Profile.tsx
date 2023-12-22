@@ -9,6 +9,8 @@ import { User2 } from "lucide-react";
 import React from "react";
 import PostedTab from "../components/shared/PostedTab";
 import SavedTab from "../components/shared/SavedTab";
+import Delete from "../components/update/Delete";
+import UpdateUser from "../components/update/UpdateUser";
 import useGetUser from "../hooks/useGetUser";
 
 const Profile = () => {
@@ -29,6 +31,10 @@ const Profile = () => {
             <p className="paragraph-regular text-dark400_light800 mt-8">
               {user.Email}
             </p>
+          </div>
+          <div className="mt-3 ml-64">
+            <UpdateUser />
+            <Delete type="user" TargetID={user.UserID} />
           </div>
         </div>
       </div>

@@ -4,7 +4,11 @@ import { EventWithUser } from "../../types";
 import EventCard from "../cards/EventCard";
 import Loader from "../shared/Loader";
 
+/**
+ * Component for rendering a list of events.
+ */
 const RenderEvents = () => {
+  // Fetch events data using the useGetEventsQuery hook from the Redux store.
   const {
     data: eventData,
     isLoading: isEventLoading,

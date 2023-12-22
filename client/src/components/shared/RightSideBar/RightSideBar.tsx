@@ -3,7 +3,13 @@ import { useArticlesQuery, useGetEventsQuery } from "../../../app/store";
 import Loader from "../Loader";
 import Tag from "../Tag";
 
+/**
+ * RightSideBar component represents the right sidebar in the application.
+ *
+ * @returns {JSX.Element} The JSX for the RightSideBar component.
+ */
 const RightSideBar = () => {
+  // Fetching upcoming events
   const { data, isLoading, isSuccess } = useGetEventsQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
@@ -12,6 +18,7 @@ const RightSideBar = () => {
     skip: false,
   });
 
+  // Fetching articles of the day
   const {
     data: articles,
     isLoading: isArticleLoading,

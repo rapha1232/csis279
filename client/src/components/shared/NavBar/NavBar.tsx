@@ -5,6 +5,12 @@ import SignedIn from "../../auth/SignedIn";
 import MobileNav from "./MobileNav";
 import Theme from "./Theme";
 
+/**
+ * NavBar component represents the navigation bar in the application.
+ *
+ * @returns {JSX.Element} The JSX for the NavBar component.
+ */
+
 const NavBar = () => {
   const navigate = useNavigate();
   return (

@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { Replies } from '@prisma/client';
 import { CreateReplyDto } from 'src/dtos/create.dto';
+import { UpdateReplyDto } from 'src/dtos/edit.dto';
 import { ReplyInteractionDTO } from 'src/dtos/interactions.dto';
 import { RepliesService } from './replies.service';
 
@@ -49,42 +51,6 @@ import { RepliesService } from './replies.service';
 @ApiTags('Replies')
 export class RepliesController {
   constructor(private readonly r: RepliesService) {}
-
-  /**
-   * Retrieves all replies for a specific Discussion Reply.
-   * @returns {Promise<Replies[]>} A promise that resolves to an array of replies.
-   */
-  @HttpCode(HttpStatus.OK)
-  @ApiParam({
-    name: 'TopicID',
-    description: 'ID of the topic to retrieve all replies.',
-    example: '1',
-  })
-  @ApiOkResponse({
-    description: 'Returns an array of replies.',
-  })
-  @Get('getAllRepliesForTopic')
-  async getAllForTopic(@Query('TopicID') TopicID: number): Promise<Replies[]> {
-    return this.r.getAllForTopic(Number(TopicID));
-  }
-
-  /**
-   * Retrieves all replies for a specific Question.
-   * @returns {Promise<Replies[]>} A promise that resolves to an array of replies.
-   */
-  @HttpCode(HttpStatus.OK)
-  @ApiParam({
-    name: 'QuestionID',
-    description: 'ID of the question to retrieve all replies.',
-    example: '1',
-  })
-  @ApiOkResponse({
-    description: 'Returns an array of replies.',
-  })
-  @Get('getAllRepliesForQuestion')
-  async getAll(@Query('QuestionID') QuestionID: number): Promise<Replies[]> {
-    return this.r.getAllForQuestion(Number(QuestionID));
-  }
 
   /**
    * Likes a reply.
@@ -237,7 +203,7 @@ export class RepliesController {
    * @returns {Promise<Replies>} A promise that resolves to the created reply.
    */
   @ApiCreatedResponse({
-    description: 'Reply created successfully.',
+    description: 'Reply created successfully!',
   })
   @ApiBadRequestResponse({
     description: 'Missing Data in Request.',
@@ -273,5 +239,26 @@ export class RepliesController {
   @Delete('deleteReply')
   async delete(@Query('ReplyID') ReplyID: number): Promise<void> {
     return this.r.delete(Number(ReplyID));
+  }
+
+  /**
+   * Updates reply info.
+   * @param {UpdateReplyDto} editDto - The new reply info.
+   * @returns {Promise<Replys>} A promise that resolves to the updated reply.
+   */
+  @ApiOkResponse({
+    description: 'Reply updated successfully.',
+  })
+  @ApiBody({
+    type: UpdateReplyDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Reply not found.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Put('updateReply')
+  async update(@Body() editDto: UpdateReplyDto): Promise<Replies> {
+    return this.r.updateReply(editDto);
   }
 }

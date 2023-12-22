@@ -9,6 +9,12 @@ import {
 import { themes } from "../../../constants";
 import { useTheme } from "../../../context/ThemeProvider";
 
+/**
+ * Theme component represents the theme switcher in the application.
+ *
+ * @returns {JSX.Element} The JSX for the Theme component.
+ */
+
 const Theme = () => {
   const { mode, setMode } = useTheme();
   return (

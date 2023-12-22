@@ -7,6 +7,11 @@ const darkTheme = createTheme({
   },
 });
 
+/**
+ * DarkTheme component
+ * @param {React.ReactNode} children - children
+ * @returns {JSX.Element} DarkTheme component
+ */
 const DarkTheme = ({ children }: { children: React.ReactNode }) => {
   return <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>;
 };

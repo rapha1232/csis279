@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { PrismaClient, Topics } from '@prisma/client';
 import { CreateTopicDto } from 'src/dtos/create.dto';
+import { UpdateTopicDto } from 'src/dtos/edit.dto';
 
 /**
  * Service responsible for handling discussions-related operations.
@@ -223,7 +224,7 @@ export class DiscussionsService {
   async getOne(TopicID: number): Promise<Topics> {
     try {
       const topic: Topics | null = await this.topics.findUnique({
-        where: { TopicID: TopicID },
+        where: { TopicID: Number(TopicID) },
         include: {
           CreatedBy: true,
           Likes: { include: { User: true } },
@@ -253,14 +254,44 @@ export class DiscussionsService {
   async delete(TopicID: number): Promise<void> {
     try {
       const topic: Topics | null = await this.topics.findUnique({
-        where: { TopicID: TopicID },
+        where: { TopicID: Number(TopicID) },
       });
 
       if (!topic) {
         throw new NotFoundException('Topic not found');
       }
 
-      await this.topics.delete({ where: { TopicID: TopicID } });
+      await this.topics.delete({ where: { TopicID: Number(TopicID) } });
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new InternalServerErrorException('Internal Server Error');
+    }
+  }
+
+  /**
+   * Updates topic info.
+   * @param {UpdateTopicDto} editDto - The new topic info.
+   * @returns A promise that resolves to the new topic.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
+   * @throws {NotFoundException} If the topic is not found.
+   */
+  async updateTopic(editDto: UpdateTopicDto): Promise<Topics> {
+    try {
+      const topic: Topics | null = await this.topics.findUnique({
+        where: { TopicID: Number(editDto.TopicID) },
+      });
+
+      if (!topic) {
+        throw new NotFoundException('Topic not found');
+      }
+
+      return this.topics.update({
+        where: { TopicID: Number(editDto.TopicID) },
+        data: {
+          Title: editDto.Title,
+          Content: editDto.Content,
+        },
+      });
     } catch (error) {
       this.logger.error(error.message);
       throw new InternalServerErrorException('Internal Server Error');

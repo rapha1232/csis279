@@ -6,6 +6,12 @@ interface Props {
   name: string;
 }
 
+/**
+ *
+ * @param {string} url - The url of the tag
+ * @param {string} name - The name of the tag
+ * @returns {JSX.Element} - A tag with a link
+ */
 const RenderTag = ({ url, name }: Props) => {
   return (
     <Link

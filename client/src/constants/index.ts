@@ -1,11 +1,13 @@
 import { SidebarLink } from "../types";
 
+// The themes data
 export const themes = [
   { value: "light", label: "Light", icon: "/assets/icons/sun.svg" },
   { value: "dark", label: "Dark", icon: "/assets/icons/moon.svg" },
   { value: "system", label: "System", icon: "/assets/icons/computer.svg" },
 ];
 
+// The sidebar links data
 export const sidebarLinks: SidebarLink[] = [
   {
     imgURL: "/assets/icons/home.svg",
@@ -36,5 +38,10 @@ export const sidebarLinks: SidebarLink[] = [
     imgURL: "/assets/icons/apod.svg",
     route: "/apod",
     label: "APOD",
+  },
+  {
+    imgURL: "/assets/icons/3d-solar-system.svg",
+    route: "/3d-solar-system",
+    label: "3D Solar System",
   },
 ];

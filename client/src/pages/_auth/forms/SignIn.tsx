@@ -17,10 +17,11 @@ import { Input } from "../../../components/ui/input";
 import { useToast } from "../../../components/ui/use-toast";
 
 import { useDispatch } from "react-redux";
-import { setCookie, setUser, useSigninMutation } from "../../../app/store";
+import { setUser, useSigninMutation } from "../../../app/store";
 import { SigninValidation } from "../../../lib/validation";
 import {
   removeLocalStorageUser,
+  setLocalStorageToken,
   setLocalStorageUser,
 } from "../../../utils/localStorageUtils";
 
@@ -43,7 +44,7 @@ const SigninForm = () => {
       removeLocalStorageUser();
       setLocalStorageUser(res.user);
       dispatch(setUser(res.user));
-      dispatch(setCookie(res.cookie.split(";")[0]));
+      setLocalStorageToken(res.cookie);
       navigate("/");
       toast({ title: "Successfully logged in" });
     } catch {

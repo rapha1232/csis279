@@ -14,6 +14,11 @@ interface MetricProps {
   onClick?: () => void;
 }
 
+/**
+ * Get the corresponding Lucide icon component based on the icon name.
+ * @param {string} iconName - The name of the icon.
+ * @returns {React.ReactNode | null} - The Lucide icon component or null if not found.
+ */
 const getIconComponent = (iconName: string) => {
   const iconMap: { [key: string]: React.ReactNode } = {
     user: <User2 />,
@@ -25,6 +30,20 @@ const getIconComponent = (iconName: string) => {
   return iconMap[iconName] || null;
 };
 
+/**
+ * Metric Component - Displays metric-like information with an optional icon.
+ * @typedef {Object} MetricProps - Props for the Metric component.
+ * @property {string | number} [value] - The numerical or string value associated with the metric.
+ * @property {string} title - The text title or description of the metric.
+ * @property {string} [href] - If provided, turns the entire metric into a clickable link.
+ * @property {string} [textStyles] - Additional CSS styles to be applied to the text content of the metric.
+ * @property {boolean} [isAuthor] - Indicates whether the metric is related to the author.
+ * @property {string} [icon] - Specifies the icon associated with the metric. Supported values: "user," "heart," "star," "comment."
+ * @property {string} [iconColor] - Specifies the color of the icon. If not provided, a default color (#CC00FF) is used.
+ * @property {number} [iconSize] - Specifies the size of the icon. If not provided, a default size (16) is used.
+ * @property {() => void} [onClick] - A callback function to be executed when the metric is clicked.
+ * @returns {JSX.Element} - JSX element representing the Metric component.
+ */
 const Metric = ({
   value,
   title,
@@ -38,6 +57,10 @@ const Metric = ({
 }: MetricProps) => {
   const iconComponent = getIconComponent(icon ?? "");
 
+  /**
+   * JSX content for the metric, including value, title, and optional icon.
+   * @type {JSX.Element}
+   */
   const metricContent = (
     <>
       {iconComponent &&

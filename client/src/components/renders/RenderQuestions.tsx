@@ -4,7 +4,11 @@ import { QuestionWithUser } from "../../types";
 import QuestionCard from "../cards/QuestionCard";
 import Loader from "../shared/Loader";
 
+/**
+ * Component for rendering a list of questions.
+ */
 const RenderQuestions = () => {
+  // Fetch events data using the useGetQuestionsQuery hook from the Redux store.
   const {
     data: questionData,
     isLoading: isQuestionLoading,

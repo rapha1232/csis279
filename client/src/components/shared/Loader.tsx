@@ -1,4 +1,9 @@
 import React from "react";
+
+/**
+ * Component for rendering a loader.
+ * @returns {Object} An object containing a loader.
+ */
 const Loader = () => (
   <div className="flex-center w-full">
     <img

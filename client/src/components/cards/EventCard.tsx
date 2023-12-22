@@ -8,7 +8,22 @@ import useGetUser from "../../hooks/useGetUser";
 import { EventWithUser } from "../../types";
 import { getTimestamp } from "../../utils/utils";
 import Metric from "../shared/Metric";
+import Delete from "../update/Delete";
+import UpdateEvent from "../update/UpdateEvent";
 
+/**
+ * Functional component representing an event card.
+ * @param {Object} props - Component props.
+ * @param {EventWithUser} props.event - The event data.
+ * @param {boolean} props.likedByUser - Indicates if the event is liked by the user.
+ * @param {boolean} props.savedByUser - Indicates if the event is saved by the user.
+ * @param {string} props.width - Width of the card.
+ * @param {boolean} props.home - Indicates if the card is displayed in the home view.
+ * @param {string} props.q - Query parameter.
+ * @param {string} props.s - Search parameter.
+ * @param {boolean} props.editable - Indicates if the card is editable.
+ * @returns {JSX.Element} - Rendered EventCard component.
+ */
 const EventCard = ({
   event,
   likedByUser,
@@ -17,6 +32,7 @@ const EventCard = ({
   home = false,
   q = "all",
   s = "",
+  editable = false,
 }: {
   event: EventWithUser;
   likedByUser: boolean;
@@ -25,11 +41,15 @@ const EventCard = ({
   home?: boolean;
   q?: string;
   s?: string;
+  editable?: boolean;
 }) => {
   const [isLiked, setIsLiked] = useState(likedByUser);
   const [isSaved, setIsSaved] = useState(savedByUser);
   const UserID = useGetUser().UserID;
 
+  /**
+   * Fetch events based on conditions.
+   */
   const { refetch } = home
     ? useGetEventsQuery()
     : useGetEventsWithFilterQuery(
@@ -42,6 +62,10 @@ const EventCard = ({
           skip: false,
         }
       );
+
+  /**
+   * Event click handling functions.
+   */
   const { handleLikeClick, handleSaveClick } = useEventClicks({
     UserID,
     isLiked,
@@ -58,7 +82,11 @@ const EventCard = ({
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
-          <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+          <div className="flex flex-row justify-between items-center">
+            {editable && <UpdateEvent prev={event} />}
+            {editable && <Delete type="event" TargetID={event.EventID} />}
+          </div>
+          <h3 className="mt-2 sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
             {event.Title}
           </h3>
         </div>

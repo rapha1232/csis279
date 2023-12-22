@@ -19,6 +19,9 @@ import {
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 
+/**
+ * Component for creating a new question using a form.
+ */
 const QuestionForm = () => {
   const user = useGetUser();
   const [createQuestion, { isLoading }] = useCreateQuestionMutation();
@@ -29,12 +32,17 @@ const QuestionForm = () => {
       Content: "",
     },
   });
+
+  /**
+   * Handles the form submission.
+   * @param {Object} question - The question data submitted.
+   */
   const handleSubmit = async (
-    event: z.infer<typeof QuestionFormValidation>
+    question: z.infer<typeof QuestionFormValidation>
   ) => {
     try {
       const res = await createQuestion({
-        ...event,
+        ...question,
         CreatedAt: getTodaysDate(),
         CreatorID: user.UserID,
       }).unwrap();

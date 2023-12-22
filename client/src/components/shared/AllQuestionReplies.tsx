@@ -5,6 +5,8 @@ import { MainFilters } from "../../constants/filters";
 import { useReplyClicks } from "../../hooks/replyMutations";
 import useGetUser from "../../hooks/useGetUser";
 import { getTimestamp } from "../../utils/utils";
+import Delete from "../update/Delete";
+import UpdateReply from "../update/UpdateReply";
 import Filter from "./Filter";
 import Loader from "./Loader";
 import Metric from "./Metric";
@@ -15,9 +17,17 @@ interface Props {
   totalReplies: number;
 }
 
+/**
+ * This component is used to display all the replies of a question.
+ * @param {number} QuestionID - The id of the question
+ * @param {number} totalReplies - The total number of replies
+ * @returns {JSX.Element} - A list of replies
+ */
 const AllQuestionReplies = ({ questionId, totalReplies }: Props) => {
+  // Get the q parameter from the url
   const [sp, setSp] = useSearchParams();
 
+  // Get the replies from the server
   const { data, isLoading, isSuccess, refetch } =
     useGetQuestionRepliesWithFilterQuery(
       {
@@ -32,14 +42,20 @@ const AllQuestionReplies = ({ questionId, totalReplies }: Props) => {
         skip: false,
       }
     );
+
+  // Update the q parameter in the url
   useEffect(() => {
     let q = sp.get("q");
   }, [sp]);
+
+  // Update the q parameter in the url
   const handleFilterChange = (newQ: string) => {
     setSp({ q: newQ });
   };
 
   const UserID = useGetUser().UserID;
+
+  //  Handle the like click
   const { handleLikeClick } = useReplyClicks({
     UserID,
     refetch,
@@ -60,14 +76,19 @@ const AllQuestionReplies = ({ questionId, totalReplies }: Props) => {
         )}
         {isSuccess &&
           data.map((reply) => (
+            // Map through the replies and display them
             <article
               key={reply.ReplyID}
               className="light-border border-b py-10"
             >
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+                {reply.CreatorID === UserID && <UpdateReply prev={reply} />}
+                {reply.CreatorID === UserID && (
+                  <Delete type="reply" TargetID={reply.ReplyID} />
+                )}
                 <Link
                   to={`/user/${reply.CreatorID}`}
-                  className="flex flex-1 items-start gap-1 sm:items-center"
+                  className="mt-2 flex flex-1 items-start gap-1 sm:items-center"
                 >
                   <Metric
                     icon="user"
@@ -96,7 +117,7 @@ const AllQuestionReplies = ({ questionId, totalReplies }: Props) => {
                   iconColor={reply.likedByUser ? "red" : ""}
                 />
               </div>
-              <div>{reply.Content}</div>
+              <div className="text-dark100_light900">{reply.Content}</div>
             </article>
           ))}
       </div>

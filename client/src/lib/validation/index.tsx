@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+// All Criteria for form validations using zod
+
 export const SignupValidation = z.object({
   FirstName: z
     .string()
@@ -65,20 +67,17 @@ export const ReplyFormValidation = z.object({
     .max(2000, { message: "Reply must be at most 2,000 characters." }),
 });
 
-// export const ProfileValidation = z.object({
-//   file: z.custom<File[]>(),
-//   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-//   username: z.string().min(2, { message: "Name must be at least 2 characters." }),
-//   email: z.string().email(),
-//   bio: z.string(),
-// });
-
-// // ============================================================
-// // POST
-// // ============================================================
-// export const PostValidation = z.object({
-//   caption: z.string().min(5, { message: "Minimum 5 characters." }).max(2200, { message: "Maximum 2,200 caracters" }),
-//   file: z.custom<File[]>(),
-//   location: z.string().min(1, { message: "This field is required" }).max(1000, { message: "Maximum 1000 characters." }),
-//   tags: z.string(),
-// });
+export const UpdateUserFormValidation = z.object({
+  FirstName: z
+    .string()
+    .min(2, { message: "First Name must be at least 2 characters." })
+    .max(30, { message: "First Name must be at most 30 characters." }),
+  LastName: z
+    .string()
+    .min(2, { message: "Last Name must be at least 2 characters." })
+    .max(30, { message: "Last Name must be at most 30 characters." }),
+  Password: z
+    .string()
+    .min(6, { message: "Password must be at least 8 characters." })
+    .max(32, { message: "Password must be at most 32 characters." }),
+});

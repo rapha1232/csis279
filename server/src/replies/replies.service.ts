@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { PrismaClient, Replies } from '@prisma/client';
 import { CreateReplyDto } from 'src/dtos/create.dto';
+import { UpdateReplyDto } from 'src/dtos/edit.dto';
 
 /**
  * Service responsible for handling Replie-related operations.
@@ -19,55 +20,11 @@ export class RepliesService {
   private readonly logger = new Logger(RepliesService.name);
 
   /**
-   * Retrieves all replies to specific Topic.
-   * @param {number} TopicID - The ID of the topic to retrieve all replies.
-   * @returns A promise that resolves to an array of replies.
-   * @throws {HttpException} If an error occurs during database interaction.
-   */
-  async getAllForTopic(TopicID: number): Promise<Replies[]> {
-    try {
-      return await this.replies.findMany({
-        where: { TopicID: TopicID },
-        include: {
-          CreatedBy: true,
-          Likes: { include: { User: true } },
-        },
-        orderBy: { LikesNB: 'desc' },
-      });
-    } catch (error) {
-      this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
-    }
-  }
-
-  /**
-   * Retrieves all replies to specific Question.
-   * @param {number} QuestionID - The ID of the Question to retrieve all replies.
-   * @returns A promise that resolves to an array of replies.
-   * @throws {HttpException} If an error occurs during database interaction.
-   */
-  async getAllForQuestion(QuestionID: number): Promise<Replies[]> {
-    try {
-      return await this.replies.findMany({
-        where: { QuestionID: QuestionID },
-        include: {
-          CreatedBy: true,
-          Likes: { include: { User: true } },
-        },
-        orderBy: { LikesNB: 'desc' },
-      });
-    } catch (error) {
-      this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
-    }
-  }
-
-  /**
    * Likes a reply.
    * @param {number} ReplyID - The ID of the reply to be liked.
    * @param {number} UserID - The ID of the user liking the reply.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async likeReply(ReplyID: number, UserID: number): Promise<void> {
     try {
@@ -81,7 +38,7 @@ export class RepliesService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -90,7 +47,7 @@ export class RepliesService {
    * @param {number} ReplyID - The ID of the reply to be unliked.
    * @param {number} UserID - The ID of the user unliking the reply.
    * @returns A promise that resolves when the operation is successful.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async unlikeReply(ReplyID: number, UserID: number): Promise<void> {
     try {
@@ -104,7 +61,7 @@ export class RepliesService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -113,7 +70,7 @@ export class RepliesService {
    * @param {string} q - The query parameter.
    * @param {number} QuestionID - The ID of the question to sort replies.
    * @returns A promise that resolves to an array of replies.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async filteredForQuestion(
     q: 'all' | 'popular' | 'recent' | 'name' | 'old',
@@ -155,7 +112,7 @@ export class RepliesService {
       return allReplies;
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -164,7 +121,7 @@ export class RepliesService {
    * @param {string} q - The query parameter.
    * @param {number} TopicID - The ID of the topic to sort replies.
    * @returns A promise that resolves to an array of replies.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    */
   async filteredForTopic(
     q: 'all' | 'popular' | 'recent' | 'name' | 'old',
@@ -206,7 +163,7 @@ export class RepliesService {
       return allReplies;
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -214,7 +171,7 @@ export class RepliesService {
    * Creates a reply for a topic.
    * @param {CreateReplyDto} createReplyDto - The info of the reply to be created.
    * @returns A promise that resolves to the created reply.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    * @throws {BadRequestException} If the request body is missing data.
    */
   async createForTopic(createReplyDto: CreateReplyDto): Promise<Replies> {
@@ -241,7 +198,7 @@ export class RepliesService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -249,7 +206,7 @@ export class RepliesService {
    * Creates a reply for a question.
    * @param {CreateReplyDto} createReplyDto - The info of the reply to be created.
    * @returns A promise that resolves to the created reply.
-   * @throws {HttpException} If an error occurs during database interaction.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
    * @throws {BadRequestException} If the request body is missing data.
    */
   async createForQuestion(createReplyDto: CreateReplyDto): Promise<Replies> {
@@ -276,7 +233,7 @@ export class RepliesService {
       });
     } catch (error) {
       this.logger.error(error.message);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException();
     }
   }
 
@@ -290,14 +247,43 @@ export class RepliesService {
   async delete(ReplyID: number): Promise<void> {
     try {
       const reply: Replies | null = await this.replies.findUnique({
-        where: { ReplyID: ReplyID },
+        where: { ReplyID: Number(ReplyID) },
       });
 
       if (!reply) {
         throw new NotFoundException('Reply not found');
       }
 
-      await this.replies.delete({ where: { ReplyID: ReplyID } });
+      await this.replies.delete({ where: { ReplyID: Number(ReplyID) } });
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  /**
+   * Updates reply info.
+   * @param {UpdateReplyDto} editDto - The new reply info.
+   * @returns A promise that resolves to the new reply.
+   * @throws {InternalServerErrorException} If an error occurs during database interaction.
+   * @throws {NotFoundException} If the reply is not found.
+   */
+  async updateReply(editDto: UpdateReplyDto): Promise<Replies> {
+    try {
+      const reply: Replies | null = await this.replies.findUnique({
+        where: { ReplyID: Number(editDto.ReplyID) },
+      });
+
+      if (!reply) {
+        throw new NotFoundException('Reply not found');
+      }
+
+      return this.replies.update({
+        where: { ReplyID: Number(editDto.ReplyID) },
+        data: {
+          Content: editDto.Content,
+        },
+      });
     } catch (error) {
       this.logger.error(error.message);
       throw new InternalServerErrorException('Internal Server Error');

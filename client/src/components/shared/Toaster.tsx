@@ -3,6 +3,10 @@ import { Button } from "../../components/ui/button";
 import { ToastAction } from "../../components/ui/toast";
 import { useToast } from "../../components/ui/use-toast";
 
+/**
+ * This is a toaster component that is used to add toast notifications to the user's expoerience.
+ * @returns {Object} An object containing a button that adds an event to the user's experience.
+ */
 const Toaster = () => {
   const { toast } = useToast();
 
